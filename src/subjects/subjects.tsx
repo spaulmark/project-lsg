@@ -3,39 +3,48 @@ import { PregameScreen } from "../components/pregameScreen/pregameScreen";
 import { Episode, PlayerProfile } from "../model";
 import { SelectedPlayerData } from "../components/playerPortrait/selectedPortrait";
 import React from "react";
-import { PortraitDisplayMode, popularityMode } from "../model/portraitDisplayMode";
-import { ColorTheme, lightTheme } from "../theme/theme";
+import {
+  PortraitDisplayMode,
+  popularityMode,
+} from "../model/portraitDisplayMode";
+import { ColorTheme } from "../theme/theme";
+import { initialProfiles } from "../images/initialProfiles";
 
 // What is currently being displayed.
-export const mainContentStream$ = new BehaviorSubject(<PregameScreen cast={[]} />);
+export const mainContentStream$ = new BehaviorSubject(
+  <PregameScreen cast={initialProfiles} />
+);
 // Push episodes to this subject to add them to the sidebar. Null resets everything.
 export const episodes$ = new BehaviorSubject<Episode | null>(null);
 // Forcibly switches to an episode. Used when adding a new episode.
 export const switchEpisode$ = new Subject<number>();
 export function newEpisode(episode: Episode | null) {
-    episodes$.next(episode);
+  episodes$.next(episode);
 }
 export function switchSceneRelative(n: number) {
-    switchEpisode$.next(n);
+  switchEpisode$.next(n);
 }
 // the list of players in the game
 export const cast$ = new BehaviorSubject<PlayerProfile[]>([]);
 export function updateCast(newCast: PlayerProfile[]) {
-    cast$.next(newCast);
+  cast$.next(newCast);
 }
 export function getCast(): PlayerProfile[] {
-    return cast$.value;
+  return cast$.value;
 }
 // The player that the user has clicked on.
-export const selectedPlayer$ = new BehaviorSubject<SelectedPlayerData | null>(null);
+export const selectedPlayer$ = new BehaviorSubject<SelectedPlayerData | null>(
+  null
+);
 export function getSelectedPlayer() {
-    return selectedPlayer$.value;
+  return selectedPlayer$.value;
 }
 
 // The display mode selected by the viewsbar.
-export const displayMode$ = new BehaviorSubject<PortraitDisplayMode>(popularityMode);
+export const displayMode$ = new BehaviorSubject<PortraitDisplayMode>(
+  popularityMode
+);
 
 // If the screen is fullscreen or not.
 export const isFullscreen$ = new BehaviorSubject<boolean>(false);
-
 export const theme$ = new Subject<ColorTheme>();

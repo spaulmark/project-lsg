@@ -43,6 +43,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/webpack-env": "^1.15.1",
     "gh-pages": "^2.2.0"
   }
 }
