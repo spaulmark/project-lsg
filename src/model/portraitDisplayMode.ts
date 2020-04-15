@@ -43,7 +43,7 @@ export const powerMode: PortraitDisplayMode = {
   maxColor: powerMaxColor,
   backgroundColor: (state: PortraitState) => {
     const powerRanking = state.powerRanking;
-    if (powerRanking === undefined) return "";
+    if (powerRanking === undefined) return "rgb(170, 170, 170)";
 
     return interpolateColor(powerMinColor, powerMaxColor, powerRanking.toFloat);
   },

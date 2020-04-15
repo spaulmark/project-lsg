@@ -46,6 +46,7 @@ export function generatePopularitySubtitle(
   state: PortraitState,
   detailed: boolean = false
 ): any[] {
+  const data = getSelectedPlayer() as SelectedPlayerData | null;
   let key = 0;
   let subtitle: any[] = [];
   // popularity
@@ -54,6 +55,9 @@ export function generatePopularitySubtitle(
   key = addCompsLine(hero, subtitle, key);
   // friendship count / relationship classification titles
   ({ subtitle, key } = addFriendshipCountTitles(hero, subtitle, key));
+
+  if (!data) subtitle.push(<br key={key++} style={{ lineHeight: 1 }} />);
+
   return subtitle;
 }
 
