@@ -1,3 +1,5 @@
+import { isNullOrUndefined } from "util";
+
 export enum RelationshipType {
   Friend = "FRIEND",
   Queen = "QUEEN",
@@ -11,7 +13,7 @@ export const RelationshipTypeToSymbol = {
   ENEMY: "💔",
   PAWN: "PAWN",
   QUEEN: "QUEEN",
-  NEUTRAL: "NULL",
+  NEUTRAL: "NEUTRAL",
 };
 
 export function classifyRelationship(
@@ -25,7 +27,10 @@ export function classifyRelationship(
   const heroDisikes = heroRelationship === false || heroRelationship === null;
   const villainDislikes =
     villainRelationship === false || villainRelationship === null;
-  if (heroRelationship === null && villainRelationship === null) {
+  if (
+    isNullOrUndefined(heroRelationship) &&
+    isNullOrUndefined(villainRelationship)
+  ) {
     return RelationshipType.Neutral;
   } else if (heroLikes && villainLikes) {
     return RelationshipType.Friend;

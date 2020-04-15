@@ -139,10 +139,7 @@ export class HouseguestPortrait extends React.Component<
           backgroundColor: this.controller.backgroundColor(props),
         }}
       >
-        <Img
-          src={props.imageURL}
-          style={{ height: 100, width: "-moz-available" }}
-        />
+        <Img src={props.imageURL} style={{ height: 100 }} />
         <br />
         {props.name}
         <br />

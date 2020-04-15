@@ -1,8 +1,4 @@
-import {
-  PortraitProps,
-  HouseguestPortrait,
-  PortraitState,
-} from "../memoryWall";
+import { PortraitProps, HouseguestPortrait } from "../memoryWall";
 import { Subscription } from "rxjs";
 import {
   selectedPlayer$,
@@ -12,6 +8,7 @@ import {
 import { SelectedPlayerData } from "./selectedPortrait";
 import { Rgb } from "../../model/color";
 import { PowerRanking } from "../../model/powerRanking";
+import { isNullOrUndefined } from "util";
 
 const selectedColor = new Rgb(51, 255, 249);
 
@@ -78,6 +75,7 @@ export class HouseguestPortraitController {
           powerRanking: this.comparePowerRankings(data),
         });
       } else {
+        // note; popularity = 2 means the player is currently selected.
         this.view.setState({
           popularity: 2,
           powerRanking: new PowerRanking(2, 1),
@@ -87,8 +85,8 @@ export class HouseguestPortraitController {
   };
 }
 
-function fixProblem(problem: number | boolean | null): number {
-  if (problem === null) return 0;
+function fixProblem(problem: number | boolean | null): number | undefined {
+  if (isNullOrUndefined(problem)) return undefined;
   if (problem === true) return 1;
   if (problem === false) return -1;
   return problem;

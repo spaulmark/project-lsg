@@ -1,5 +1,5 @@
 import React from "react";
-import { roundTwoDigits, newDiscreteRelationshipMap } from "../../utils";
+import { roundTwoDigits } from "../../utils";
 import { ProfileHouseguest, PortraitProps, PortraitState } from "../memoryWall";
 import { SelectedPlayerData } from "./selectedPortrait";
 import {
@@ -8,7 +8,6 @@ import {
   classifyRelationship,
 } from "../../utils/ai/classifyRelationship";
 import { getSelectedPlayer } from "../../subjects/subjects";
-import { isNullOrUndefined } from "util";
 
 export function generatePowerSubtitle(
   hero: PortraitProps,
@@ -147,11 +146,6 @@ function friendOrEnemyTitle(
   villain: SelectedPlayerData
 ): string[] {
   const titles: string[] = [];
-  // TODO: ADD NEUTRAL TO THIS FUNCTION, also we need to have non-mutuals represented properly here, i cant rely on popularity.
-  // we can access the relationship map from portrait props, so we can skip the existing titles.push statement.
-
-  // if (!isNullOrUndefined(hero.relationships) && hero.relationships. )
-
   const heroRelationship: boolean | number | null = hero.relationships![
     villain.id
   ];
@@ -175,10 +169,20 @@ function friendEnemyCountTitle(hero: PortraitProps): string[] {
   const count = hero.getFriendEnemyCount
     ? hero.getFriendEnemyCount()
     : { friends: 0, enemies: 0 };
+  const friendCountText =
+    count.friends > 0
+      ? `${count.friends} ${RelationshipTypeToSymbol[Relationship.Friend]}`
+      : "";
+
+  const enemyCountText =
+    count.enemies > 0
+      ? `${count.enemies} ${RelationshipTypeToSymbol[Relationship.Enemy]}`
+      : "";
+
   titles.push(
-    `${count.friends} ${RelationshipTypeToSymbol[Relationship.Friend]} | ${
-      count.enemies
-    } ${RelationshipTypeToSymbol[Relationship.Enemy]}`
+    `${friendCountText}${
+      friendCountText && enemyCountText && " | "
+    }${enemyCountText}`
   );
   return titles;
 }
