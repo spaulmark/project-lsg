@@ -1,11 +1,10 @@
 import React from "react";
-import { PlayerProfile } from "../../model";
-import { MemoryWall } from "../memoryWall";
+import { MemoryWall, ProfileHouseguest } from "../memoryWall";
 import { HasText } from "../layout/text";
 import { ViewsBar } from "../viewsBar/viewBar";
 
 interface PregameScreenProps {
-  cast: PlayerProfile[];
+  cast: ProfileHouseguest[];
 }
 
 export function PregameScreen(props: PregameScreenProps): JSX.Element {

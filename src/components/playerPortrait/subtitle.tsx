@@ -50,14 +50,12 @@ export function generatePopularitySubtitle(
   let key = 0;
   let subtitle: any[] = [];
   // popularity
-  key = addPopularityLine(state, hero, detailed, subtitle, key);
+  // key = addPopularityLine(state, hero, detailed, subtitle, key);
   // competition wins
   key = addCompsLine(hero, subtitle, key);
   // friendship count / relationship classification titles
   ({ subtitle, key } = addFriendshipCountTitles(hero, subtitle, key));
-
-  if (!data) subtitle.push(<br key={key++} style={{ lineHeight: 1 }} />);
-
+  // if (!data) subtitle.push(<br key={key++} style={{ lineHeight: 1 }} />);
   return subtitle;
 }
 
@@ -103,7 +101,7 @@ function addPopularityLine(
       const arrow = deltaPop > 0 ? " | ↑" : " | ↓";
       popularitySubtitle += `${arrow} ${deltaPop}%`;
     }
-    subtitle.push(<div key={key++}>{popularitySubtitle}</div>);
+    subtitle.push(<div key={key++}>{""}</div>); // hardcoded to do nothing for the discrete case.
   }
   return key;
 }
@@ -150,10 +148,10 @@ function friendOrEnemyTitle(
   villain: SelectedPlayerData
 ): string[] {
   const titles: string[] = [];
-  const heroRelationship: boolean | number | null = hero.relationships![
+  const heroRelationship: boolean | number | undefined = hero.relationships![
     villain.id
   ];
-  const villainRelationship: boolean | number | null =
+  const villainRelationship: boolean | number | undefined =
     villain.relationships[hero.id!];
   titles.push(
     RelationshipTypeToSymbol[
@@ -170,9 +168,7 @@ function friendOrEnemyTitle(
 
 function friendEnemyCountTitle(hero: PortraitProps): string[] {
   const titles: string[] = [];
-  const count = hero.getFriendEnemyCount
-    ? hero.getFriendEnemyCount()
-    : { friends: 0, enemies: 0 };
+  const count = { friends: hero.likedBy, enemies: hero.dislikedBy };
   const friendCountText =
     count.friends > 0
       ? `${count.friends} ${RelationshipTypeToSymbol[Relationship.Friend]}`

@@ -77,7 +77,7 @@ function updateFriendCounts(gameState: GameState) {
           hero.popularity,
           villain.popularity,
           hero.relationshipWith(villain),
-          villain.relationshipWith(hero)
+          false
         );
         if (hero.id === villain.id) {
           return;
@@ -111,16 +111,6 @@ export class EpisodeFactory {
     }
     updatePopularity(newState);
     updateFriendCounts(newState);
-    const finalState = new GameState(newState);
-    switch (episodeType) {
-      case BigBrotherVanilla:
-        return generateBbVanilla(finalState);
-      case BigBrotherFinale:
-        return generateBbFinale(finalState);
-      case GameOver:
-        return generateGameOver(finalState);
-      default:
-        throw new Error("Unsupported Episode Type");
-    }
+    throw new Error("You can't call this function.");
   }
 }

@@ -1,6 +1,5 @@
 import React from "react";
 import { SidebarController } from "./sidebarController";
-import { PregameEpisode } from "../episode/pregameEpisode";
 import { Episode, GameState } from "../../model";
 import { Scene } from "../episode/scene";
 import { newEpisode } from "../../subjects/subjects";
@@ -17,7 +16,6 @@ export class Sidebar extends React.Component<{}, SidebarState> {
     super(props);
     this.controller = new SidebarController(this);
     this.state = { episodes: [], selectedScene: 0 };
-    newEpisode(new PregameEpisode(new GameState([])));
   }
 
   public componentDidMount() {

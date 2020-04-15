@@ -3,7 +3,7 @@ export interface RelationshipMap {
 }
 
 export interface DiscreteRelationshipMap {
-  [id: number]: boolean | null;
+  [id: number]: boolean | undefined;
 }
 
 export function newRelationshipMap(
@@ -23,7 +23,7 @@ export function newDiscreteRelationshipMap(
 ): DiscreteRelationshipMap {
   const result: DiscreteRelationshipMap = {};
   for (let i = 0; i < size; i++) {
-    if (i !== exclude) result[i] = null;
+    if (i !== exclude) result[i] = undefined;
   }
   return result;
 }

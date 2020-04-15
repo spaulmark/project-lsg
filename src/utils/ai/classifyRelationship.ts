@@ -1,47 +1,79 @@
-import { isNullOrUndefined } from "util";
-
 export enum RelationshipType {
-  Friend = "FRIEND",
-  Queen = "QUEEN",
-  Pawn = "PAWN",
-  Enemy = "ENEMY",
   Neutral = "NEUTRAL",
+  Friend = "FRIEND",
+  Enemy = "ENEMY",
+  Pawn = "PAWN",
+  Queen = "QUEEN",
+  Hunter = "HUNTER",
+  Target = "TARGET",
+  Dupe = "DUPE",
+  Deceiver = "DECEIVER",
 }
 
 export const RelationshipTypeToSymbol = {
+  NEUTRAL: "-",
   FRIEND: "♥",
   ENEMY: "💔",
-  PAWN: "PAWN",
-  QUEEN: "QUEEN",
-  NEUTRAL: "NEUTRAL",
+  PAWN: "♥ PAWN",
+  QUEEN: "- QUEEN",
+  HUNTER: "💔 HUNTER",
+  TARGET: "- TARGET",
+  DUPE: "♥ DUPE",
+  DECEIVER: "💔 DECEIVER",
 };
+
+export const RelationshipTypeToPopularity = {
+  NEUTRAL: 0,
+  FRIEND: 1,
+  ENEMY: -1,
+  PAWN: 0.66,
+  QUEEN: 0.15,
+  HUNTER: -0.66,
+  TARGET: -0.33,
+  DUPE: 0.5,
+  DECEIVER: -0.5,
+};
+
+export const ClassifyDiscreteRelationship: {
+  [id: string]: { [id: string]: RelationshipType };
+} = {
+  true: {
+    true: RelationshipType.Friend,
+    false: RelationshipType.Dupe,
+    undefined: RelationshipType.Pawn,
+  },
+  false: {
+    true: RelationshipType.Deceiver,
+    false: RelationshipType.Enemy,
+    undefined: RelationshipType.Hunter,
+  },
+  undefined: {
+    true: RelationshipType.Queen,
+    false: RelationshipType.Target,
+    undefined: RelationshipType.Neutral,
+  },
+};
+
+function f(a: boolean | undefined): "true" | "false" | "undefined" {
+  if (a === true) return "true";
+  else if (a === false) return "false";
+  else return "undefined";
+}
 
 export function classifyRelationship(
   heroPopularity: number,
   villainPopularity: number,
-  heroRelationship: number | boolean | null,
-  villainRelationship: number | boolean | null
+  heroRelationship: number | boolean | undefined,
+  villainRelationship: number | boolean | undefined
 ): RelationshipType {
-  const heroLikes = heroRelationship === true;
-  const villainLikes = villainRelationship === true;
-  const heroDisikes = heroRelationship === false || heroRelationship === null;
-  const villainDislikes =
-    villainRelationship === false || villainRelationship === null;
   if (
-    isNullOrUndefined(heroRelationship) &&
-    isNullOrUndefined(villainRelationship)
+    typeof heroRelationship !== "number" &&
+    typeof villainRelationship !== "number"
   ) {
-    return RelationshipType.Neutral;
-  } else if (heroLikes && villainLikes) {
-    return RelationshipType.Friend;
-  } else if (heroLikes && villainDislikes) {
-    return RelationshipType.Pawn;
-  } else if (heroDisikes && villainLikes) {
-    return RelationshipType.Enemy;
-  } else if (heroDisikes && villainLikes) {
-    return RelationshipType.Queen;
+    return ClassifyDiscreteRelationship[f(heroRelationship)][
+      f(villainRelationship)
+    ];
   }
-  ////// number zone
 
   const benefitsHero = heroRelationship! > heroPopularity;
   const benefitsVillain = heroRelationship! > villainPopularity;

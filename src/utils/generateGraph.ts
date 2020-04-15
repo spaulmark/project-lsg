@@ -33,7 +33,7 @@ function generateEdge(
     hero.popularity,
     villain.popularity,
     relationship,
-    null
+    undefined
   );
   if (relationshipType === RelationshipType.Friend) {
     return [[hero.id, villain.id], 1];

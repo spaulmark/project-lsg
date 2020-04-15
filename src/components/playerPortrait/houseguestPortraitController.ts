@@ -9,6 +9,10 @@ import { SelectedPlayerData } from "./selectedPortrait";
 import { Rgb } from "../../model/color";
 import { PowerRanking } from "../../model/powerRanking";
 import { isNullOrUndefined } from "util";
+import {
+  classifyRelationship,
+  RelationshipTypeToPopularity,
+} from "../../utils/ai/classifyRelationship";
 
 const selectedColor = new Rgb(51, 255, 249);
 
@@ -71,7 +75,10 @@ export class HouseguestPortraitController {
     } else {
       if (data.id !== this.view.props.id) {
         this.view.setState({
-          popularity: fixProblem(data.relationships[this.view.props.id!]),
+          popularity: getPopularity(
+            this.view.props.relationships![data.id],
+            data.relationships[this.view.props.id!]
+          ),
           powerRanking: this.comparePowerRankings(data),
         });
       } else {
@@ -84,10 +91,17 @@ export class HouseguestPortraitController {
     }
   };
 }
+type Rship = number | boolean | undefined;
 
-function fixProblem(problem: number | boolean | null): number | undefined {
-  if (isNullOrUndefined(problem)) return undefined;
-  if (problem === true) return 1;
-  if (problem === false) return -1;
-  return problem;
+function getPopularity(hero: Rship, villain: Rship): number | undefined {
+  if (isNullOrUndefined(hero) && isNullOrUndefined(villain)) return undefined;
+
+  if (typeof hero === "number") {
+    return hero;
+  } else if (typeof villain === "number") {
+    return villain;
+  }
+
+  const relationshipType = classifyRelationship(0, 0, hero, villain);
+  return RelationshipTypeToPopularity[relationshipType];
 }

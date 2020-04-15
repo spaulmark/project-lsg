@@ -71,7 +71,8 @@ export interface PortraitProps {
   deltaPopularity?: number;
   detailed?: boolean;
   superiors?: Set<number>;
-  getFriendEnemyCount?: () => { friends: number; enemies: number };
+  likedBy: number;
+  dislikedBy: number;
 }
 
 export interface PortraitState {
