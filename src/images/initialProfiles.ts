@@ -26,10 +26,18 @@ class RelationshipMapper {
   private setRelationship(h: string, v: string, newR: boolean | undefined) {
     const hToV = this.getRelationship(h, v);
     console.log(h, v, hToV, newR);
+    const hero = this.get(h);
     const villain = this.get(v);
-    if (hToV === newR) {
-      return; // no change needs to be made
-    } else if (hToV === undefined) {
+    if (
+      hToV === newR ||
+      hero.isEvicted ||
+      hero.isJury ||
+      villain.isJury ||
+      villain.isEvicted
+    ) {
+      return;
+    }
+    if (hToV === undefined) {
       newR === true ? villain.likedBy++ : villain.dislikedBy++;
     } else {
       newR === true
@@ -37,7 +45,7 @@ class RelationshipMapper {
         : villain.likedBy-- && villain.dislikedBy++;
     }
     // actually set it
-    this.get(h).relationships![villain.id!] = newR;
+    hero.relationships![villain.id!] = newR;
   }
 
   public like(hero: string, villain: string) {
@@ -72,11 +80,21 @@ function importAll(
   context: __WebpackModuleApi.RequireContext
 ): ProfileHouseguest[] {
   const profiles: ProfileHouseguest[] = [];
+
+  const evictedHouseguests: Set<string> = new Set<string>();
+  const jurors: Set<string> = new Set<string>();
+  evictedHouseguests.add("kuduku");
+  evictedHouseguests.add("baran");
+  evictedHouseguests.add("kitava");
+  jurors.add("malachai");
   context.keys().map((item: string, i: number) => {
+    const name = item.replace(".png", "").replace("./", "");
     profiles.push({
-      name: item.replace(".png", "").replace("./", ""),
+      name,
       imageURL: context(item),
       id: i,
+      isEvicted: evictedHouseguests.has(name.toLowerCase()),
+      isJury: jurors.has(name.toLowerCase()),
       relationships: newDiscreteRelationshipMap(context.length - 1, i),
       likedBy: 0,
       dislikedBy: 0,
@@ -86,7 +104,7 @@ function importAll(
   r.like("atziri", "dominus");
   r.friends("solaris", "lunaris");
   r.enemies("the elder", "the shaper");
-  r.alliance(["eleron", "avarius", "archbishop geofri"]);
+  r.alliance(["eleron", "avarius", "archbishop geofri", "baran"]);
   r.dislike("brutus", "piety");
   r.like("hillock", "izaro");
   r.dislike("izaro", "hillock");

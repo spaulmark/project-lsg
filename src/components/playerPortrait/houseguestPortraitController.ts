@@ -36,7 +36,7 @@ export class HouseguestPortraitController {
     if (selectedPlayer !== null && selectedPlayer.id === props.id) {
       return selectedColor.toHex();
     }
-    return props.isEvicted
+    return props.isEvicted || props.isJury
       ? undefined
       : this.view.state.displayMode.backgroundColor(this.view.state);
   }
