@@ -2,6 +2,10 @@ import React from "react";
 import { PlayerProfile } from "../../model";
 import { Portraits } from "../playerPortrait/portraits";
 import { RelationshipMap, DiscreteRelationshipMap } from "../../utils";
+import { Tribe } from "../../images/tribe";
+import _ from "lodash";
+import { DividerBox } from "../layout/box";
+import { CenteredBold } from "../layout/centered";
 export interface IMemoryWallProps {
   readonly houseguests: ProfileHouseguest[];
 }
@@ -19,12 +23,32 @@ export interface ProfileHouseguest extends PlayerProfile {
   tooltip?: string;
   likedBy: number;
   dislikedBy: number;
+  tribe?: Tribe;
 }
 
 export function MemoryWall(props: IMemoryWallProps): JSX.Element {
-  if (!props.houseguests || props.houseguests.length === 0) {
+  const houseguests = props.houseguests;
+  if (!houseguests || houseguests.length === 0) {
     return <div />;
   }
+  const houseguestsByTribe = _.groupBy(houseguests, (hg) =>
+    hg.tribe === undefined ? hg.tribe : hg.tribe.name
+  );
+  const tribes: JSX.Element[] = [];
+  _.forEach(houseguestsByTribe, (hgs, tribeName) => {
+    if (tribeName === "undefined") {
+      // tribes.push(<Portraits houseguests={hgs} centered={true}></Portraits>);
+      return;
+    }
+    const color = hgs[0].tribe ? hgs[0].tribe.color : "";
+    tribes.push(
+      <DividerBox key={tribeName}>
+        <CenteredBold style={{ color }}>{tribeName}</CenteredBold>
+        <hr style={{ color }}></hr>
+        <Portraits houseguests={hgs} centered={true}></Portraits>
+      </DividerBox>
+    );
+  });
   return (
     <div
       style={{
@@ -32,11 +56,7 @@ export function MemoryWall(props: IMemoryWallProps): JSX.Element {
         maxWidth: -1,
       }}
     >
-      <Portraits
-        houseguests={props.houseguests}
-        centered={true}
-        detailed={true}
-      />
+      {tribes}
     </div>
   );
 }

@@ -1,15 +1,11 @@
 import { ProfileHouseguest } from "../components/memoryWall";
 import { newDiscreteRelationshipMap } from "../utils";
-/* id?: number;
-  relationships?: RelationshipMap;
-  isEvicted?: boolean;
-  isJury?: boolean;
-  popularity?: number;
-  tooltip?: string;
-  getFriendEnemyCount?: () => { friends: number; enemies: number };*/
+import { Tribe } from "./tribe";
+
 class RelationshipMapper {
   public houseguests: ProfileHouseguest[] = [];
   private cache: { [id: string]: ProfileHouseguest } = {};
+  private tribes: { [id: string]: ProfileHouseguest[] } = {};
   public constructor(houseguests: ProfileHouseguest[]) {
     this.houseguests = houseguests;
     houseguests.forEach((hg) => {
@@ -25,7 +21,6 @@ class RelationshipMapper {
 
   private setRelationship(h: string, v: string, newR: boolean | undefined) {
     const hToV = this.getRelationship(h, v);
-    console.log(h, v, hToV, newR);
     const hero = this.get(h);
     const villain = this.get(v);
     if (
@@ -46,6 +41,12 @@ class RelationshipMapper {
     }
     // actually set it
     hero.relationships![villain.id!] = newR;
+  }
+
+  public tribe(tribe: Tribe, members: string[]) {
+    members.forEach((hg) => {
+      this.get(hg).tribe = tribe;
+    });
   }
 
   public like(hero: string, villain: string) {
@@ -83,10 +84,8 @@ function importAll(
 
   const evictedHouseguests: Set<string> = new Set<string>();
   const jurors: Set<string> = new Set<string>();
-  evictedHouseguests.add("kuduku");
-  evictedHouseguests.add("baran");
   evictedHouseguests.add("kitava");
-  jurors.add("malachai");
+
   context.keys().map((item: string, i: number) => {
     const name = item.replace(".png", "").replace("./", "");
     profiles.push({
@@ -101,6 +100,33 @@ function importAll(
     });
   });
   const r: RelationshipMapper = new RelationshipMapper(profiles);
+  r.tribe({ name: "Vaal", color: "#ff0000" }, [
+    "Hillock",
+    "Piety",
+    "Brutus",
+    "malachai",
+    "kitava",
+    "Atziri",
+    "doedre",
+  ]);
+  r.tribe({ name: "Templars", color: "#00ffff" }, [
+    "Lunaris",
+    "Archbishop Geofri",
+    "Solaris",
+    "baran",
+    "Eleron",
+    "Dominus",
+    "Avarius",
+  ]);
+  r.tribe({ name: "The Atlas of Worlds", color: "#00ff00" }, [
+    "Veritania",
+    "The Elder",
+    "Rhys of Abram",
+    "Izaro",
+    "kuduku",
+    "Shavronne",
+    "The Shaper",
+  ]);
   r.like("atziri", "dominus");
   r.friends("solaris", "lunaris");
   r.enemies("the elder", "the shaper");
