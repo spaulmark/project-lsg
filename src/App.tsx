@@ -2,7 +2,7 @@ import React from "react";
 import { MainPage } from "./components/mainPage/mainPage";
 import { MainPageController } from "./components/mainPage/mainPageController";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, ColorTheme, darkTheme } from "./theme/theme";
+import { ColorTheme, darkTheme } from "./theme/theme";
 import { GlobalStyles } from "./theme/globalTheme";
 import { theme$ } from "./subjects/subjects";
 import { Subscription } from "rxjs";
@@ -12,11 +12,7 @@ class App extends React.Component<{}, { theme: ColorTheme }> {
   public constructor(props: any) {
     super(props);
     this.state = {
-      theme:
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? darkTheme
-          : lightTheme,
+      theme: darkTheme,
     };
   }
 

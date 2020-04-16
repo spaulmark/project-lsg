@@ -8,16 +8,13 @@ import {
 } from "../../model/gameState";
 import { Episode, Houseguest } from "../../model";
 import { EpisodeType } from "./episodes";
-import { BigBrotherVanilla, generateBbVanilla } from "./bigBrotherEpisode";
-import { BigBrotherFinale, generateBbFinale } from "./bigBrotherFinale";
-import { rng, roundTwoDigits } from "../../utils";
+import { roundTwoDigits } from "../../utils";
 import { doesHeroWinTheFinale as heroWinsTheFinale } from "../../utils/ai/aiUtils";
 import {
   classifyRelationship,
   RelationshipType as Relationship,
 } from "../../utils/ai/classifyRelationship";
 import { PowerRanking } from "../../model/powerRanking";
-import { GameOver, generateGameOver } from "./gameOver";
 import { EpisodeLog } from "../../model/logging/episodelog";
 
 function firstImpressions(houseguests: Houseguest[]) {
@@ -26,9 +23,6 @@ function firstImpressions(houseguests: Houseguest[]) {
     for (let j = i + 1; j < houseguests.length; j++) {
       // creates a bunch of 100% random mutual relationships
       const jMap = houseguests[j].relationships;
-      const impression = rng().randomFloat();
-      jMap[i] = impression;
-      iMap[j] = impression;
     }
   }
 }

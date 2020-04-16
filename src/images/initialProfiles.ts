@@ -1,15 +1,17 @@
 import { ProfileHouseguest } from "../components/memoryWall";
 import { newDiscreteRelationshipMap } from "../utils";
 import { Tribe } from "./tribe";
+import prand from "pure-rand";
 
 class RelationshipMapper {
   public houseguests: ProfileHouseguest[] = [];
   private cache: { [id: string]: ProfileHouseguest } = {};
-  private tribes: { [id: string]: ProfileHouseguest[] } = {};
+  private nonEvictedHouseguests: number = 0;
   public constructor(houseguests: ProfileHouseguest[]) {
     this.houseguests = houseguests;
     houseguests.forEach((hg) => {
       this.cache[hg.name.toUpperCase()] = hg;
+      !hg.isEvicted && this.nonEvictedHouseguests++;
     });
   }
   private get(hero: string) {
@@ -19,7 +21,13 @@ class RelationshipMapper {
     return this.get(h).relationships![this.get(v).id!];
   }
 
-  private setRelationship(h: string, v: string, newR: boolean | undefined) {
+  private updatePopularity(hg: ProfileHouseguest) {
+    hg.popularity === undefined && (hg.popularity = 0);
+    hg.popularity = (hg.likedBy - hg.dislikedBy) / this.houseguests.length;
+    hg.likedBy === 0 && hg.dislikedBy === 0 && (hg.popularity = undefined);
+  }
+
+  public setRelationship(h: string, v: string, newR: boolean | undefined) {
     const hToV = this.getRelationship(h, v);
     const hero = this.get(h);
     const villain = this.get(v);
@@ -41,6 +49,7 @@ class RelationshipMapper {
     }
     // actually set it
     hero.relationships![villain.id!] = newR;
+    this.updatePopularity(villain);
   }
 
   public tribe(tribe: Tribe, members: string[]) {
@@ -127,17 +136,52 @@ function importAll(
     "Shavronne",
     "The Shaper",
   ]);
-  r.like("atziri", "dominus");
-  r.friends("solaris", "lunaris");
-  r.enemies("the elder", "the shaper");
-  r.alliance(["eleron", "avarius", "archbishop geofri", "baran"]);
-  r.dislike("brutus", "piety");
-  r.like("hillock", "izaro");
-  r.dislike("izaro", "hillock");
-  r.like("veritania", "rhys of abram");
+  randomRelationships(r);
+  // r.like("atziri", "dominus");
+  // r.friends("solaris", "lunaris");
+  // r.enemies("the elder", "the shaper");
+  // r.alliance(["eleron", "avarius", "archbishop geofri", "baran"]);
+  // r.dislike("brutus", "piety");
+  // r.like("hillock", "izaro");
+  // r.dislike("izaro", "hillock");
+  // r.like("veritania", "rhys of abram");
   return r.houseguests;
 }
 
 export const initialProfiles = importAll(
   require.context("./src", false, /.png/)
 );
+
+function randomInt(
+  a: number,
+  b: number,
+  rng: prand.RandomGenerator
+): [number, prand.RandomGenerator] {
+  let result: number;
+  [result, rng] = prand.uniformIntDistribution(a, b, rng);
+  return [result, rng];
+}
+function randomChoice(
+  a: (number | boolean | undefined)[],
+  rng: prand.RandomGenerator
+): [number | boolean | undefined, prand.RandomGenerator] {
+  const [result, rng2] = randomInt(0, a.length - 1, rng);
+  return [a[result], rng2];
+}
+
+function randomRelationships(r: RelationshipMapper) {
+  let rng = prand.xorshift128plus(0);
+  const hgs = r.houseguests;
+  for (let i = 0; i < hgs.length; i++) {
+    const hero = hgs[i].name;
+    for (let j = i + 1; j < hgs.length; j++) {
+      const villain = hgs[j].name;
+      let r1;
+      let r2;
+      [r1, rng] = randomChoice([true, false, undefined], rng);
+      [r2, rng] = randomChoice([true, false, undefined], rng);
+      r.setRelationship(hero, villain, r1 as any);
+      r.setRelationship(villain, hero, r2 as any);
+    }
+  }
+}
