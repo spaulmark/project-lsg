@@ -13,8 +13,8 @@ import { getSelectedPlayer } from "../../subjects/subjects";
 
 function threatLevelOf(a: boolean | undefined): string {
   if (a === undefined) return "-";
-  if (a) return "THREAT";
-  return "WEAK";
+  if (a) return "💢 THREAT";
+  return "💤 WEAK";
 }
 
 export function generatePowerSubtitle(

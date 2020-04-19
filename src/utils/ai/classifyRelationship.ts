@@ -29,8 +29,8 @@ export const RelationshipTypeToSymbol = {
 };
 
 export const ThreatLevelToSymbol = {
-  THREAT: "⚠️",
-  WEAK: "🐐",
+  THREAT: "💢",
+  WEAK: "💤", // "🐐",
   NEUTRAL: "-",
 };
 

@@ -36,12 +36,13 @@ export const popularityMode: PortraitDisplayMode = {
   generateSubtitle: generatePopularitySubtitle,
 };
 
-// const powerMinColor = new Rgb(192, 181, 255);
-// const powerMaxColor = new Rgb(255, 204, 94);
-const powerMinColor = new Rgb(104, 128, 158); // blue
+const powerMinColor = new Rgb(192, 181, 255);
+const powerMaxColor = new Rgb(255, 204, 94);
+/// originals ^^^^^
+// const powerMinColor = new Rgb(104, 128, 158); // blue
 
 // const powerMinColor = new Rgb(148, 16, 240);
-const powerMaxColor = new Rgb(255, 143, 0);
+// const powerMaxColor = new Rgb(255, 143, 0);
 
 export const powerMode: PortraitDisplayMode = {
   minColor: powerMinColor,
