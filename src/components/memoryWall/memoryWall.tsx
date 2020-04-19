@@ -12,18 +12,25 @@ export interface IMemoryWallProps {
 
 export interface ProfileHouseguest extends PlayerProfile {
   id?: number;
-  relationships?: RelationshipMap | DiscreteRelationshipMap;
   isEvicted?: boolean;
   isJury?: boolean;
+  tribe?: Tribe;
+  //
+  relationships?: RelationshipMap | DiscreteRelationshipMap;
   popularity?: number;
   deltaPopularity?: number;
+  likedBy: number;
+  dislikedBy: number;
+  //
+  powerRankings: DiscreteRelationshipMap;
+  powerRanking?: number;
+  thinksImWeak: number;
+  thinksImThreat: number;
+  //
   hohWins?: number;
   povWins?: number;
   nominations?: number;
   tooltip?: string;
-  likedBy: number;
-  dislikedBy: number;
-  tribe?: Tribe;
 }
 
 export function MemoryWall(props: IMemoryWallProps): JSX.Element {

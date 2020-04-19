@@ -5,7 +5,6 @@ import { RelationshipMap, DiscreteRelationshipMap } from "../../utils";
 import _ from "lodash";
 import { HouseguestPortraitController } from "./houseguestPortraitController";
 import { PortraitDisplayMode } from "../../model/portraitDisplayMode";
-import { PowerRanking } from "../../model/powerRanking";
 import styled from "styled-components";
 import { ColorTheme } from "../../theme/theme";
 
@@ -64,20 +63,23 @@ export interface PortraitProps {
   name: string;
   id?: number;
   relationships?: RelationshipMap | DiscreteRelationshipMap;
+  popularity?: number;
+  powerRankings: DiscreteRelationshipMap;
+  powerRanking?: number;
   isEvicted?: boolean;
   isJury?: boolean;
-  popularity?: number;
-  powerRanking?: PowerRanking;
   deltaPopularity?: number;
   detailed?: boolean;
   superiors?: Set<number>;
   likedBy: number;
   dislikedBy: number;
+  thinksImWeak: number;
+  thinksImThreat: number;
 }
 
 export interface PortraitState {
   popularity?: number;
-  powerRanking?: PowerRanking;
+  powerRanking?: number;
   displayMode: PortraitDisplayMode;
 }
 export class HouseguestPortrait extends React.Component<
@@ -113,6 +115,7 @@ export class HouseguestPortrait extends React.Component<
       isEvicted: !!this.props.isEvicted,
       popularity: this.props.popularity || 0,
       superiors: this.props.superiors,
+      powerRankings: this.props.powerRankings,
     };
     selectPlayer(data);
   }

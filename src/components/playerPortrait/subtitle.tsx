@@ -6,8 +6,16 @@ import {
   RelationshipTypeToSymbol,
   RelationshipType as Relationship,
   classifyRelationship,
+  ThreatLevelToSymbol,
+  ThreatLevel,
 } from "../../utils/ai/classifyRelationship";
 import { getSelectedPlayer } from "../../subjects/subjects";
+
+function threatLevelOf(a: boolean | undefined): string {
+  if (a === undefined) return "-";
+  if (a) return "THREAT";
+  return "WEAK";
+}
 
 export function generatePowerSubtitle(
   hero: PortraitProps,
@@ -18,22 +26,17 @@ export function generatePowerSubtitle(
   let subtitle: any[] = [];
   key = addPopularityLine(state, hero, !!_, subtitle, key);
   key = addCompsLine(hero, subtitle, key);
-  if (!hero.isEvicted && state.powerRanking) {
+  if (!hero.isEvicted) {
     const data = getSelectedPlayer() as SelectedPlayerData | null;
     if (data && data.id !== hero.id) {
       subtitle.push(
-        <div key={key++}>{`${
-          state.powerRanking!.beats > 0 ? "LOSE" : "WIN"
-        }`}</div>
+        <div key={key++}>{`${threatLevelOf(hero.powerRankings[data.id])}`}</div>
       );
     } else if (data && data.id === hero.id) {
-      subtitle.push(<div key={key++}>I WOULD</div>);
+      subtitle.push(<div key={key++}>I'M SEEN AS</div>);
+      subtitle.push(<div key={key++}>{threatLevelCountTitle(hero)}</div>);
     } else {
-      subtitle.push(
-        <div
-          key={key++}
-        >{`WINS ${state.powerRanking.beats}/${state.powerRanking.outOf}`}</div>
-      );
+      subtitle.push(<div key={key++}>{threatLevelCountTitle(hero)}</div>);
     }
   } else {
     subtitle.push(<br key={key++} style={{ lineHeight: 1 }} />);
@@ -46,7 +49,7 @@ export function generatePopularitySubtitle(
   state: PortraitState,
   detailed: boolean = false
 ): any[] {
-  const data = getSelectedPlayer() as SelectedPlayerData | null;
+  // const data = getSelectedPlayer() as SelectedPlayerData | null;
   let key = 0;
   let subtitle: any[] = [];
   // popularity
@@ -54,25 +57,33 @@ export function generatePopularitySubtitle(
   // competition wins
   key = addCompsLine(hero, subtitle, key);
   // friendship count / relationship classification titles
-  ({ subtitle, key } = addFriendshipCountTitles(hero, subtitle, key));
+  ({ subtitle, key } = addCountTitle(
+    hero,
+    subtitle,
+    key,
+    friendOrEnemyTitle,
+    friendEnemyCountTitle
+  ));
   // if (!data) subtitle.push(<br key={key++} style={{ lineHeight: 1 }} />);
   return subtitle;
 }
 
-function addFriendshipCountTitles(
+function addCountTitle(
   hero: PortraitProps,
   subtitle: any[],
-  key: number
+  key: number,
+  discreteTitle: (a: PortraitProps, b: SelectedPlayerData) => string[],
+  countTitle: (a: PortraitProps) => string[]
 ) {
   if (!hero.isEvicted) {
     const data = getSelectedPlayer() as SelectedPlayerData | null;
     if (data && data.id !== hero.id) {
-      const titles = friendOrEnemyTitle(hero, data);
+      const titles = discreteTitle(hero, data);
       subtitle = subtitle.concat(
         titles.map((txt) => <div key={key++}>{txt}</div>)
       );
     } else {
-      const titles = friendEnemyCountTitle(hero);
+      const titles = countTitle(hero);
       subtitle = subtitle.concat(
         titles.map((txt) => <div key={key++}>{txt}</div>)
       );
@@ -162,6 +173,27 @@ function friendOrEnemyTitle(
         villainRelationship
       )
     ]
+  );
+  return titles;
+}
+
+function threatLevelCountTitle(hero: PortraitProps): string[] {
+  const titles: string[] = [];
+  const count = { friends: hero.thinksImThreat, enemies: hero.thinksImWeak };
+  const friendCountText =
+    count.friends > 0
+      ? `${count.friends} ${ThreatLevelToSymbol[ThreatLevel.Threat]}`
+      : "";
+
+  const enemyCountText =
+    count.enemies > 0
+      ? `${count.enemies} ${ThreatLevelToSymbol[ThreatLevel.Weak]}`
+      : "";
+
+  titles.push(
+    `${friendCountText}${
+      friendCountText && enemyCountText && " | "
+    }${enemyCountText}`
   );
   return titles;
 }

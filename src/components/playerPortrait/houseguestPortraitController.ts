@@ -60,15 +60,6 @@ export class HouseguestPortraitController {
     this.subs.forEach((sub) => sub.unsubscribe());
   }
 
-  private comparePowerRankings(data: SelectedPlayerData): PowerRanking {
-    // 0 is blue. 1 is orange
-    if (!data.superiors) return new PowerRanking(0, 1);
-    const id = this.view.props.id === undefined ? -1 : this.view.props.id;
-    return data.superiors.has(id)
-      ? new PowerRanking(1, 1)
-      : new PowerRanking(0, 1);
-  }
-
   private refreshData = (data: SelectedPlayerData | null) => {
     if (!data) {
       this.view.setState(this.defaultState);
@@ -79,19 +70,33 @@ export class HouseguestPortraitController {
             this.view.props.relationships![data.id],
             data.relationships[this.view.props.id!]
           ),
-          powerRanking: this.comparePowerRankings(data),
+          powerRanking: getPowerRanking(
+            this.view.props.powerRankings![data.id],
+            data.powerRankings[this.view.props.id!]
+          ),
         });
       } else {
         // note; popularity = 2 means the player is currently selected.
         this.view.setState({
           popularity: 2,
-          powerRanking: new PowerRanking(2, 1),
+          powerRanking: 2,
         });
       }
     }
   };
 }
 type Rship = number | boolean | undefined;
+
+function getPowerRanking(hero: Rship, villain: Rship): number | undefined {
+  if (typeof hero === "number") {
+    return hero;
+  } else if (typeof villain === "number") {
+    return villain;
+  }
+  if (hero === true) return 1;
+  if (hero === false) return 0;
+  return undefined;
+}
 
 function getPopularity(hero: Rship, villain: Rship): number | undefined {
   if (isNullOrUndefined(hero) && isNullOrUndefined(villain)) return undefined;

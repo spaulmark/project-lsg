@@ -8,7 +8,7 @@ export function Topbar(props: { style?: any }): JSX.Element {
   return (
     <Box className="level is-mobile" style={style}>
       <HasText className="level-item">
-        TODO: Enter Code: <input className="input" />
+        Enter Code: <input className="input" />
       </HasText>
       <div className="level-item">
         <ThemeSwitcher />
