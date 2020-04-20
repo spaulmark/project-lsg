@@ -20,12 +20,12 @@ export const RelationshipTypeToSymbol = {
   NEUTRAL: "-",
   FRIEND: "♥",
   ENEMY: "💔",
-  PAWN: "♥ PAWN",
-  QUEEN: "- QUEEN",
-  HUNTER: "💔 HUNTER",
-  TARGET: "- TARGET",
-  DUPE: "♥ DUPE",
-  DECEIVER: "💔 DECEIVER",
+  PAWN: "THEY ♥ ME",
+  QUEEN: "I ♥ THEM",
+  HUNTER: "THEY 💔 ME",
+  TARGET: "I 💔 THEM",
+  DUPE: "I ♥ THEM THEY 💔 ME",
+  DECEIVER: "I 💔 THEM THEY ♥ ME",
 };
 
 export const ThreatLevelToSymbol = {
@@ -39,11 +39,11 @@ export const RelationshipTypeToPopularity = {
   FRIEND: 1,
   ENEMY: -1,
   PAWN: 0.66,
-  QUEEN: 0.15,
+  QUEEN: 0.33,
   HUNTER: -0.66,
   TARGET: -0.33,
-  DUPE: 0.5,
-  DECEIVER: -0.5,
+  DUPE: 0.25,
+  DECEIVER: -0.25, /// TODO: idk about some of these
 };
 
 export const ClassifyDiscreteRelationship: {
