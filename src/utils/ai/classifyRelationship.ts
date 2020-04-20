@@ -24,8 +24,8 @@ export const RelationshipTypeToSymbol = {
   QUEEN: "I ♥ THEM",
   HUNTER: "THEY 💔 ME",
   TARGET: "I 💔 THEM",
-  DUPE: "I ♥ THEM THEY 💔 ME",
-  DECEIVER: "I 💔 THEM THEY ♥ ME",
+  DUPE: "I 💔 THEM THEY ♥ ME",
+  DECEIVER: "I ♥ THEM THEY 💔 ME",
 };
 
 export const ThreatLevelToSymbol = {
