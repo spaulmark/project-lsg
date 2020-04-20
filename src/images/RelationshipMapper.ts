@@ -1,5 +1,7 @@
 import { ProfileHouseguest } from "../components/memoryWall";
 import { Tribe } from "./tribe";
+import { PlayerProfile } from "../model";
+import { RelationshipMap, DiscreteRelationshipMap } from "../utils";
 
 type Map = "relationships" | "powerRankings";
 type LikeKey = "likedBy" | "thinksImThreat";
@@ -11,24 +13,44 @@ function likeByDislikeBy(threats: number, weaks: number, n: number) {
   return 0.5 + threats / twoN - weaks / twoN;
 }
 
+export interface RelationshipHouseguest extends PlayerProfile {
+  id: number;
+  isEvicted?: boolean;
+  isJury?: boolean;
+  tribe?: Tribe;
+  //
+  relationships: DiscreteRelationshipMap;
+  popularity?: number;
+  likedBy: number;
+  dislikedBy: number;
+  //
+  powerRankings: DiscreteRelationshipMap;
+  powerRanking?: number;
+  thinksImWeak: number;
+  thinksImThreat: number;
+  //
+  tooltip?: string;
+}
 export class RelationshipMapper {
-  public houseguests: ProfileHouseguest[] = [];
+  public houseguests: RelationshipHouseguest[] = [];
   private cache: {
-    [id: string]: ProfileHouseguest;
+    [id: string]: RelationshipHouseguest;
   } = {};
   private nonEvictedHouseguests: number = 0;
-  public constructor(houseguests: ProfileHouseguest[]) {
+  nonEvictedIDs: number[] = [];
+  public constructor(houseguests: RelationshipHouseguest[]) {
     this.houseguests = houseguests;
     houseguests.forEach((hg) => {
       this.cache[hg.name.toUpperCase()] = hg;
       !hg.isEvicted && this.nonEvictedHouseguests++;
+      !hg.isEvicted && this.nonEvictedIDs.push(hg.id);
     });
   }
   private get(hero: string) {
     return this.cache[hero.toUpperCase()];
   }
   private getRelationship(h: string, v: string, map: Map) {
-    return this.get(h)[map]![this.get(v).id!];
+    return this.get(h)[map][this.get(v).id];
   }
   private updatePopularities(hg: ProfileHouseguest) {
     const peopleWithOpinions = this.nonEvictedHouseguests - 1;
@@ -75,7 +97,7 @@ export class RelationshipMapper {
         : villain[likeKey]-- && villain[dislikeKey]++;
     }
     // actually set it
-    hero[map]![villain.id!] = newR;
+    hero[map][villain.id] = newR;
     this.updatePopularities(villain);
   }
   public tribe(tribe: Tribe, members: string[]) {

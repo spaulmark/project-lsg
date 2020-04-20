@@ -1,22 +1,25 @@
-import { ProfileHouseguest } from "../components/memoryWall";
 import { newDiscreteRelationshipMap, hashcode } from "../utils";
 import prand from "pure-rand";
-import { RelationshipMapper } from "./RelationshipMapper";
+import {
+  RelationshipMapper,
+  RelationshipHouseguest,
+} from "./RelationshipMapper";
+import { encodeRelationships } from "./encoder";
 
 function importAll(
   context: __WebpackModuleApi.RequireContext
-): ProfileHouseguest[] {
-  const profiles: ProfileHouseguest[] = [];
+): RelationshipHouseguest[] {
+  const profiles: RelationshipHouseguest[] = [];
 
   const evictedHouseguests: Set<string> = new Set<string>();
   const jurors: Set<string> = new Set<string>();
 
-  evictedHouseguests.add("malachai");
-  evictedHouseguests.add("hillock");
-  evictedHouseguests.add("kuduku");
-  evictedHouseguests.add("izaro");
-  evictedHouseguests.add("rhys of abram");
-  evictedHouseguests.add("avarius");
+  // evictedHouseguests.add("malachai");
+  // evictedHouseguests.add("hillock");
+  // evictedHouseguests.add("kuduku");
+  // evictedHouseguests.add("izaro");
+  // evictedHouseguests.add("rhys of abram");
+  // evictedHouseguests.add("avarius");
   // evictedHouseguests.add("doedre");
   // evictedHouseguests.add("kitava");
   // evictedHouseguests.add("baran");
@@ -53,13 +56,23 @@ function importAll(
     "The Shaper",
   ]);
   randomRelationships(r);
-  // r.threat("dominus", "atziri");
-  // r.weak("doedre", "brutus");
-  // r.weak("the shaper", "atziri");
+  r.like("izaro", "baran");
+  console.log(encodeRelationships(r));
   return r.houseguests;
 }
 
-////////////////// nothing below this line matters
+////////////////// safe space below here
+
+// const rainbow =
+//   "0123456789™€›…•‡†ƒžŽżŻƖź¡ŹŸŷŶŵŴųŲűŰůŮŭŬūŪũŨŧŦťŤţŢšŠşŞŝŜśŚřŘŗŖŕŔœŒőŐŏŎōŌŋŊŉňŇņŅńŃłŁŀĿľĽļĻĺĹĸķĶĵĴĳĲıİįĮĭĬīĪĩĨħĥĤģĢġĠğĞĝĜěĚęĘėĖĕĔēĒđĐďĎčČċĊĉĈćĆąĄăĂāĀ¼¹µ³²±°¯®¬«ª©¨§¤¢}`_^]\\[@?>=;:/.-,+*)('&%$#\"!zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA";
+
+// function generateLookupTable() {
+//   const test2: { [id: string]: string } = {};
+//   for (let i = 0; i < rainbow.length; i++) {
+//     test2[rainbow[i]] = pad(i.toString(3)); // replace i with whatever i want to lookup table with.
+//   }
+//   console.log(test2);
+// }
 
 export const initialProfiles = importAll(
   require.context("./src", false, /.png/)
@@ -67,7 +80,7 @@ export const initialProfiles = importAll(
 
 function setupProfiles(
   context: __WebpackModuleApi.RequireContext,
-  profiles: ProfileHouseguest[],
+  profiles: RelationshipHouseguest[],
   evictedHouseguests: Set<string>,
   jurors: Set<string>
 ) {
