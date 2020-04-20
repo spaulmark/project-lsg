@@ -30,7 +30,7 @@ export const RelationshipTypeToSymbol = {
 
 export const ThreatLevelToSymbol = {
   THREAT: "💢",
-  WEAK: "💤", // "🐐",
+  WEAK: "💤",
   NEUTRAL: "-",
 };
 
