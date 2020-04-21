@@ -4,12 +4,10 @@ import {
   calculatePopularity,
   nonEvictedHouseguests,
   inJury,
-  getJurors,
 } from "../../model/gameState";
 import { Episode, Houseguest } from "../../model";
 import { EpisodeType } from "./episodes";
 import { roundTwoDigits } from "../../utils";
-import { doesHeroWinTheFinale as heroWinsTheFinale } from "../../utils/ai/aiUtils";
 import {
   classifyRelationship,
   RelationshipType as Relationship,
@@ -23,20 +21,6 @@ function firstImpressions(houseguests: Houseguest[]) {
     for (let j = i + 1; j < houseguests.length; j++) {
       // creates a bunch of 100% random mutual relationships
       const jMap = houseguests[j].relationships;
-    }
-  }
-}
-
-function populateSuperiors(houseguests: Houseguest[]) {
-  for (let i = 0; i < houseguests.length; i++) {
-    const hero = houseguests[i];
-    for (let j = i + 1; j < houseguests.length; j++) {
-      const villain = houseguests[j];
-      if (heroWinsTheFinale({ hero, villain }, houseguests)) {
-        villain.superiors.add(hero.id);
-      } else {
-        hero.superiors.add(villain.id);
-      }
     }
   }
 }
@@ -96,10 +80,7 @@ export class EpisodeFactory {
     if (nonEvictedHouseguests(gameState).length > 2) {
       newState.log[newState.phase] = new EpisodeLog();
     }
-    // If jury starts this episode, populate superior/inferior data. In the future, every jury ep. (dynamic rels)
-    if (inJury(gameState) && getJurors(gameState).length === 0) {
-      populateSuperiors(nonEvictedHouseguests(newState));
-    }
+
     if (inJury(gameState)) {
       updatePowerRankings(nonEvictedHouseguests(newState));
     }
