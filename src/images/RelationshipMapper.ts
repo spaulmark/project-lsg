@@ -1,7 +1,7 @@
 import { ProfileHouseguest } from "../components/memoryWall";
 import { Tribe } from "./tribe";
 import { PlayerProfile } from "../model";
-import { RelationshipMap, DiscreteRelationshipMap } from "../utils";
+import { DiscreteRelationshipMap } from "../utils";
 
 type Map = "relationships" | "powerRankings";
 type LikeKey = "likedBy" | "thinksImThreat";
@@ -69,6 +69,20 @@ export class RelationshipMapper {
       (hg.powerRanking = undefined);
   }
 
+  public evict(h: string) {
+    const hero = this.get(h);
+    if (hero.isEvicted) return;
+    hero.isEvicted = true;
+    this.nonEvictedHouseguests--;
+    this.nonEvictedIDs.forEach((id) => {
+      console.log(this.houseguests[id].name);
+      this.neutral(h, this.houseguests[id].name);
+      this.neutral(this.houseguests[id].name, h);
+      this.utr(h, this.houseguests[id].name);
+      this.utr(this.houseguests[id].name, h);
+    });
+  }
+
   public setRelationship(
     h: string,
     v: string,
@@ -82,15 +96,15 @@ export class RelationshipMapper {
     const villain = this.get(v);
     if (
       hToV === newR ||
-      hero.isEvicted ||
-      hero.isJury ||
-      villain.isJury ||
-      villain.isEvicted
+      ((hero.isEvicted || hero.isJury || villain.isJury || villain.isEvicted) &&
+        newR !== undefined)
     ) {
       return;
     }
     if (hToV === undefined) {
       newR === true ? villain[likeKey]++ : villain[dislikeKey]++;
+    } else if (newR === undefined) {
+      hToV === true ? villain[likeKey]-- : villain[dislikeKey]--;
     } else {
       newR === true
         ? villain[likeKey]++ && villain[dislikeKey]--

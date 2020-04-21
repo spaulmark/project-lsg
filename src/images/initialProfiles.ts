@@ -56,7 +56,6 @@ function importAll(
     "The Shaper",
   ]);
   randomRelationships(r);
-  r.like("izaro", "baran");
   console.log(encodeRelationships(r));
   return r.houseguests;
 }
