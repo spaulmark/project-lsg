@@ -55,7 +55,6 @@ function importAll(
 //   for (let i = 0; i < rainbow.length; i++) {
 //     test2[rainbow[i]] = leftPad(i.toString(3)); // replace i with whatever i want to lookup table with.
 //   }
-//   console.log(test2);
 // }
 
 export const initialProfiles = importAll(

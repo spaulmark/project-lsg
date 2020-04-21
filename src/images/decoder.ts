@@ -32,7 +32,7 @@ export function decodeToRelationshipMapper(
   return r;
 }
 
-const chex = /[a-f0-9]){6}/;
+const chex = /([a-f0-9]){6}/;
 
 function decodeTribes(m: RelationshipMapper, c: string) {
   const tribes: string[] = c.split("•");
