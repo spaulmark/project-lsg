@@ -24,14 +24,9 @@ export function newEpisode(episode: Episode | null) {
 export function switchSceneRelative(n: number) {
   switchEpisode$.next(n);
 }
-// the list of players in the game
+// this variable is unused but if you delete it it breaks some race condition or something and the code compiles, but doesn't work anymore.
 export const cast$ = new BehaviorSubject<PlayerProfile[]>([]);
-export function updateCast(newCast: PlayerProfile[]) {
-  cast$.next(newCast);
-}
-export function getCast(): PlayerProfile[] {
-  return cast$.value;
-}
+
 // The player that the user has clicked on.
 export const selectedPlayer$ = new BehaviorSubject<SelectedPlayerData | null>(
   null

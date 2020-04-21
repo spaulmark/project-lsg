@@ -39,10 +39,8 @@ export function rng() {
 
 const rng$ = new BehaviorSubject(new BbRandomGenerator(0));
 
+// theoretically this does nothing, but if you delete it the code stops working.
+// yay race conditions...?
 const castSub = cast$.subscribe({
-  next: (cast) => {
-    let castNames = "";
-    cast.forEach((houseguest) => (castNames += houseguest.name));
-    rng$.next(new BbRandomGenerator(hashcode(castNames)));
-  },
+  next: () => {},
 });
