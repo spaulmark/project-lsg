@@ -1,5 +1,5 @@
 import { BehaviorSubject, Subject } from "rxjs";
-import { PregameScreen } from "../components/pregameScreen/pregameScreen";
+import { MemoryWallScreen } from "../components/memoryWallScreen/memoryWallScreen";
 import { Episode, PlayerProfile } from "../model";
 import { SelectedPlayerData } from "../components/playerPortrait/selectedPortrait";
 import React from "react";
@@ -8,12 +8,10 @@ import {
   popularityMode,
 } from "../model/portraitDisplayMode";
 import { ColorTheme } from "../theme/theme";
-import { initialProfiles } from "../images/initialProfiles";
+import { ProfileHouseguest } from "../components/memoryWall";
 
 // What is currently being displayed.
-export const mainContentStream$ = new BehaviorSubject(
-  <PregameScreen cast={initialProfiles} />
-);
+export const mainContentStream$ = new BehaviorSubject(<MemoryWallScreen />);
 // Push episodes to this subject to add them to the sidebar. Null resets everything.
 export const episodes$ = new BehaviorSubject<Episode | null>(null);
 // Forcibly switches to an episode. Used when adding a new episode.
@@ -24,6 +22,9 @@ export function newEpisode(episode: Episode | null) {
 export function switchSceneRelative(n: number) {
   switchEpisode$.next(n);
 }
+
+export const players$ = new BehaviorSubject<ProfileHouseguest[]>([]);
+
 // this variable is unused but if you delete it it breaks some race condition or something and the code compiles, but doesn't work anymore.
 export const cast$ = new BehaviorSubject<PlayerProfile[]>([]);
 

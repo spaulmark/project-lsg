@@ -40,8 +40,8 @@ export class RelationshipMapper {
   nonEvictedIDs: number[] = [];
   public constructor(houseguests: RelationshipHouseguest[]) {
     this.houseguests = houseguests;
-    if (houseguests.length > 243) {
-      throw new Error("The max number of players is 243.");
+    if (houseguests.length > 4096) {
+      throw new Error("The max number of players is 4096.");
     }
     houseguests.forEach((hg) => {
       this.cache[hg.name.toUpperCase()] = hg;
@@ -80,6 +80,7 @@ export class RelationshipMapper {
 
   public evict(h: string) {
     const hero = this.get(h);
+    const toDelete = this.nonEvictedIDs.indexOf(hero.id);
     if (hero.isEvicted) return;
     hero.isEvicted = true;
     this.nonEvictedHouseguests--;
@@ -89,6 +90,7 @@ export class RelationshipMapper {
       this.utr(h, this.houseguests[id].name);
       this.utr(this.houseguests[id].name, h);
     });
+    this.nonEvictedIDs.splice(toDelete, 1);
   }
 
   public setRelationship(
@@ -123,8 +125,8 @@ export class RelationshipMapper {
     this.updatePopularities(villain);
   }
   public tribe(tribe: Tribe, members: string[]) {
-    if (tribe.name.includes("#") || tribe.name.includes("•"))
-      throw new Error("Tribe names cannot contain # or •");
+    if (tribe.name.includes("#") || tribe.name.includes("="))
+      throw new Error("Tribe names cannot contain # or =");
     members.forEach((hg) => {
       this.get(hg).tribe = tribe;
     });

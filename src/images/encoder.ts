@@ -1,13 +1,13 @@
 import { RelationshipMapper } from "./RelationshipMapper";
 import _ from "lodash";
+import { Base64 } from "../utils/base64";
 
 export type CodedRelationships = {
   relationships: string;
   powerRankings: string;
 };
-const tree =
-  "0123456789™€›…Ȋ‡†ƒžŽżŻƖź¡ŹŸŷŶŵŴųŲűŰůŮŭŬūŪũŨŧŦťŤţŢšŠşŞŝŜśŚřŘŗŖŕŔœŒőŐŏŎōŌŋŊŉňŇņŅńŃłŁŀĿľĽļĻĺĹĸķĶĵĴĳĲıİįĮĭĬīĪĩĨħĥĤģĢġĠğĞĝĜěĚęĘėĖĕĔēĒđĐďĎčČċĊĉĈćĆąĄăĂāĀ¼¹µ³²±°¯®¬«ª©¨§¤¢}`_^]\\[@?>=;:/.-,+*)('&%$#\"!zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA";
-// the encoding is
+const decode = (s: string) => Base64.toInt(s).toString(3).padStart(7, "0"); // base64 --> ternary
+const encode = (s: string) => encodeNumber(parseInt(s, 3)).padStart(2, "0"); // ternary --> base64
 
 // 0 : left child   : false
 // 1 : middle child : true
@@ -17,22 +17,19 @@ function toTernary(r: boolean | undefined): string {
   if (r === true) return "1";
   return "0";
 }
-function pad(s: string) {
-  let result = s;
-  while (result.length < 5) {
-    result += "0";
-  }
-  return result;
+
+function encodeNumber(n: number): string {
+  return Base64.fromInt(n).padStart(2, "0"); // don't remove the padStart, idiot
 }
 
 function encodeEvictees(m: RelationshipMapper): string {
   let result = "";
   m.houseguests.forEach((hg) => {
     if (!hg.isEvicted) return;
-    if (tree[hg.id] === undefined) {
+    if (encodeNumber(hg.id) === undefined) {
       throw new Error(`Invalid houseguest ID: ${hg.id}`);
     }
-    result += tree[hg.id];
+    result += encodeNumber(hg.id);
   });
   return result;
 }
@@ -47,9 +44,9 @@ function encodeTribes(m: RelationshipMapper): string {
     const color = hgs[0].tribe ? hgs[0].tribe.color : "#ffffff";
     let ids = "";
     hgs.forEach((hg) => {
-      ids += tree[hg.id];
+      ids += encodeNumber(hg.id);
     });
-    const spacer = encodedTribes !== "" ? "•" : "";
+    const spacer = encodedTribes !== "" ? "=" : "";
     encodedTribes += `${spacer}${tribeName}${color}${ids}`;
   });
   return encodedTribes;
@@ -60,6 +57,14 @@ function encodeRelationships(m: RelationshipMapper): CodedRelationships {
   let powerRankings = "";
   let rBuffer: string = "";
   let pBuffer: string = "";
+  let validateBuffer = (s: string) => {
+    if (decode(encode(rBuffer)) !== rBuffer) {
+      throw new Error(
+        `encoding failure: ${rBuffer} (${encode(rBuffer)}) encoded to 
+        ${decode(encode(rBuffer))} `
+      );
+    }
+  };
   m.houseguests.forEach((hg) => {
     if (hg.isEvicted || hg.isJury) return; // we skip evicted houseguests
     m.nonEvictedIDs.forEach((id) => {
@@ -67,23 +72,31 @@ function encodeRelationships(m: RelationshipMapper): CodedRelationships {
       ///// relationships
       const nextCharR = toTernary(hg.relationships[id]);
       rBuffer += nextCharR;
-      if (rBuffer.length === 5) {
-        const e: string = tree[parseInt(rBuffer, 3)];
+      if (rBuffer.length === 7) {
+        console.log("adding", rBuffer, "as", encode(rBuffer));
+        const e: string = encode(rBuffer);
+        if (e.length !== 2)
+          throw new Error(`Byte misalignment prevented: (${e})`);
+        validateBuffer(rBuffer);
         relationships += e;
         rBuffer = "";
       }
-      ///// powerRankings
+      /// powerRankings ////////////////////////////////////////// focus on relationships for now then copy+paste
       const nextCharP = toTernary(hg.powerRankings[id]);
       pBuffer += nextCharP;
-      if (pBuffer.length === 5) {
-        const e: string = tree[parseInt(pBuffer, 3)];
+      if (parseInt(`${pBuffer}${nextCharP}`, 3) > 4095) {
+        const e: string = encode(pBuffer);
+        // validateBuffer(pBuffer);
         powerRankings += e;
-        pBuffer = "";
+        pBuffer = nextCharP;
       }
     });
   });
-  powerRankings += tree[parseInt(pad(pBuffer), 3)];
-  relationships += tree[parseInt(pad(pBuffer), 3)];
+  rBuffer = rBuffer.padEnd(7, "0");
+  console.log("adding", rBuffer, "as", encode(rBuffer));
+  validateBuffer(rBuffer);
+  relationships += encode(rBuffer); // TODO: this is very very bad because its wrong
+  powerRankings += encode(pBuffer);
   return { relationships, powerRankings };
 }
 

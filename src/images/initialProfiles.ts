@@ -5,10 +5,11 @@ import {
   RelationshipHouseguest,
 } from "./RelationshipMapper";
 import { encodeRelationshipMapper } from "./encoder";
+import { Base64 } from "../utils/base64";
 
 function importAll(
   context: __WebpackModuleApi.RequireContext
-): RelationshipHouseguest[] {
+): RelationshipMapper {
   const profiles: RelationshipHouseguest[] = [];
   setupProfiles(context, profiles, new Set<string>(), new Set<string>());
   const r: RelationshipMapper = new RelationshipMapper(profiles);
@@ -33,19 +34,18 @@ function importAll(
   r.tribe({ name: "Wisdom", color: "#00ff00" }, [
     "Veritania",
     "The Elder",
-    "Rhys of Abram",
+    "Rhys",
     "Izaro",
     "kuduku",
     "Shavronne",
     "The Shaper",
   ]);
-  // r.evict("Archbishop Geofri");
-  // r.evict("avarius");
-  // r.evict("atziri");
-  // r.evict("veritania");
+  r.evict("brutus");
+  r.evict("baran");
+  r.alliance(["kitava", "rhys"]);
   randomRelationships(r);
   console.log(encodeRelationshipMapper(r));
-  return r.houseguests;
+  return r;
 }
 
 ////////////////// safe space below here
