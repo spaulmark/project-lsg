@@ -9,7 +9,6 @@ import {
   switchEpisode$,
   newEpisode,
   switchSceneRelative,
-  cast$,
   getSelectedPlayer,
   selectedPlayer$,
 } from "../../subjects/subjects";
@@ -41,11 +40,6 @@ export class SidebarController {
         next: (value: number) => {
           this.switchSceneRelative(value);
         },
-      })
-    );
-    this.subscriptions.push(
-      cast$.subscribe({
-        next: () => (this.season = new Season()),
       })
     );
   }
