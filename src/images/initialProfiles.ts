@@ -4,29 +4,13 @@ import {
   RelationshipMapper,
   RelationshipHouseguest,
 } from "./RelationshipMapper";
-import { encodeRelationships } from "./encoder";
+import { encodeRelationshipMapper } from "./encoder";
 
 function importAll(
   context: __WebpackModuleApi.RequireContext
 ): RelationshipHouseguest[] {
   const profiles: RelationshipHouseguest[] = [];
-
-  const evictedHouseguests: Set<string> = new Set<string>();
-  const jurors: Set<string> = new Set<string>();
-
-  // evictedHouseguests.add("malachai");
-  // evictedHouseguests.add("hillock");
-  // evictedHouseguests.add("kuduku");
-  // evictedHouseguests.add("izaro");
-  // evictedHouseguests.add("rhys of abram");
-  // evictedHouseguests.add("avarius");
-  // evictedHouseguests.add("doedre");
-  // evictedHouseguests.add("kitava");
-  // evictedHouseguests.add("baran");
-  // evictedHouseguests.add("atziri");
-  // evictedHouseguests.add("lunaris");
-
-  setupProfiles(context, profiles, evictedHouseguests, jurors);
+  setupProfiles(context, profiles, new Set<string>(), new Set<string>());
   const r: RelationshipMapper = new RelationshipMapper(profiles);
   r.tribe({ name: "Power", color: "#ff0000" }, [
     "Hillock",
@@ -46,7 +30,7 @@ function importAll(
     "Dominus",
     "Avarius",
   ]);
-  r.tribe({ name: "Wisgn", color: "#00ff00" }, [
+  r.tribe({ name: "Wisdom", color: "#00ff00" }, [
     "Veritania",
     "The Elder",
     "Rhys of Abram",
@@ -55,20 +39,21 @@ function importAll(
     "Shavronne",
     "The Shaper",
   ]);
+  // r.evict("Archbishop Geofri");
+  // r.evict("avarius");
+  // r.evict("atziri");
+  // r.evict("veritania");
   randomRelationships(r);
-  console.log(encodeRelationships(r));
+  console.log(encodeRelationshipMapper(r));
   return r.houseguests;
 }
 
 ////////////////// safe space below here
 
-// const rainbow =
-//   "0123456789™€›…•‡†ƒžŽżŻƖź¡ŹŸŷŶŵŴųŲűŰůŮŭŬūŪũŨŧŦťŤţŢšŠşŞŝŜśŚřŘŗŖŕŔœŒőŐŏŎōŌŋŊŉňŇņŅńŃłŁŀĿľĽļĻĺĹĸķĶĵĴĳĲıİįĮĭĬīĪĩĨħĥĤģĢġĠğĞĝĜěĚęĘėĖĕĔēĒđĐďĎčČċĊĉĈćĆąĄăĂāĀ¼¹µ³²±°¯®¬«ª©¨§¤¢}`_^]\\[@?>=;:/.-,+*)('&%$#\"!zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA";
-
 // function generateLookupTable() {
 //   const test2: { [id: string]: string } = {};
 //   for (let i = 0; i < rainbow.length; i++) {
-//     test2[rainbow[i]] = pad(i.toString(3)); // replace i with whatever i want to lookup table with.
+//     test2[rainbow[i]] = leftPad(i.toString(3)); // replace i with whatever i want to lookup table with.
 //   }
 //   console.log(test2);
 // }

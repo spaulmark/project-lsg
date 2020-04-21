@@ -19,7 +19,6 @@ export function generateBbFinale(
   const content = (
     <HasText>
       Finale Night
-      {/* <MemoryWall houseguests={initialGameState.houseguests} /> <br /> */}
       <NextEpisodeButton />
     </HasText>
   );
