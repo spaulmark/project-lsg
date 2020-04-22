@@ -32,7 +32,7 @@ export function decodeToRelationshipMapper(
   });
   const c = c1.trim();
   try {
-    if (c.split("|").length !== 4) throw new Error(`${c} is not a valid code`);
+    if (c.split("|").length !== 4) throw new Error(`Not a code`);
     const [tribes, evictees, relationships, powerRankings] = c.split("|");
     if (
       relationships.length % 2 > 0 ||
@@ -108,7 +108,6 @@ function decodeRelationships(m: RelationshipMapper, c: CodedRelationships) {
     m.nonEvictedIDs.forEach((id) => {
       if (hg.id === id) return;
       //////////////////////////////////////////////// relationships
-      // console.log("decoding", hg.name, id);
       if (decodedR.length === 0) {
         decodedR = decode(`${relationships[r]}${relationships[r + 1]}`);
         r += 2;

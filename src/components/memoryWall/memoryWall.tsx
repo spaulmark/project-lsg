@@ -43,14 +43,16 @@ export function MemoryWall(props: IMemoryWallProps): JSX.Element {
   );
   const tribes: JSX.Element[] = [];
   _.forEach(houseguestsByTribe, (hgs, tribeName) => {
-    if (tribeName === "undefined") {
+    if (tribeName === "undefined" && _.size(houseguestsByTribe) > 1) {
       return;
     }
     const color = hgs[0].tribe ? hgs[0].tribe.color : "";
     tribes.push(
       <DividerBox key={tribeName}>
-        <CenteredBold style={{ color }}>{tribeName}</CenteredBold>
-        <hr style={{ color }}></hr>
+        {tribeName !== "undefined" && (
+          <CenteredBold style={{ color }}>{tribeName}</CenteredBold>
+        )}
+        {tribeName !== "undefined" && <hr style={{ color }}></hr>}
         <Portraits houseguests={hgs} centered={true}></Portraits>
       </DividerBox>
     );

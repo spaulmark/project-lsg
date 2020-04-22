@@ -5,7 +5,6 @@ import {
   RelationshipHouseguest,
 } from "./RelationshipMapper";
 import { encodeRelationshipMapper } from "./encoder";
-import { Base64 } from "../utils/base64";
 
 function importAll(
   context: __WebpackModuleApi.RequireContext
@@ -13,49 +12,39 @@ function importAll(
   const profiles: RelationshipHouseguest[] = [];
   setupProfiles(context, profiles, new Set<string>(), new Set<string>());
   const r: RelationshipMapper = new RelationshipMapper(profiles);
-  r.tribe({ name: "Power", color: "#ff0000" }, [
-    "Hillock",
-    "Piety",
-    "Brutus",
-    "malachai",
-    "kitava",
-    "Atziri",
-    "doedre",
-  ]);
-  r.tribe({ name: "Courage", color: "#00ffff" }, [
-    "Lunaris",
-    "Archbishop Geofri",
-    "Solaris",
-    "baran",
-    "Eleron",
-    "Dominus",
-    "Avarius",
-  ]);
-  r.tribe({ name: "Wisdom", color: "#00ff00" }, [
-    "Veritania",
-    "The Elder",
-    "Rhys",
-    "Izaro",
-    "kuduku",
-    "Shavronne",
-    "The Shaper",
-  ]);
-  r.evict("brutus");
-  r.evict("baran");
-  r.alliance(["kitava", "rhys"]);
-  randomRelationships(r);
-  console.log(encodeRelationshipMapper(r));
+  // r.tribe({ name: "Power", color: "#ff0000" }, [
+  //   "Hillock",
+  //   "Piety",
+  //   "Brutus",
+  //   "malachai",
+  //   "kitava",
+  //   "Atziri",
+  //   "doedre",
+  // ]);
+  // r.tribe({ name: "Courage", color: "#00ffff" }, [
+  //   "Lunaris",
+  //   "Archbishop Geofri",
+  //   "Solaris",
+  //   "baran",
+  //   "Eleron",
+  //   "Dominus",
+  //   "Avarius",
+  // ]);
+  // r.tribe({ name: "Wisdom", color: "#00ff00" }, [
+  //   "Veritania",
+  //   "The Elder",
+  //   "Rhys",
+  //   "Izaro",
+  //   "kuduku",
+  //   "Shavronne",
+  //   "The Shaper",
+  // ]);
+  // r.alliance(["kitava", "rhys"]);
+  // console.log(encodeRelationshipMapper(r));
   return r;
 }
 
 ////////////////// safe space below here
-
-// function generateLookupTable() {
-//   const test2: { [id: string]: string } = {};
-//   for (let i = 0; i < rainbow.length; i++) {
-//     test2[rainbow[i]] = leftPad(i.toString(3)); // replace i with whatever i want to lookup table with.
-//   }
-// }
 
 export const initialProfiles = importAll(
   require.context("./src", false, /.png/)

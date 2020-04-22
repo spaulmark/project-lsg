@@ -41,9 +41,13 @@ export class Topbar extends React.Component<TopbarProps, TopbarState> {
             value={this.state.inputCode}
             onChange={this.handleChange}
           />
-          <div className="button" onClick={this.controller.onSubmit}>
+          <button
+            disabled={!!!this.state.inputCode}
+            className={`button is-light`}
+            onClick={this.controller.onSubmit}
+          >
             Submit
-          </div>
+          </button>
         </HasText>
         <div className="level-item">
           <ThemeSwitcher />
