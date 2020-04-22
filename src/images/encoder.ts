@@ -58,10 +58,10 @@ function encodeRelationships(m: RelationshipMapper): CodedRelationships {
   let rBuffer: string = "";
   let pBuffer: string = "";
   let validateBuffer = (s: string) => {
-    if (decode(encode(rBuffer)) !== rBuffer) {
+    if (decode(encode(s)) !== s) {
       throw new Error(
-        `encoding failure: ${rBuffer} (${encode(rBuffer)}) encoded to 
-        ${decode(encode(rBuffer))} `
+        `encoding failure: ${s} (${encode(s)}) encoded to 
+        ${decode(encode(s))} `
       );
     }
   };
@@ -73,7 +73,6 @@ function encodeRelationships(m: RelationshipMapper): CodedRelationships {
       const nextCharR = toTernary(hg.relationships[id]);
       rBuffer += nextCharR;
       if (rBuffer.length === 7) {
-        console.log("adding", rBuffer, "as", encode(rBuffer));
         const e: string = encode(rBuffer);
         if (e.length !== 2)
           throw new Error(`Byte misalignment prevented: (${e})`);
@@ -81,22 +80,30 @@ function encodeRelationships(m: RelationshipMapper): CodedRelationships {
         relationships += e;
         rBuffer = "";
       }
-      /// powerRankings ////////////////////////////////////////// focus on relationships for now then copy+paste
+      /// powerRankings /////////////////////////////////////////
+
       const nextCharP = toTernary(hg.powerRankings[id]);
       pBuffer += nextCharP;
-      if (parseInt(`${pBuffer}${nextCharP}`, 3) > 4095) {
+      if (pBuffer.length === 7) {
         const e: string = encode(pBuffer);
-        // validateBuffer(pBuffer);
+        if (e.length !== 2)
+          throw new Error(`Byte misalignment prevented: (${e})`);
+        validateBuffer(pBuffer);
         powerRankings += e;
-        pBuffer = nextCharP;
+        pBuffer = "";
       }
     });
   });
-  rBuffer = rBuffer.padEnd(7, "0");
-  console.log("adding", rBuffer, "as", encode(rBuffer));
-  validateBuffer(rBuffer);
-  relationships += encode(rBuffer); // TODO: this is very very bad because its wrong
-  powerRankings += encode(pBuffer);
+  if (rBuffer !== "") {
+    rBuffer = rBuffer.padEnd(7, "0");
+    validateBuffer(rBuffer);
+    relationships += encode(rBuffer);
+  }
+  if (pBuffer !== "") {
+    pBuffer = pBuffer.padEnd(7, "0");
+    validateBuffer(pBuffer);
+    powerRankings += encode(pBuffer);
+  }
   return { relationships, powerRankings };
 }
 
