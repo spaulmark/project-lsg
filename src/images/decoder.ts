@@ -4,6 +4,7 @@ import {
 } from "./RelationshipMapper";
 import { CodedRelationships } from "./encoder";
 import { Base64 } from "../utils/base64";
+import _ from "lodash";
 
 const decode = (s: string) => Base64.toInt(s).toString(3).padStart(7, "0"); // base64 --> ternary
 
@@ -25,7 +26,10 @@ export function decodeToRelationshipMapper(
   m: RelationshipMapper,
   c1: string
 ): RelationshipMapper | null {
-  const r = new RelationshipMapper(m.houseguests);
+  const r = new RelationshipMapper(_.cloneDeep(m.houseguests));
+  r.houseguests.forEach((hg) => {
+    r.unevict(hg.name);
+  });
   const c = c1.trim();
   try {
     if (c.split("|").length !== 4) throw new Error(`${c} is not a valid code`);

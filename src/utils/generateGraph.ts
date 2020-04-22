@@ -43,7 +43,7 @@ function generateEdge(
 }
 
 export default function generateGraph(gameState: GameState): Graph {
-  // TODO: this algorithm assumes every relationship is mutual,
+  // this algorithm assumes every relationship is mutual,
   // and will need a face lift once we start getting non-mutual relationships.
   const players = nonEvictedHouseguests(gameState);
   const nodes: number[] = [];
@@ -65,7 +65,6 @@ export default function generateGraph(gameState: GameState): Graph {
         }
       }
     });
-    // nodes[player.id] = friendCount; TODO: for pivot later on, thats why friendcount is there unused
     nodes.push(player.id);
   });
   return { nodes, neighbors: (v: number) => edges.data[v] || new Set([]) };

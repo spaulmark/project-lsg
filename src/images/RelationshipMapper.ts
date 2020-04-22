@@ -93,6 +93,14 @@ export class RelationshipMapper {
     this.nonEvictedIDs.splice(toDelete, 1);
   }
 
+  public unevict(h: string) {
+    const hero = this.get(h);
+    if (!hero.isEvicted) return;
+    hero.isEvicted = false;
+    this.nonEvictedHouseguests++;
+    this.nonEvictedIDs.push(hero.id);
+  }
+
   public setRelationship(
     h: string,
     v: string,

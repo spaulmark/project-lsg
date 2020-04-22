@@ -15,7 +15,8 @@ export class TopbarController {
       this.view.state.inputCode
     );
     if (newMap === null) return;
+
     this.view.setState({ rMapper: newMap, inputCode: "" });
-    players$.next(newMap.houseguests);
+    players$.next(newMap.houseguests); // TODO: unevict
   };
 }

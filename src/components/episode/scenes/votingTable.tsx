@@ -100,7 +100,7 @@ export function generateVotingTable(gameState: GameState): JSX.Element {
             {getById(gameState, log.runnerUp).name}
           </CenteredBold>
           <Centered noMargin={true}>
-            <small>Finalist</small> {/** TODO: put "X votes" here instead. */}
+            <small>Finalist</small>
           </Centered>
         </RunnerUpCell>
       );

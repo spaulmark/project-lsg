@@ -43,7 +43,7 @@ export const RelationshipTypeToPopularity = {
   HUNTER: -0.66,
   TARGET: -0.33,
   DUPE: 0.25,
-  DECEIVER: -0.25, /// TODO: idk about some of these
+  DECEIVER: -0.25,
 };
 
 export const ClassifyDiscreteRelationship: {
