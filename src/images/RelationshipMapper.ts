@@ -78,6 +78,12 @@ export class RelationshipMapper {
       (hg.powerRanking = undefined);
   }
 
+  public dropYourBuffs() {
+    this.houseguests.forEach((hg) => {
+      hg.tribe = undefined;
+    });
+  }
+
   public evict(h: string) {
     const hero = this.get(h);
     const toDelete = this.nonEvictedIDs.indexOf(hero.id);

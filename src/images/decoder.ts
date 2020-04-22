@@ -6,22 +6,6 @@ import { CodedRelationships } from "./encoder";
 import { Base64 } from "../utils/base64";
 import _ from "lodash";
 
-const decode = (s: string) => Base64.toInt(s).toString(3).padStart(7, "0"); // base64 --> ternary
-
-const ternaryToRelationship = new Map<string, boolean | undefined>(
-  Object.entries({
-    "0": false,
-    "1": true,
-    "2": undefined,
-  })
-);
-function fromTernary(n: string): boolean | undefined {
-  const result = ternaryToRelationship.get(n);
-  if (result === undefined && n !== "2")
-    throw new Error(`${n} is not a ternary value`);
-  return result;
-}
-
 export function decodeToRelationshipMapper(
   m: RelationshipMapper,
   c1: string
@@ -30,6 +14,7 @@ export function decodeToRelationshipMapper(
   r.houseguests.forEach((hg) => {
     r.unevict(hg.name);
   });
+  r.dropYourBuffs();
   const c = c1.trim();
   try {
     if (c.split("|").length !== 4) throw new Error(`Not a code`);
@@ -52,6 +37,21 @@ export function decodeToRelationshipMapper(
   return r;
 }
 
+const decode = (s: string) => Base64.toInt(s).toString(3).padStart(7, "0"); // base64 --> ternary
+
+const ternaryToRelationship = new Map<string, boolean | undefined>(
+  Object.entries({
+    "0": false,
+    "1": true,
+    "2": undefined,
+  })
+);
+function fromTernary(n: string): boolean | undefined {
+  const result = ternaryToRelationship.get(n);
+  if (result === undefined && n !== "2")
+    throw new Error(`${n} is not a ternary value`);
+  return result;
+}
 const chex = /([a-f0-9]){6}/;
 
 function decodeTribes(m: RelationshipMapper, c: string) {
