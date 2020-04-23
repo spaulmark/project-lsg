@@ -49,9 +49,6 @@ export class Topbar extends React.Component<TopbarProps, TopbarState> {
             Submit
           </button>
         </HasText>
-        <div className="level-item">
-          <ThemeSwitcher />
-        </div>
       </Box>
     );
   }
