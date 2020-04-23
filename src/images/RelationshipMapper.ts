@@ -1,5 +1,5 @@
 import { ProfileHouseguest } from "../components/memoryWall";
-import { Tribe } from "./tribe";
+import { Tribe, tribeId } from "./tribe";
 import { PlayerProfile } from "../model";
 import { DiscreteRelationshipMap } from "../utils";
 
@@ -36,8 +36,11 @@ export class RelationshipMapper {
   private cache: {
     [id: string]: RelationshipHouseguest;
   } = {};
-  private nonEvictedHouseguests: number = 0;
-  nonEvictedIDs: number[] = [];
+  private tribeIDs: Set<string> = new Set<string>();
+  get nonEvictedHouseguests(): number {
+    return this.nonEvictedIDs.length;
+  }
+  nonEvictedIDs: number[] = []; // this must be an ordered type to guarentee encoding/decoding works. don't use a set
   public constructor(houseguests: RelationshipHouseguest[]) {
     this.houseguests = houseguests;
     if (houseguests.length > 4096) {
@@ -45,7 +48,6 @@ export class RelationshipMapper {
     }
     houseguests.forEach((hg) => {
       this.cache[hg.name.toUpperCase()] = hg;
-      !hg.isEvicted && this.nonEvictedHouseguests++;
       !hg.isEvicted && this.nonEvictedIDs.push(hg.id);
     });
   }
@@ -87,6 +89,7 @@ export class RelationshipMapper {
   }
 
   public dropYourBuffs() {
+    this.tribeIDs = new Set<string>();
     this.houseguests.forEach((hg) => {
       hg.tribe = undefined;
     });
@@ -97,7 +100,6 @@ export class RelationshipMapper {
     const toDelete = this.nonEvictedIDs.indexOf(hero.id);
     if (hero.isEvicted) return;
     hero.isEvicted = true;
-    this.nonEvictedHouseguests--;
     this.nonEvictedIDs.forEach((id) => {
       this.neutral(h, this.houseguests[id].name);
       this.neutral(this.houseguests[id].name, h);
@@ -111,7 +113,6 @@ export class RelationshipMapper {
     const hero = this.get(h);
     if (!hero.isEvicted) return;
     hero.isEvicted = false;
-    this.nonEvictedHouseguests++;
     this.nonEvictedIDs.push(hero.id);
   }
 
@@ -147,8 +148,13 @@ export class RelationshipMapper {
     this.updatePopularities(villain);
   }
   public tribe(tribe: Tribe, members: string[]) {
-    if (tribe.name.includes("#") || tribe.name.includes("="))
+    if (tribe.name.includes("#") || tribe.name.includes("=")) {
       throw new Error("Tribe names cannot contain # or =");
+    }
+    if (this.tribeIDs.has(tribeId(tribe))) {
+      throw new Error(`Tribe ${tribeId(tribe)} declared twice`);
+    }
+    this.tribeIDs.add(tribeId(tribe));
     members.forEach((hg) => {
       this.get(hg).tribe = tribe;
     });

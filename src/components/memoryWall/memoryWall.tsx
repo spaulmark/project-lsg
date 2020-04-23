@@ -1,25 +1,12 @@
 import React from "react";
 import { PlayerProfile } from "../../model";
-import { Portraits } from "../playerPortrait/portraits";
 import { RelationshipMap, DiscreteRelationshipMap } from "../../utils";
-import { Tribe } from "../../images/tribe";
+import { Tribe, tribeId } from "../../images/tribe";
 import _ from "lodash";
-import { DividerBox } from "../layout/box";
-import styled from "styled-components";
-import { textColor } from "../../model/color";
+import { TribeContainer } from "./tribeContainer";
 export interface IMemoryWallProps {
   readonly houseguests: ProfileHouseguest[];
 }
-
-const getHoverable = (color: string) => {
-  return styled.p`
-    background-color: ${color};
-    color: ${textColor(color)};
-    // :hover {
-    //   color: ${color};
-    // }
-  `;
-};
 
 export interface ProfileHouseguest extends PlayerProfile {
   id?: number;
@@ -53,22 +40,13 @@ export function MemoryWall(props: IMemoryWallProps): JSX.Element {
     hg.tribe === undefined ? hg.tribe : hg.tribe.name
   );
   const tribes: JSX.Element[] = [];
-  _.forEach(houseguestsByTribe, (hgs, tribeName) => {
-    if (tribeName === "undefined" && _.size(houseguestsByTribe) > 1) {
+  _.forEach(houseguestsByTribe, (hgs, name) => {
+    if (name === "undefined" && _.size(houseguestsByTribe) > 1) {
       return;
     }
     const color = hgs[0].tribe ? hgs[0].tribe.color : "";
-    const Hoverable = getHoverable(color);
-    tribes.push(
-      <DividerBox key={tribeName} style={{ textAlign: "center" }}>
-        {tribeName !== "undefined" && (
-          <b>
-            <Hoverable>{tribeName}</Hoverable>
-          </b>
-        )}
-        <Portraits houseguests={hgs} centered={true}></Portraits>
-      </DividerBox>
-    );
+    const tribe: Tribe = { name, color };
+    tribes.push(<TribeContainer key={tribeId(tribe)} {...{ tribe, hgs }} />);
   });
   return (
     <div
