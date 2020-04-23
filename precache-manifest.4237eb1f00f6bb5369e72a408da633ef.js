@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/project-lsg/static/media/Izaro.eb3f6068.png"
   },
   {
-    "revision": "c450e8af37cbe6a7c833",
+    "revision": "b4b742ec7a7b8d70bd60",
     "url": "/project-lsg/static/css/main.ad40f0b4.chunk.css"
   },
   {
@@ -52,8 +52,8 @@ self.__precacheManifest = [
     "url": "/project-lsg/static/media/Hillock.4f59f957.png"
   },
   {
-    "revision": "c450e8af37cbe6a7c833",
-    "url": "/project-lsg/static/js/main.14ebccc9.chunk.js"
+    "revision": "b4b742ec7a7b8d70bd60",
+    "url": "/project-lsg/static/js/main.d463a0b2.chunk.js"
   },
   {
     "revision": "cb87a5ddb830e30158222f2804181d02",
@@ -100,7 +100,7 @@ self.__precacheManifest = [
     "url": "/project-lsg/static/media/Veritania.3cbf82c9.png"
   },
   {
-    "revision": "118868e8659a1e27f97c211dab04114d",
+    "revision": "58fb49bce4eb819a3d562d0d1a7b5ed7",
     "url": "/project-lsg/index.html"
   }
 ];
