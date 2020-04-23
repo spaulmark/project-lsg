@@ -25,7 +25,9 @@ const StyledBox = styled.div`
 
 export function DividerBox(props: any): JSX.Element {
   return (
-    <ShadowBox className={props.className || ""}>{props.children}</ShadowBox>
+    <ShadowBox className={props.className || ""} style={props.style || {}}>
+      {props.children}
+    </ShadowBox>
   );
 }
 

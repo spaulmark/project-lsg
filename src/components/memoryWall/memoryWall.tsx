@@ -5,10 +5,21 @@ import { RelationshipMap, DiscreteRelationshipMap } from "../../utils";
 import { Tribe } from "../../images/tribe";
 import _ from "lodash";
 import { DividerBox } from "../layout/box";
-import { CenteredBold } from "../layout/centered";
+import styled from "styled-components";
+import { textColor } from "../../model/color";
 export interface IMemoryWallProps {
   readonly houseguests: ProfileHouseguest[];
 }
+
+const getHoverable = (color: string) => {
+  return styled.p`
+    background-color: ${color};
+    color: ${textColor(color)};
+    // :hover {
+    //   color: ${color};
+    // }
+  `;
+};
 
 export interface ProfileHouseguest extends PlayerProfile {
   id?: number;
@@ -47,12 +58,14 @@ export function MemoryWall(props: IMemoryWallProps): JSX.Element {
       return;
     }
     const color = hgs[0].tribe ? hgs[0].tribe.color : "";
+    const Hoverable = getHoverable(color);
     tribes.push(
-      <DividerBox key={tribeName}>
+      <DividerBox key={tribeName} style={{ textAlign: "center" }}>
         {tribeName !== "undefined" && (
-          <CenteredBold style={{ color }}>{tribeName}</CenteredBold>
+          <b>
+            <Hoverable>{tribeName}</Hoverable>
+          </b>
         )}
-        {tribeName !== "undefined" && <hr style={{ color }}></hr>}
         <Portraits houseguests={hgs} centered={true}></Portraits>
       </DividerBox>
     );
