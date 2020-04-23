@@ -55,6 +55,14 @@ export class RelationshipMapper {
     return this.houseguests[id];
   }
 
+  public reset() {
+    this.dropYourBuffs();
+    this.houseguests.forEach((hg) => {
+      this.evict(hg.name);
+      this.unevict(hg.name);
+    });
+  }
+
   private get(hero: string) {
     return this.cache[hero.toUpperCase()];
   }

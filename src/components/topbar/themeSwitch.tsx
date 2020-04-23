@@ -16,7 +16,7 @@ export function ThemeSwitcher() {
 
   const className = `button ${theme === "dark" ? `is-dark` : "is-light"}`;
   return (
-    <div className={className} onClick={toggleTheme}>
+    <div className={className}>
       {theme === "light" ? "Dark mode" : "Light mode"}
     </div>
   );

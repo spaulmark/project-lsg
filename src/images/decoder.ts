@@ -11,10 +11,7 @@ export function decodeToRelationshipMapper(
   c1: string
 ): RelationshipMapper | null {
   const r = new RelationshipMapper(_.cloneDeep(m.houseguests));
-  r.houseguests.forEach((hg) => {
-    r.unevict(hg.name);
-  });
-  r.dropYourBuffs();
+  r.reset();
   const c = c1.trim();
   try {
     if (c.split("|").length !== 4) throw new Error(`Not a code`);
@@ -27,8 +24,8 @@ export function decodeToRelationshipMapper(
       throw new Error(
         `Misaligned bytes: (${evictees.length}, ${relationships.length}, ${powerRankings.length}`
       );
-    decodeRelationships(r, { relationships, powerRankings });
     decodeEvictees(r, evictees);
+    decodeRelationships(r, { relationships, powerRankings });
     decodeTribes(r, tribes);
   } catch (e) {
     alert(e);
