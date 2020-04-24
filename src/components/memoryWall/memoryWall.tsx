@@ -1,7 +1,7 @@
 import React from "react";
 import { PlayerProfile } from "../../model";
 import { RelationshipMap, DiscreteRelationshipMap } from "../../utils";
-import { Tribe, tribeId } from "../../images/tribe";
+import { Tribe, tribeId, nullTribe } from "../../images/tribe";
 import _ from "lodash";
 import { TribeContainer } from "./tribeContainer";
 import { Likemap } from "../../utils/likeMap";
@@ -45,8 +45,7 @@ export function MemoryWall(props: IMemoryWallProps): JSX.Element {
     if (name === "undefined" && _.size(houseguestsByTribe) > 1) {
       return;
     }
-    const color = hgs[0].tribe ? hgs[0].tribe.color : "";
-    const tribe: Tribe = { name, color };
+    const tribe: Tribe = hgs[0].tribe ? hgs[0].tribe : nullTribe;
     tribes.push(<TribeContainer key={tribeId(tribe)} {...{ tribe, hgs }} />);
   });
   return (

@@ -30,8 +30,10 @@ export class TribeContainer extends React.Component<
   }
   public componentDidMount() {
     this.subs.push(
-      selectedTribe$.subscribe((id) => {
-        this.setState({ selected: id === tribeId(this.props.tribe) });
+      selectedTribe$.subscribe((selected) => {
+        this.setState({
+          selected: tribeId(selected) === tribeId(this.props.tribe),
+        });
       })
     );
   }

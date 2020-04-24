@@ -6,6 +6,7 @@ import {
   selectedPlayer$,
   selectedTribe$,
 } from "../../subjects/subjects";
+import { nullTribe } from "../../images/tribe";
 
 export class TopbarController {
   private view: Topbar;
@@ -24,6 +25,6 @@ export class TopbarController {
     this.view.setState({ rMapper: newMap });
     players$.next(newMap.houseguests);
     selectedPlayer$.next(null);
-    selectedTribe$.next("");
+    selectedTribe$.next(nullTribe);
   };
 }

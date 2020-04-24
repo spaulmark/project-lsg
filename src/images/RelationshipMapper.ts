@@ -14,6 +14,32 @@ function calcPowerRank(threats: number, weaks: number, n: number) {
   return 0.5 + threats / twoN - weaks / twoN;
 }
 
+export function calculatePopularity(
+  hg: { likedBy: Likemap; dislikedBy: Likemap },
+  n: number
+): number | undefined {
+  if (n < 1) return undefined;
+  const likedBy = sizeOf(hg.likedBy);
+  const dislikedBy = sizeOf(hg.dislikedBy);
+  let result: number | undefined = 0;
+  result = (likedBy - dislikedBy) / n;
+  likedBy === 0 && dislikedBy === 0 && (result = undefined);
+  return result;
+}
+
+export function calculatePowerRanking(
+  hg: { thinksImThreat: Likemap; thinksImWeak: Likemap },
+  n: number
+): number | undefined {
+  if (n < 1) return undefined;
+  const thinksImThreat = sizeOf(hg.thinksImThreat);
+  const thinksImWeak = sizeOf(hg.thinksImWeak);
+  let result: number | undefined = 0;
+  result = calcPowerRank(thinksImThreat, thinksImWeak, n);
+  thinksImThreat === 0 && thinksImWeak === 0 && (result = undefined);
+  return result;
+}
+
 export interface RelationshipHouseguest extends PlayerProfile {
   id: number;
   isEvicted?: boolean;
@@ -72,24 +98,6 @@ export class RelationshipMapper {
   private getRelationship(h: string, v: string, map: Map) {
     return this.get(h)[map][this.get(v).id];
   }
-  private updatePopularities(hg: ProfileHouseguest) {
-    const peopleWithOpinions = this.nonEvictedHouseguests - 1;
-    const likedBy = sizeOf(hg.likedBy);
-    const dislikedBy = sizeOf(hg.dislikedBy);
-    const thinksImThreat = sizeOf(hg.thinksImThreat);
-    const thinksImWeak = sizeOf(hg.thinksImWeak);
-    hg.popularity === undefined && (hg.popularity = 0);
-    hg.popularity = (likedBy - dislikedBy) / peopleWithOpinions;
-    hg.powerRanking === undefined && (hg.powerRanking = 0);
-    likedBy === 0 && dislikedBy === 0 && (hg.popularity = undefined);
-    //////
-    hg.powerRanking = calcPowerRank(
-      thinksImThreat,
-      thinksImWeak,
-      peopleWithOpinions
-    );
-    thinksImThreat === 0 && thinksImWeak === 0 && (hg.powerRanking = undefined);
-  }
 
   public dropYourBuffs() {
     this.tribeIDs = new Set<string>();
@@ -98,8 +106,14 @@ export class RelationshipMapper {
     });
   }
 
+  private updatePopularities(hg: ProfileHouseguest, n: number) {
+    hg.popularity = calculatePopularity(hg, n);
+    hg.powerRanking = calculatePowerRanking(hg, n);
+  }
+
   public evict(h: string) {
     const hero = this.get(h);
+    const myTribeId = tribeId(hero.tribe);
     const toDelete = this.nonEvictedIDs.indexOf(hero.id);
     if (hero.isEvicted) return;
     hero.isEvicted = true;
@@ -108,6 +122,8 @@ export class RelationshipMapper {
       this.neutral(this.houseguests[id].name, h);
       this.utr(h, this.houseguests[id].name);
       this.utr(this.houseguests[id].name, h);
+      const tribe = this.houseguests[id].tribe;
+      tribe && tribeId(tribe) === myTribeId && tribe.size--;
     });
     this.nonEvictedIDs.splice(toDelete, 1);
   }
@@ -158,9 +174,14 @@ export class RelationshipMapper {
     }
     // actually set it
     hero[map][villain.id] = newR;
-    this.updatePopularities(villain);
+    this.updatePopularities(villain, this.nonEvictedHouseguests - 1);
   }
-  public tribe(tribe: Tribe, members: string[]) {
+  public tribe(skeleton: { name: string; color: string }, members: string[]) {
+    const tribe = {
+      size: members.filter((hg) => !this.get(hg).isEvicted).length, // only count non-evicted members
+      name: skeleton.name,
+      color: skeleton.color,
+    };
     if (tribe.name.includes("#") || tribe.name.includes("=")) {
       throw new Error("Tribe names cannot contain # or =");
     }

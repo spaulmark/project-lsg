@@ -87,6 +87,10 @@ export interface PortraitState {
   powerRanking?: number;
   displayMode: PortraitDisplayMode;
   disabled: boolean;
+  likedBy: Likemap;
+  dislikedBy: Likemap;
+  thinksImWeak: Likemap;
+  thinksImThreat: Likemap;
 }
 export class HouseguestPortrait extends React.Component<
   PortraitProps,
