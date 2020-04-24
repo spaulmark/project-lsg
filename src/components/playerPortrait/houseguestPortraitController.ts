@@ -103,22 +103,21 @@ export class HouseguestPortraitController {
   // this effectively restricts likeCounts to [people on the same tribe as me]
   // this function can later be repurposed into accepting a more generic filter, such as a group in general
   private updateLikeCounts(selectedTribe: Tribe) {
-    const f = hasSameTribe(tribeId(this.view.props.tribe));
-    const disabled = tribeId(selectedTribe) !== tribeId(this.view.props.tribe);
-    const n = this.view.props.tribe ? this.view.props.tribe.size : 0;
-    const likedBy = _.filter(this.view.props.likedBy, f);
-    const dislikedBy = _.filter(this.view.props.dislikedBy, f);
-    const thinksImThreat = _.filter(this.view.props.thinksImThreat, f);
-    const thinksImWeak = _.filter(this.view.props.thinksImWeak, f);
-    this.view.setState({
-      likedBy,
-      dislikedBy,
-      thinksImThreat,
-      thinksImWeak,
-      popularity: calculatePopularity({ likedBy, dislikedBy }, n),
-      powerRanking: calculatePowerRanking({ thinksImThreat, thinksImWeak }, n),
-      disabled,
-    });
+    const props = this.view.props;
+    const newState: any = {
+      disabled: tribeId(selectedTribe) !== tribeId(props.tribe),
+    };
+    const f = hasSameTribe(tribeId(props.tribe));
+    newState.likedBy = _.filter(props.likedBy, f);
+    newState.dislikedBy = _.filter(props.dislikedBy, f);
+    newState.thinksImThreat = _.filter(props.thinksImThreat, f);
+    newState.thinksImWeak = _.filter(props.thinksImWeak, f);
+    if (!getSelectedPlayer()) {
+      const n = props.tribe ? props.tribe.size : 0;
+      newState.popularity = calculatePopularity({ ...newState }, n);
+      newState.powerRanking = calculatePowerRanking({ ...newState }, n);
+    }
+    this.view.setState(newState);
   }
 
   private goToDefaultState() {
