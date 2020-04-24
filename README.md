@@ -1,4 +1,4 @@
-## Hi, welcome to Project LSG!
+# Hi, welcome to Project LSG!
 
 This project is a secret right now! Only a few people know what to do with this page. If you're one of those people, just follow the instructions I've given you, and let me know what you think. Otherwise, you should just check back in a couple months.
 
