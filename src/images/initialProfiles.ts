@@ -11,34 +11,32 @@ function importAll(
   const profiles: RelationshipHouseguest[] = [];
   setupProfiles(context, profiles, new Set<string>(), new Set<string>());
   const r: RelationshipMapper = new RelationshipMapper(profiles);
-  // r.tribe({ name: "Power", color: "#ff0000" }, [
-  //   "Hillock",
-  //   "Piety",
-  //   "Brutus",
-  //   "malachai",
-  //   "kitava",
-  //   "Atziri",
-  //   "doedre",
-  // ]);
-  // r.tribe({ name: "Courage", color: "#00ffff" }, [
+  // r.tribe({ name: "Dream Team", color: "#cacf64" }, [
   //   "Lunaris",
   //   "Archbishop Geofri",
   //   "Solaris",
   //   "baran",
   //   "Eleron",
+  //   "Hillock",
+  //   "Piety",
+  //   "Brutus",
   //   "Dominus",
   //   "Avarius",
   // ]);
-  // r.tribe({ name: "Wisdom", color: "#00ff00" }, [
+  // r.tribe({ name: "Scream Team", color: "#64cacf" }, [
   //   "Veritania",
   //   "The Elder",
   //   "Rhys",
   //   "Izaro",
-  //   "kuduku",
   //   "Shavronne",
+  //   "malachai",
+  //   "kitava",
+  //   "Atziri",
+  //   "doedre",
   //   "The Shaper",
   // ]);
-  // r.alliance(["kitava", "rhys"]);
+  // randomRelationships(r);
+  // r.evict("kuduku");
   // console.log(encodeRelationshipMapper(r));
   return r;
 }
