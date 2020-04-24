@@ -9,6 +9,7 @@ import {
 } from "../model/portraitDisplayMode";
 import { ColorTheme } from "../theme/theme";
 import { ProfileHouseguest } from "../components/memoryWall";
+import { Tribe, nullTribe } from "../images/tribe";
 
 // What is currently being displayed.
 export const mainContentStream$ = new BehaviorSubject(<MemoryWallScreen />);
@@ -22,6 +23,8 @@ export function newEpisode(episode: Episode | null) {
 export function switchSceneRelative(n: number) {
   switchEpisode$.next(n);
 }
+
+export const selectedTribe$ = new BehaviorSubject<Tribe>(nullTribe);
 
 export const players$ = new BehaviorSubject<ProfileHouseguest[]>([]);
 

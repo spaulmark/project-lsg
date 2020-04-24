@@ -1,11 +1,10 @@
 import React from "react";
 import { PlayerProfile } from "../../model";
-import { Portraits } from "../playerPortrait/portraits";
 import { RelationshipMap, DiscreteRelationshipMap } from "../../utils";
-import { Tribe } from "../../images/tribe";
+import { Tribe, tribeId, nullTribe } from "../../images/tribe";
 import _ from "lodash";
-import { DividerBox } from "../layout/box";
-import { CenteredBold } from "../layout/centered";
+import { TribeContainer } from "./tribeContainer";
+import { Likemap } from "../../utils/likeMap";
 export interface IMemoryWallProps {
   readonly houseguests: ProfileHouseguest[];
 }
@@ -13,19 +12,19 @@ export interface IMemoryWallProps {
 export interface ProfileHouseguest extends PlayerProfile {
   id?: number;
   isEvicted?: boolean;
-  isJury?: boolean;
+  disabled?: boolean;
   tribe?: Tribe;
   //
   relationships?: RelationshipMap | DiscreteRelationshipMap;
   popularity?: number;
   deltaPopularity?: number;
-  likedBy: number;
-  dislikedBy: number;
+  likedBy: Likemap;
+  dislikedBy: Likemap;
   //
   powerRankings: DiscreteRelationshipMap;
   powerRanking?: number;
-  thinksImWeak: number;
-  thinksImThreat: number;
+  thinksImWeak: Likemap;
+  thinksImThreat: Likemap;
   //
   hohWins?: number;
   povWins?: number;
@@ -42,20 +41,12 @@ export function MemoryWall(props: IMemoryWallProps): JSX.Element {
     hg.tribe === undefined ? hg.tribe : hg.tribe.name
   );
   const tribes: JSX.Element[] = [];
-  _.forEach(houseguestsByTribe, (hgs, tribeName) => {
-    if (tribeName === "undefined" && _.size(houseguestsByTribe) > 1) {
+  _.forEach(houseguestsByTribe, (hgs, name) => {
+    if (name === "undefined" && _.size(houseguestsByTribe) > 1) {
       return;
     }
-    const color = hgs[0].tribe ? hgs[0].tribe.color : "";
-    tribes.push(
-      <DividerBox key={tribeName}>
-        {tribeName !== "undefined" && (
-          <CenteredBold style={{ color }}>{tribeName}</CenteredBold>
-        )}
-        {tribeName !== "undefined" && <hr style={{ color }}></hr>}
-        <Portraits houseguests={hgs} centered={true}></Portraits>
-      </DividerBox>
-    );
+    const tribe: Tribe = hgs[0].tribe ? hgs[0].tribe : nullTribe;
+    tribes.push(<TribeContainer key={tribeId(tribe)} {...{ tribe, hgs }} />);
   });
   return (
     <div

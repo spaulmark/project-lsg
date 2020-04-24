@@ -4,7 +4,6 @@ import {
   RelationshipMapper,
   RelationshipHouseguest,
 } from "./RelationshipMapper";
-import { encodeRelationshipMapper } from "./encoder";
 
 function importAll(
   context: __WebpackModuleApi.RequireContext
@@ -63,13 +62,13 @@ function setupProfiles(
       imageURL: context(item),
       id: i,
       isEvicted: evictedHouseguests.has(name.toLowerCase()),
-      isJury: jurors.has(name.toLowerCase()),
+      disabled: jurors.has(name.toLowerCase()),
       relationships: newDiscreteRelationshipMap(context.length - 1, i),
       powerRankings: newDiscreteRelationshipMap(context.length - 1, i),
-      likedBy: 0,
-      dislikedBy: 0,
-      thinksImThreat: 0,
-      thinksImWeak: 0,
+      likedBy: {},
+      dislikedBy: {},
+      thinksImThreat: {},
+      thinksImWeak: {},
     });
   });
 }
