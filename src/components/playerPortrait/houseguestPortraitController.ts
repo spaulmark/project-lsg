@@ -80,10 +80,15 @@ export class HouseguestPortraitController {
     } else {
       // disable
       const selectedPlayer = getSelectedPlayer();
+      const disabled = id !== tribeId(this.view.props.tribe);
       this.view.setState({
-        disabled: id !== tribeId(this.view.props.tribe),
+        disabled,
       });
-      if (selectedPlayer !== null && selectedPlayer.id === this.view.props.id) {
+      if (
+        disabled &&
+        selectedPlayer !== null &&
+        selectedPlayer.id === this.view.props.id
+      ) {
         selectedPlayer$.next(null);
       }
     }
