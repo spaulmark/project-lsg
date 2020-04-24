@@ -1,14 +1,21 @@
 ## Hi, welcome to Project LSG!
 
-This project is a secret right now! Only a few people know what to do with this page. If you're one of those people, just follow the instructions I've given you, and let me know what you think.
+This project is a secret right now! Only a few people know what to do with this page. If you're one of those people, just follow the instructions I've given you, and let me know what you think. Otherwise, you should just check back in a couple months.
 
+## What is a community viewer for social networks?
 
-Otherwise, you should just check back in a couple months.
+A community viewer for social networks is something that makes sense of a small social network with a lot of edges.
 
-In the mean time, why don't you go check out bb-bots? It's way more fun than whatever I'm hiding in this repo.
+You know how when you look at a really big graph, sometimes you can notice little groups and clusters of nodes that are mostly connected to each other? Those are called communities. In a social network, a community might be a classroom, a group of co-workers, or members of the same club. Communities can also have communities within them, like the popular girls that always eat lunch together.
 
----> https://github.com/spaulmark/bb-bots <---
+Because most people talk to each other in a community, the resulting graph is very dense in edges and is hard to look at. Everybody has an opinion on everybody else, so displaying it like a graph to try to visualize it isn't very helpful, even for small communities. That's where this software comes in.
 
-### I cannot wait!
+## Why are you making this?
 
-Then go download the source code and run `npm install` and `npm start`. But you're on your own from there!
+Because if you want something done right, sometimes you just have to do it yourself. 
+
+Very few tools do community analysis, and the ones that do don't do what I want. They're good for getting the big picture of who has the most influence in a community, or the general shape of it, but I want a community viewer where you can not only get all of that, but also dig deeply into each individual's relationships and position in the social structure.  
+
+### What can I do right now? 
+
+Maybe do some reading on community visualziation: Look up "NodeTrix" and "Social Network Visualization" on Google Scholar and start reading papers until you're excited about this problem as I am. 
