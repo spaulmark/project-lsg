@@ -25,8 +25,8 @@ export function decodeToRelationshipMapper(
         `Misaligned bytes: (${evictees.length}, ${relationships.length}, ${powerRankings.length}`
       );
     decodeEvictees(r, evictees);
-    decodeRelationships(r, { relationships, powerRankings });
     decodeTribes(r, tribes);
+    decodeRelationships(r, { relationships, powerRankings });
   } catch (e) {
     alert(e);
     return null;
