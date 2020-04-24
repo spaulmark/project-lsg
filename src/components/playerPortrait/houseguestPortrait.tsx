@@ -7,6 +7,8 @@ import { HouseguestPortraitController } from "./houseguestPortraitController";
 import { PortraitDisplayMode } from "../../model/portraitDisplayMode";
 import styled from "styled-components";
 import { ColorTheme } from "../../theme/theme";
+import { Tribe } from "../../images/tribe";
+import { displayMode$ } from "../../subjects/subjects";
 
 const Subtitle = styled.small`
   font-weight: 100;
@@ -67,7 +69,7 @@ export interface PortraitProps {
   powerRankings: DiscreteRelationshipMap;
   powerRanking?: number;
   isEvicted?: boolean;
-  isJury?: boolean;
+  disabled?: boolean;
   deltaPopularity?: number;
   detailed?: boolean;
   superiors?: Set<number>;
@@ -75,12 +77,14 @@ export interface PortraitProps {
   dislikedBy: number;
   thinksImWeak: number;
   thinksImThreat: number;
+  tribe?: Tribe;
 }
 
 export interface PortraitState {
   popularity?: number;
   powerRanking?: number;
   displayMode: PortraitDisplayMode;
+  disabled: boolean;
 }
 export class HouseguestPortrait extends React.Component<
   PortraitProps,
@@ -106,7 +110,12 @@ export class HouseguestPortrait extends React.Component<
   }
 
   private onClick(): void {
-    if (isNullOrUndefined(this.props.id) || !this.props.relationships) {
+    if (
+      isNullOrUndefined(this.props.id) ||
+      !this.props.relationships ||
+      this.state.disabled ||
+      this.props.isEvicted
+    ) {
       return;
     }
     const data = {
@@ -122,16 +131,17 @@ export class HouseguestPortrait extends React.Component<
 
   public render() {
     const props = this.props;
-    const Img = getImageClass(props);
+    const state = this.state;
+    const Img = getImageClass(props, state);
     let subtitle: any[] = [];
     subtitle = this.state.displayMode.generateSubtitle(
-      this.props,
-      this.state,
+      props,
+      state,
       !!props.detailed
     );
 
     let Portrait = MemoryWallPortrait;
-    if (props.isJury) {
+    if (state.disabled) {
       Portrait = Jury;
     } else if (props.isEvicted) {
       Portrait = Evicted;
@@ -140,21 +150,21 @@ export class HouseguestPortrait extends React.Component<
       <Portrait
         onClick={() => this.onClick()}
         style={{
-          backgroundColor: this.controller.backgroundColor(props),
+          backgroundColor: this.controller.backgroundColor(props, this.state),
         }}
       >
         <Img src={props.imageURL} style={{ height: 100 }} />
         <br />
         {props.name}
         <br />
-        {<Subtitle>{subtitle}</Subtitle>}
+        <Subtitle>{subtitle}</Subtitle>
       </Portrait>
     );
   }
 }
 
-function getImageClass(props: PortraitProps) {
+function getImageClass(props: PortraitProps, state: PortraitState) {
   let imageClass = props.isEvicted ? Grayscale : Normal;
-  imageClass = props.isJury ? Sepia : imageClass;
+  imageClass = state.disabled ? Sepia : imageClass;
   return imageClass;
 }

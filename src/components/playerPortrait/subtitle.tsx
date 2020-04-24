@@ -17,11 +17,16 @@ function threatLevelOf(a: boolean | undefined): string {
   return "💤 WEAK";
 }
 
+function emptySubtitle(): JSX.Element[] {
+  return [<br key={1} />, <br key={2} />];
+}
+
 export function generatePowerSubtitle(
   hero: PortraitProps,
   state: PortraitState,
   _: boolean | undefined
 ): any[] {
+  if (state.disabled) return emptySubtitle();
   let key = 0;
   let subtitle: any[] = [];
   key = addPopularityLine(state, hero, !!_, subtitle, key);
@@ -49,6 +54,7 @@ export function generatePopularitySubtitle(
   state: PortraitState,
   detailed: boolean = false
 ): any[] {
+  if (state.disabled) return emptySubtitle();
   // const data = getSelectedPlayer() as SelectedPlayerData | null;
   let key = 0;
   let subtitle: any[] = [];

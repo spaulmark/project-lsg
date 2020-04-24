@@ -16,7 +16,7 @@ function likeByDislikeBy(threats: number, weaks: number, n: number) {
 export interface RelationshipHouseguest extends PlayerProfile {
   id: number;
   isEvicted?: boolean;
-  isJury?: boolean;
+  disabled?: boolean;
   tribe?: Tribe;
   //
   relationships: DiscreteRelationshipMap;
@@ -129,7 +129,10 @@ export class RelationshipMapper {
     const villain = this.get(v);
     if (
       hToV === newR ||
-      ((hero.isEvicted || hero.isJury || villain.isJury || villain.isEvicted) &&
+      ((hero.isEvicted ||
+        hero.disabled ||
+        villain.disabled ||
+        villain.isEvicted) &&
         newR !== undefined)
     ) {
       return;

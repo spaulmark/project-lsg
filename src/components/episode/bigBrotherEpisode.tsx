@@ -30,7 +30,6 @@ export function evictHouseguest(gameState: MutableGameState, id: number) {
   if (gameState.currentLog) gameState.currentLog.evicted = evictee.id;
   evictee.isEvicted = true;
   if (gameState.remainingPlayers - getFinalists() <= finalJurySize()) {
-    evictee.isJury = true;
   }
   if (inJury(gameState)) {
     nonEvictedHouseguests(gameState).forEach((hg) => {

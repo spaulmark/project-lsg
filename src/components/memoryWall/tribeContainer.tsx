@@ -40,12 +40,10 @@ export class TribeContainer extends React.Component<
     this.subs.forEach((sub) => sub.unsubscribe());
   }
   private select() {
-    console.log("selecting", this.props.tribe.name);
     selectTribe(this.props.tribe);
   }
 
   public render() {
-    console.log(this.props.tribe.name, this.state);
     const Hoverable = this.getHoverable(this.props.tribe.color);
     const tribeName = this.props.tribe.name;
     return (
@@ -68,7 +66,7 @@ export class TribeContainer extends React.Component<
         ${selected ? hilite : normal}
       }
       :hover {
-        ${selected ? normal : hilite}
+        ${hilite}
       }
     `;
   };

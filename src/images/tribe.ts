@@ -3,6 +3,7 @@ export interface Tribe {
   color: string;
 }
 
-export function tribeId(t: Tribe): string {
+export function tribeId(t: Tribe | undefined): string {
+  if (t === undefined) return "";
   return `${t.name}${t.color}`;
 }

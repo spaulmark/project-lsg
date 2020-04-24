@@ -66,7 +66,7 @@ function encodeRelationships(m: RelationshipMapper): CodedRelationships {
     }
   };
   m.houseguests.forEach((hg) => {
-    if (hg.isEvicted || hg.isJury) return; // we skip evicted houseguests
+    if (hg.isEvicted || hg.disabled) return; // we skip evicted houseguests
     m.nonEvictedIDs.forEach((id) => {
       if (id === hg.id) return; // we don't declare relationships for ourselves
       ///// relationships

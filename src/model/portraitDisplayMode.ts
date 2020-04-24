@@ -1,6 +1,6 @@
 import { Rgb, interpolateColor } from "./color";
 import { PortraitState, PortraitProps } from "../components/memoryWall";
-import { extremeValues, rng } from "../utils";
+import { extremeValues } from "../utils";
 import {
   generatePopularitySubtitle,
   generatePowerSubtitle,

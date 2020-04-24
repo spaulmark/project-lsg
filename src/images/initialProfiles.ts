@@ -63,7 +63,7 @@ function setupProfiles(
       imageURL: context(item),
       id: i,
       isEvicted: evictedHouseguests.has(name.toLowerCase()),
-      isJury: jurors.has(name.toLowerCase()),
+      disabled: jurors.has(name.toLowerCase()),
       relationships: newDiscreteRelationshipMap(context.length - 1, i),
       powerRankings: newDiscreteRelationshipMap(context.length - 1, i),
       likedBy: 0,

@@ -11,7 +11,7 @@ export interface IMemoryWallProps {
 export interface ProfileHouseguest extends PlayerProfile {
   id?: number;
   isEvicted?: boolean;
-  isJury?: boolean;
+  disabled?: boolean;
   tribe?: Tribe;
   //
   relationships?: RelationshipMap | DiscreteRelationshipMap;

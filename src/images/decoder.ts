@@ -101,7 +101,7 @@ function decodeRelationships(m: RelationshipMapper, c: CodedRelationships) {
   let p: number = 0;
   const [relationships, powerRankings] = [c.relationships, c.powerRankings];
   m.houseguests.forEach((hg) => {
-    if (hg.isEvicted || hg.isJury) return;
+    if (hg.isEvicted || hg.disabled) return;
     m.nonEvictedIDs.forEach((id) => {
       if (hg.id === id) return;
       //////////////////////////////////////////////// relationships

@@ -1,18 +1,23 @@
-import { PortraitProps, HouseguestPortrait } from "../memoryWall";
+import {
+  PortraitProps,
+  HouseguestPortrait,
+  PortraitState,
+} from "../memoryWall";
 import { Subscription } from "rxjs";
 import {
   selectedPlayer$,
   displayMode$,
   getSelectedPlayer,
+  selectedTribe$,
 } from "../../subjects/subjects";
 import { SelectedPlayerData } from "./selectedPortrait";
 import { Rgb } from "../../model/color";
-import { PowerRanking } from "../../model/powerRanking";
 import { isNullOrUndefined } from "util";
 import {
   classifyRelationship,
   RelationshipTypeToPopularity,
 } from "../../utils/ai/classifyRelationship";
+import { tribeId } from "../../images/tribe";
 
 const selectedColor = new Rgb(51, 255, 249);
 
@@ -22,21 +27,24 @@ export class HouseguestPortraitController {
   constructor(view: HouseguestPortrait) {
     this.view = view;
   }
-
-  get defaultState() {
+  get defaultState(): PortraitState {
     return {
       popularity: this.view.props.popularity,
       displayMode: displayMode$.value,
       powerRanking: this.view.props.powerRanking,
+      disabled: !!this.view.props.disabled,
     };
   }
-
-  public backgroundColor(props: PortraitProps): undefined | string {
+  public backgroundColor(
+    props: PortraitProps,
+    state: PortraitState
+  ): undefined | string {
     const selectedPlayer = getSelectedPlayer();
+    if (state.disabled) return undefined;
     if (selectedPlayer !== null && selectedPlayer.id === props.id) {
       return selectedColor.toHex();
     }
-    return props.isEvicted || props.isJury
+    return props.isEvicted || state.disabled
       ? undefined
       : this.view.state.displayMode.backgroundColor(this.view.state);
   }
@@ -46,6 +54,11 @@ export class HouseguestPortraitController {
     subs.push(
       selectedPlayer$.subscribe({
         next: this.refreshData,
+      })
+    );
+    subs.push(
+      selectedTribe$.subscribe({
+        next: this.refreshTribeFilter,
       })
     );
     subs.push(
@@ -60,7 +73,24 @@ export class HouseguestPortraitController {
     this.subs.forEach((sub) => sub.unsubscribe());
   }
 
+  private refreshTribeFilter = (id: string) => {
+    if (!id) {
+      // un-disable
+      this.refreshData(getSelectedPlayer());
+    } else {
+      // disable
+      const selectedPlayer = getSelectedPlayer();
+      this.view.setState({
+        disabled: id !== tribeId(this.view.props.tribe),
+      });
+      if (selectedPlayer !== null && selectedPlayer.id === this.view.props.id) {
+        selectedPlayer$.next(null);
+      }
+    }
+  };
+
   private refreshData = (data: SelectedPlayerData | null) => {
+    if (this.view.state.disabled) return;
     if (!data) {
       this.view.setState(this.defaultState);
     } else {

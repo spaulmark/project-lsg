@@ -9,7 +9,6 @@ import {
 } from "../model/portraitDisplayMode";
 import { ColorTheme } from "../theme/theme";
 import { ProfileHouseguest } from "../components/memoryWall";
-import { Tribe } from "../images/tribe";
 
 // What is currently being displayed.
 export const mainContentStream$ = new BehaviorSubject(<MemoryWallScreen />);

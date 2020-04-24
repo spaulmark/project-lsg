@@ -1,5 +1,4 @@
 import React from "react";
-import { ThemeSwitcher } from "./themeSwitch";
 import { Box } from "../layout/box";
 import { HasText } from "../layout/text";
 import { TopbarController } from "./topBarController";
