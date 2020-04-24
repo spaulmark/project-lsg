@@ -2,12 +2,13 @@ import { ProfileHouseguest } from "../components/memoryWall";
 import { Tribe, tribeId } from "./tribe";
 import { PlayerProfile } from "../model";
 import { DiscreteRelationshipMap } from "../utils";
+import { Likemap, sizeOf } from "../utils/likeMap";
 
 type Map = "relationships" | "powerRankings";
 type LikeKey = "likedBy" | "thinksImThreat";
 type DislikeKey = "dislikedBy" | "thinksImWeak";
 
-function likeByDislikeBy(threats: number, weaks: number, n: number) {
+function calcPowerRank(threats: number, weaks: number, n: number) {
   if (n === 0) return 0;
   const twoN = 2 * n;
   return 0.5 + threats / twoN - weaks / twoN;
@@ -21,13 +22,13 @@ export interface RelationshipHouseguest extends PlayerProfile {
   //
   relationships: DiscreteRelationshipMap;
   popularity?: number;
-  likedBy: number;
-  dislikedBy: number;
+  likedBy: Likemap;
+  dislikedBy: Likemap;
   //
   powerRankings: DiscreteRelationshipMap;
   powerRanking?: number;
-  thinksImWeak: number;
-  thinksImThreat: number;
+  thinksImWeak: Likemap;
+  thinksImThreat: Likemap;
   //
   tooltip?: string;
 }
@@ -73,19 +74,21 @@ export class RelationshipMapper {
   }
   private updatePopularities(hg: ProfileHouseguest) {
     const peopleWithOpinions = this.nonEvictedHouseguests - 1;
+    const likedBy = sizeOf(hg.likedBy);
+    const dislikedBy = sizeOf(hg.dislikedBy);
+    const thinksImThreat = sizeOf(hg.thinksImThreat);
+    const thinksImWeak = sizeOf(hg.thinksImWeak);
     hg.popularity === undefined && (hg.popularity = 0);
-    hg.popularity = (hg.likedBy - hg.dislikedBy) / peopleWithOpinions;
+    hg.popularity = (likedBy - dislikedBy) / peopleWithOpinions;
     hg.powerRanking === undefined && (hg.powerRanking = 0);
-    hg.likedBy === 0 && hg.dislikedBy === 0 && (hg.popularity = undefined);
+    likedBy === 0 && dislikedBy === 0 && (hg.popularity = undefined);
     //////
-    hg.powerRanking = likeByDislikeBy(
-      hg.thinksImThreat,
-      hg.thinksImWeak,
+    hg.powerRanking = calcPowerRank(
+      thinksImThreat,
+      thinksImWeak,
       peopleWithOpinions
     );
-    hg.thinksImThreat === 0 &&
-      hg.thinksImWeak === 0 &&
-      (hg.powerRanking = undefined);
+    thinksImThreat === 0 && thinksImWeak === 0 && (hg.powerRanking = undefined);
   }
 
   public dropYourBuffs() {
@@ -116,6 +119,14 @@ export class RelationshipMapper {
     this.nonEvictedIDs.push(hero.id);
   }
 
+  private addToLikeMap(l: Likemap, h: RelationshipHouseguest) {
+    l[h.id] = { tribeId: tribeId(h.tribe), groups: new Set<number>() };
+  }
+
+  private deleteFromLikeMap(l: Likemap, h: RelationshipHouseguest) {
+    delete l[h.id];
+  }
+
   public setRelationship(
     h: string,
     v: string,
@@ -138,13 +149,12 @@ export class RelationshipMapper {
       return;
     }
     if (hToV === undefined) {
-      newR === true ? villain[likeKey]++ : villain[dislikeKey]++;
+      this.addToLikeMap(villain[newR ? likeKey : dislikeKey], hero);
     } else if (newR === undefined) {
-      hToV === true ? villain[likeKey]-- : villain[dislikeKey]--;
+      this.deleteFromLikeMap(villain[hToV ? likeKey : dislikeKey], hero);
     } else {
-      newR === true
-        ? villain[likeKey]++ && villain[dislikeKey]--
-        : villain[likeKey]-- && villain[dislikeKey]++;
+      this.addToLikeMap(villain[newR ? likeKey : dislikeKey], hero);
+      this.deleteFromLikeMap(villain[newR ? dislikeKey : likeKey], hero);
     }
     // actually set it
     hero[map][villain.id] = newR;

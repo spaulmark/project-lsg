@@ -10,6 +10,7 @@ import {
   ThreatLevel,
 } from "../../utils/ai/classifyRelationship";
 import { getSelectedPlayer } from "../../subjects/subjects";
+import { sizeOf } from "../../utils/likeMap";
 
 function threatLevelOf(a: boolean | undefined): string {
   if (a === undefined) return "-";
@@ -185,7 +186,10 @@ function friendOrEnemyTitle(
 
 function threatLevelCountTitle(hero: PortraitProps): string[] {
   const titles: string[] = [];
-  const count = { friends: hero.thinksImThreat, enemies: hero.thinksImWeak };
+  const count = {
+    friends: sizeOf(hero.thinksImThreat),
+    enemies: sizeOf(hero.thinksImWeak),
+  };
   const friendCountText =
     count.friends > 0
       ? `${count.friends} ${ThreatLevelToSymbol[ThreatLevel.Threat]}`
@@ -206,7 +210,10 @@ function threatLevelCountTitle(hero: PortraitProps): string[] {
 
 function friendEnemyCountTitle(hero: PortraitProps): string[] {
   const titles: string[] = [];
-  const count = { friends: hero.likedBy, enemies: hero.dislikedBy };
+  const count = {
+    friends: sizeOf(hero.likedBy),
+    enemies: sizeOf(hero.dislikedBy),
+  };
   const friendCountText =
     count.friends > 0
       ? `${count.friends} ${RelationshipTypeToSymbol[Relationship.Friend]}`

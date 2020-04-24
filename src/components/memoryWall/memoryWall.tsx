@@ -4,6 +4,7 @@ import { RelationshipMap, DiscreteRelationshipMap } from "../../utils";
 import { Tribe, tribeId } from "../../images/tribe";
 import _ from "lodash";
 import { TribeContainer } from "./tribeContainer";
+import { Likemap } from "../../utils/likeMap";
 export interface IMemoryWallProps {
   readonly houseguests: ProfileHouseguest[];
 }
@@ -17,13 +18,13 @@ export interface ProfileHouseguest extends PlayerProfile {
   relationships?: RelationshipMap | DiscreteRelationshipMap;
   popularity?: number;
   deltaPopularity?: number;
-  likedBy: number;
-  dislikedBy: number;
+  likedBy: Likemap;
+  dislikedBy: Likemap;
   //
   powerRankings: DiscreteRelationshipMap;
   powerRanking?: number;
-  thinksImWeak: number;
-  thinksImThreat: number;
+  thinksImWeak: Likemap;
+  thinksImThreat: Likemap;
   //
   hohWins?: number;
   povWins?: number;

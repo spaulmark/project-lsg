@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { ColorTheme } from "../../theme/theme";
 import { Tribe } from "../../images/tribe";
 import { displayMode$ } from "../../subjects/subjects";
+import { Likemap } from "../../utils/likeMap";
 
 const Subtitle = styled.small`
   font-weight: 100;
@@ -73,10 +74,11 @@ export interface PortraitProps {
   deltaPopularity?: number;
   detailed?: boolean;
   superiors?: Set<number>;
-  likedBy: number;
-  dislikedBy: number;
-  thinksImWeak: number;
-  thinksImThreat: number;
+  //
+  likedBy: Likemap;
+  dislikedBy: Likemap;
+  thinksImWeak: Likemap;
+  thinksImThreat: Likemap;
   tribe?: Tribe;
 }
 
