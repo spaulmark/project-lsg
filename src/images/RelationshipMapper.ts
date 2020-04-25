@@ -114,6 +114,7 @@ export class RelationshipMapper {
   public evict(h: string) {
     const hero = this.get(h);
     const myTribeId = tribeId(hero.tribe);
+    let flag = true;
     const toDelete = this.nonEvictedIDs.indexOf(hero.id);
     if (hero.isEvicted) return;
     hero.isEvicted = true;
@@ -123,7 +124,10 @@ export class RelationshipMapper {
       this.utr(h, this.houseguests[id].name);
       this.utr(this.houseguests[id].name, h);
       const tribe = this.houseguests[id].tribe;
-      tribe && tribeId(tribe) === myTribeId && tribe.size--;
+      if (flag && tribe && tribeId(tribe) === myTribeId) {
+        tribe.size--;
+        flag = false;
+      }
     });
     this.nonEvictedIDs.splice(toDelete, 1);
   }

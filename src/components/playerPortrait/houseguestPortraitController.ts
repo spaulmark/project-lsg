@@ -104,15 +104,16 @@ export class HouseguestPortraitController {
   // this function can later be repurposed into accepting a more generic filter, such as a group in general
   private updateLikeCounts(selectedTribe: Tribe) {
     const props = this.view.props;
+    const disabled = tribeId(selectedTribe) !== tribeId(props.tribe);
     const newState: any = {
-      disabled: tribeId(selectedTribe) !== tribeId(props.tribe),
+      disabled,
     };
     const f = hasSameTribe(tribeId(props.tribe));
     newState.likedBy = _.filter(props.likedBy, f);
     newState.dislikedBy = _.filter(props.dislikedBy, f);
     newState.thinksImThreat = _.filter(props.thinksImThreat, f);
     newState.thinksImWeak = _.filter(props.thinksImWeak, f);
-    if (!getSelectedPlayer()) {
+    if (!getSelectedPlayer() && !disabled) {
       const n = props.tribe ? props.tribe.size : 0;
       newState.popularity = calculatePopularity({ ...newState }, n);
       newState.powerRanking = calculatePowerRanking({ ...newState }, n);
