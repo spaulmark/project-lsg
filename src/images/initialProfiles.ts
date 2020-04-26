@@ -11,30 +11,7 @@ function importAll(
   const profiles: RelationshipHouseguest[] = [];
   setupProfiles(context, profiles, new Set<string>(), new Set<string>());
   const r: RelationshipMapper = new RelationshipMapper(profiles);
-  // r.tribe({ name: "Dream Team", color: "#cacf64" }, [
-  //   "Lunaris",
-  //   "Archbishop Geofri",
-  //   "Solaris",
-  //   "baran",
-  //   "Eleron",
-  //   "Hillock",
-  //   "Piety",
-  //   "Brutus",
-  //   "Dominus",
-  //   "Avarius",
-  // ]);
-  // r.tribe({ name: "Scream Team", color: "#64cacf" }, [
-  //   "Veritania",
-  //   "The Elder",
-  //   "Rhys",
-  //   "Izaro",
-  //   "Shavronne",
-  //   "malachai",
-  //   "kitava",
-  //   "Atziri",
-  //   "doedre",
-  //   "The Shaper",
-  // ]);
+
   // randomRelationships(r);
   // r.evict("kuduku");
   // console.log(encodeRelationshipMapper(r));
@@ -44,7 +21,7 @@ function importAll(
 ////////////////// safe space below here
 
 export const initialProfiles = importAll(
-  require.context("./src", false, /.png/)
+  require.context("./src", false, /.jpg/)
 );
 
 function setupProfiles(
@@ -54,7 +31,7 @@ function setupProfiles(
   jurors: Set<string>
 ) {
   context.keys().map((item: string, i: number) => {
-    const name = item.replace(".png", "").replace("./", "");
+    const name = item.replace(".jpg", "").replace("./", "");
     profiles.push({
       name,
       imageURL: context(item),

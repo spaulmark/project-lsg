@@ -5,23 +5,23 @@
   "private": true,
   "dependencies": {
     "@types/jest": "24.0.9",
-    "@types/lodash": "^4.14.149",
+    "@types/lodash": "^4.14.150",
     "@types/node": "11.10.4",
     "@types/react": "16.8.6",
     "@types/react-dom": "16.8.2",
     "@types/react-tooltip": "^3.11.0",
     "@types/rx": "^4.1.1",
-    "@types/styled-components": "^4.4.2",
+    "@types/styled-components": "^4.4.3",
     "bulma": "^0.7.5",
     "lodash": "^4.17.15",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.0",
     "pure-rand": "^1.7.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-file-drop": "^0.2.8",
     "react-scripts": "^2.1.8",
     "react-tiny-popover": "^4.0.0",
-    "rxjs": "^6.5.4",
+    "rxjs": "^6.5.5",
     "styled-components": "^4.4.1",
     "typescript": "3.3.3333"
   },
@@ -43,7 +43,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@types/webpack-env": "^1.15.1",
+    "@types/webpack-env": "^1.15.2",
     "gh-pages": "^2.2.0"
   }
 }
