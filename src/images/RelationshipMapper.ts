@@ -92,8 +92,10 @@ export class RelationshipMapper {
     });
   }
 
-  private get(hero: string) {
-    return this.cache[hero.toUpperCase()];
+  private get(hero: string): RelationshipHouseguest {
+    const result = this.cache[hero.toUpperCase()];
+    if (result === undefined) throw new Error(`bad name: ${hero}`);
+    return result;
   }
   private getRelationship(h: string, v: string, map: Map) {
     return this.get(h)[map][this.get(v).id];

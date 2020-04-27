@@ -47,10 +47,9 @@ const Jury = styled(MemoryWallPortrait)`
 
 const Normal = styled.img`
   min-width: 100px;
-  width: 100%;
+  max-width: 110px;
   width: -moz-available; /* For Mozzila */
   width: -webkit-fill-available; /* For Chrome */
-  width: stretch; /* Unprefixed */
 `;
 
 const Grayscale = styled(Normal)`
