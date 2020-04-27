@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/project-lsg/static/media/Mipha.4179b588.jpg"
   },
   {
-    "revision": "e668cfc46d9e93d06e47",
+    "revision": "0cab9f3022fd888ec881",
     "url": "/project-lsg/static/css/main.ad40f0b4.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = [
     "url": "/project-lsg/static/js/runtime~main.32522c35.js"
   },
   {
-    "revision": "c45ad6cf2241eba294be",
-    "url": "/project-lsg/static/js/2.4cd3ec9c.chunk.js"
+    "revision": "04290e8eacdd4e6402b6",
+    "url": "/project-lsg/static/js/2.47a4ea21.chunk.js"
   },
   {
     "revision": "6b817900a2662efc5e52eeb7ff57e306",
@@ -52,8 +52,8 @@ self.__precacheManifest = [
     "url": "/project-lsg/static/media/Master Kohga.24908791.jpg"
   },
   {
-    "revision": "e668cfc46d9e93d06e47",
-    "url": "/project-lsg/static/js/main.af5293ea.chunk.js"
+    "revision": "0cab9f3022fd888ec881",
+    "url": "/project-lsg/static/js/main.461aede1.chunk.js"
   },
   {
     "revision": "7d4ced3f3941180f25e37ceba951f63b",
@@ -100,7 +100,7 @@ self.__precacheManifest = [
     "url": "/project-lsg/static/media/Urbosa.84fbf55c.jpg"
   },
   {
-    "revision": "e8c73f79bc291a8ccc6b424d2370cf3c",
+    "revision": "97f72973feb2a837e09b592a730703e8",
     "url": "/project-lsg/index.html"
   }
 ];
