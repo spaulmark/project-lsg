@@ -13,7 +13,6 @@ function importAll(
   const r: RelationshipMapper = new RelationshipMapper(profiles);
 
   // randomRelationships(r);
-  // r.evict("kuduku");
   // console.log(encodeRelationshipMapper(r));
   return r;
 }
