@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "4179b5889c40f95f17f173cef69c7cf3",
-    "url": "/project-lsg/static/media/Mipha.4179b588.jpg"
+    "revision": "bd1d901c9b356d823472",
+    "url": "/project-lsg/static/css/main.ad40f0b4.chunk.css"
   },
   {
-    "revision": "7ed28a0d497d2bcebcad",
-    "url": "/project-lsg/static/css/main.ad40f0b4.chunk.css"
+    "revision": "bd1d901c9b356d823472",
+    "url": "/project-lsg/static/js/main.4b3b9a95.chunk.js"
   },
   {
     "revision": "3c5b3ae24ad353434636",
@@ -24,56 +24,56 @@ self.__precacheManifest = [
     "url": "/project-lsg/static/media/Chio.8c7ec4dc.jpg"
   },
   {
-    "revision": "85e2e1280647fe9f7fe8e524021124b5",
-    "url": "/project-lsg/static/media/Epona.85e2e128.jpg"
+    "revision": "88cef75265c646572b989a0bf2242d06",
+    "url": "/project-lsg/static/media/Epona.88cef752.jpg"
   },
   {
-    "revision": "7fc76cff203f8757235c8e3b0199a35b",
-    "url": "/project-lsg/static/media/Hunnie.7fc76cff.jpg"
+    "revision": "ace36d9025a90afdf4317c5e380b301d",
+    "url": "/project-lsg/static/media/Hunnie.ace36d90.jpg"
   },
   {
     "revision": "67d640a75429ac3f52baa3a15eb71f24",
     "url": "/project-lsg/static/media/Karson.67d640a7.jpg"
   },
   {
-    "revision": "ecf515dab07ba1bd078caef796466449",
-    "url": "/project-lsg/static/media/Kass.ecf515da.jpg"
+    "revision": "02c5f88289be4ea9038614d47c1cedbe",
+    "url": "/project-lsg/static/media/Kass.02c5f882.jpg"
   },
   {
-    "revision": "ca089b9995e91a5940f510a6c163bc0a",
-    "url": "/project-lsg/static/media/Link.ca089b99.jpg"
+    "revision": "01a85fa6108c695ab12006627cb4a377",
+    "url": "/project-lsg/static/media/Link.01a85fa6.jpg"
   },
   {
     "revision": "17e0b3bfbbef50efcdae0118ed3c81b5",
     "url": "/project-lsg/static/media/Magda.17e0b3bf.jpg"
   },
   {
-    "revision": "fe0b3b22e20d6535ee07ff244906c016",
-    "url": "/project-lsg/static/media/Master Kohga.fe0b3b22.jpg"
+    "revision": "0074005bedc3a561c0352c9bdd6848b4",
+    "url": "/project-lsg/static/media/Master Kohga.0074005b.jpg"
   },
   {
-    "revision": "7ed28a0d497d2bcebcad",
-    "url": "/project-lsg/static/js/main.b8c3ebcd.chunk.js"
+    "revision": "c760649d952fe2f6daa708d1c1ebcd91",
+    "url": "/project-lsg/static/media/Mipha.c760649d.jpg"
   },
   {
     "revision": "7d4ced3f3941180f25e37ceba951f63b",
     "url": "/project-lsg/static/media/Oaki.7d4ced3f.jpg"
   },
   {
-    "revision": "1fbc751e8b15a5e2a6ab5459e0d42137",
-    "url": "/project-lsg/static/media/Patrica.1fbc751e.jpg"
+    "revision": "2d7078ed79f17b1c6a0f74457f19fe75",
+    "url": "/project-lsg/static/media/Patrica.2d7078ed.jpg"
   },
   {
     "revision": "d2d8eb3d1155f357a2f6c787529d695d",
     "url": "/project-lsg/static/media/Pelison.d2d8eb3d.jpg"
   },
   {
-    "revision": "121e32b8e76400d4dcff317576ae92ea",
-    "url": "/project-lsg/static/media/Prince Sidon.121e32b8.jpg"
+    "revision": "25297a391c00cbc6b1da51cb8f1b6ccf",
+    "url": "/project-lsg/static/media/Prince Sidon.25297a39.jpg"
   },
   {
-    "revision": "1eedf44c2a25048566ebf554934a886e",
-    "url": "/project-lsg/static/media/Revali.1eedf44c.jpg"
+    "revision": "cfc5fcf328804f70568fcb840ee2a5f4",
+    "url": "/project-lsg/static/media/Revali.cfc5fcf3.jpg"
   },
   {
     "revision": "7c0b36f3066ee818abfe7405815ab0ec",
@@ -88,19 +88,19 @@ self.__precacheManifest = [
     "url": "/project-lsg/static/media/Roscoe.9b467e1a.jpg"
   },
   {
-    "revision": "61ca14e1945d300dc089a00f631dbe0b",
-    "url": "/project-lsg/static/media/Royal White Horse.61ca14e1.jpg"
+    "revision": "b555d8147dc934e589567bee30d16597",
+    "url": "/project-lsg/static/media/Royal White Horse.b555d814.jpg"
   },
   {
     "revision": "88ef76735b04cc03ad0e606ff54a8b1e",
     "url": "/project-lsg/static/media/Teebo.88ef7673.jpg"
   },
   {
-    "revision": "d51820b09581b74e8cf73af90e952581",
-    "url": "/project-lsg/static/media/Urbosa.d51820b0.jpg"
+    "revision": "122f3dc6f97f1f56887b5014f135a278",
+    "url": "/project-lsg/static/media/Urbosa.122f3dc6.jpg"
   },
   {
-    "revision": "d5bf0a3aa44f471bbf9b314b80cf076d",
+    "revision": "f903ae650fc46f20b3268049b36df126",
     "url": "/project-lsg/index.html"
   }
 ];
