@@ -1,5 +1,9 @@
 import { RelationshipMap, DiscreteRelationshipMap } from "../../utils";
-import { getSelectedPlayer, selectedPlayer$ } from "../../subjects/subjects";
+import {
+  selectedPlayer$,
+  emptySet,
+  getOnlySelectedPlayerOrNull,
+} from "../../subjects/selectedPlayer$";
 
 export interface SelectedPlayerData {
   id: number;
@@ -13,10 +17,11 @@ export interface SelectedPlayerData {
 export function selectPlayer(player: SelectedPlayerData | null) {
   if (
     !player ||
-    (getSelectedPlayer() && getSelectedPlayer()!.id === player.id)
+    (getOnlySelectedPlayerOrNull() &&
+      getOnlySelectedPlayerOrNull()!.id === player.id)
   ) {
-    selectedPlayer$.next(null);
+    selectedPlayer$.next(emptySet);
   } else {
-    selectedPlayer$.next(player);
+    selectedPlayer$.next(new Set<SelectedPlayerData>().add(player));
   }
 }

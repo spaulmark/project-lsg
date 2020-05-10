@@ -5,11 +5,16 @@ import {
 } from "../memoryWall";
 import { Subscription } from "rxjs";
 import {
-  selectedPlayer$,
   displayMode$,
-  getSelectedPlayer,
+  getSelectedPlayers,
   selectedTribe$,
 } from "../../subjects/subjects";
+import {
+  selectedPlayer$,
+  PlayerSet,
+  getOnlySelectedPlayerOrNull,
+  emptySet,
+} from "../../subjects/selectedPlayer$";
 import { SelectedPlayerData } from "./selectedPortrait";
 import { Rgb } from "../../model/color";
 import { isNullOrUndefined } from "util";
@@ -48,9 +53,9 @@ export class HouseguestPortraitController {
     props: PortraitProps,
     state: PortraitState
   ): undefined | string {
-    const selectedPlayer = getSelectedPlayer();
+    const data = getOnlySelectedPlayerOrNull();
     if (state.disabled) return undefined;
-    if (selectedPlayer !== null && selectedPlayer.id === props.id) {
+    if (data !== null && data.id === props.id) {
       return selectedColor.toHex();
     }
     return props.isEvicted || state.disabled
@@ -85,18 +90,18 @@ export class HouseguestPortraitController {
   private refreshTribeFilter = (selectedTribe: Tribe) => {
     // un-disable all
     if (!selectedTribe.name) {
-      this.refreshData(getSelectedPlayer());
+      this.refreshData(getSelectedPlayers());
       return;
     }
     // o/w, disable if nessecary
-    const selectedPlayer = getSelectedPlayer();
+    const selectedPlayer = getOnlySelectedPlayerOrNull();
     this.updateLikeCounts(selectedTribe);
     if (
       tribeId(selectedTribe) !== tribeId(this.view.props.tribe) &&
       selectedPlayer !== null &&
       selectedPlayer.id === this.view.props.id
     ) {
-      selectedPlayer$.next(null);
+      selectedPlayer$.next(emptySet);
     }
   };
 
@@ -113,7 +118,7 @@ export class HouseguestPortraitController {
     newState.dislikedBy = _.filter(props.dislikedBy, f);
     newState.thinksImThreat = _.filter(props.thinksImThreat, f);
     newState.thinksImWeak = _.filter(props.thinksImWeak, f);
-    if (!getSelectedPlayer() && !disabled) {
+    if (!getSelectedPlayers() && !disabled) {
       const n = props.tribe ? props.tribe.size : 0;
       newState.popularity = calculatePopularity({ ...newState }, n);
       newState.powerRanking = calculatePowerRanking({ ...newState }, n);
@@ -130,11 +135,14 @@ export class HouseguestPortraitController {
     }
   }
 
-  private refreshData = (data: SelectedPlayerData | null) => {
+  private refreshData = (set: PlayerSet) => {
     if (this.view.state.disabled) return;
-    if (!data) {
+    if (set.size === 0) {
+      // no one is selected
       this.goToDefaultState();
-    } else {
+    } else if (set.size === 1) {
+      // only one person is selected
+      const data = getOnlySelectedPlayerOrNull()!;
       if (data.id !== this.view.props.id) {
         this.view.setState({
           popularity: getPopularity(
@@ -147,12 +155,13 @@ export class HouseguestPortraitController {
           ),
         });
       } else {
-        // note; popularity = 2 means the player is currently selected.
         this.view.setState({
-          popularity: 2,
+          popularity: 2, // note; popularity = 2 means the player is currently selected.
           powerRanking: 2,
         });
       }
+    } else {
+      // TODO: multiple people are selected
     }
   };
 }

@@ -1,7 +1,6 @@
 import { BehaviorSubject, Subject } from "rxjs";
 import { MemoryWallScreen } from "../components/memoryWallScreen/memoryWallScreen";
 import { Episode, PlayerProfile } from "../model";
-import { SelectedPlayerData } from "../components/playerPortrait/selectedPortrait";
 import React from "react";
 import {
   PortraitDisplayMode,
@@ -10,6 +9,7 @@ import {
 import { ColorTheme } from "../theme/theme";
 import { ProfileHouseguest } from "../components/memoryWall";
 import { Tribe, nullTribe } from "../images/tribe";
+import { selectedPlayer$, PlayerSet } from "./selectedPlayer$";
 
 // What is currently being displayed.
 export const mainContentStream$ = new BehaviorSubject(<MemoryWallScreen />);
@@ -31,11 +31,7 @@ export const players$ = new BehaviorSubject<ProfileHouseguest[]>([]);
 // this variable is unused but if you delete it it breaks some race condition or something and the code compiles, but doesn't work anymore.
 export const cast$ = new BehaviorSubject<PlayerProfile[]>([]);
 
-// The player that the user has clicked on.
-export const selectedPlayer$ = new BehaviorSubject<SelectedPlayerData | null>(
-  null
-);
-export function getSelectedPlayer() {
+export function getSelectedPlayers(): PlayerSet {
   return selectedPlayer$.value;
 }
 

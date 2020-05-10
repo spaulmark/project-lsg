@@ -9,8 +9,9 @@ import {
   ThreatLevelToSymbol,
   ThreatLevel,
 } from "../../utils/ai/classifyRelationship";
-import { getSelectedPlayer } from "../../subjects/subjects";
+import { getSelectedPlayers } from "../../subjects/subjects";
 import { sizeOf } from "../../utils/likeMap";
+import { getOnlySelectedPlayerOrNull } from "../../subjects/selectedPlayer$";
 
 function threatLevelOf(a: boolean | undefined): string {
   if (a === undefined) return "-";
@@ -33,7 +34,7 @@ export function generatePowerSubtitle(
   key = addPopularityLine(state, hero, !!_, subtitle, key);
   key = addCompsLine(hero, subtitle, key);
   if (!hero.isEvicted) {
-    const data = getSelectedPlayer() as SelectedPlayerData | null;
+    const data = getOnlySelectedPlayerOrNull();
     if (data && data.id !== hero.id) {
       subtitle.push(
         <div key={key++}>{`${threatLevelOf(hero.powerRankings[data.id])}`}</div>
@@ -85,7 +86,7 @@ function addCountTitle(
   countTitle: (a: PortraitState) => string[]
 ) {
   if (!hero.isEvicted) {
-    const data = getSelectedPlayer() as SelectedPlayerData | null;
+    const data = getOnlySelectedPlayerOrNull();
     if (data && data.id !== hero.id) {
       const titles = discreteTitle(hero, data);
       subtitle = subtitle.concat(

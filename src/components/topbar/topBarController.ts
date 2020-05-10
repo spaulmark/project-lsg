@@ -1,11 +1,8 @@
 import { Topbar } from "./topBar";
 import { decodeToRelationshipMapper } from "../../images/decoder";
 import { RelationshipMapper } from "../../images/RelationshipMapper";
-import {
-  players$,
-  selectedPlayer$,
-  selectedTribe$,
-} from "../../subjects/subjects";
+import { players$, selectedTribe$ } from "../../subjects/subjects";
+import { selectedPlayer$, emptySet } from "../../subjects/selectedPlayer$";
 import { nullTribe } from "../../images/tribe";
 
 export class TopbarController {
@@ -24,7 +21,7 @@ export class TopbarController {
 
     this.view.setState({ rMapper: newMap });
     players$.next(newMap.houseguests);
-    selectedPlayer$.next(null);
+    selectedPlayer$.next(emptySet);
     selectedTribe$.next(nullTribe);
   };
 }

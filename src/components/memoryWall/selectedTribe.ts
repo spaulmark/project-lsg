@@ -4,5 +4,7 @@ import { selectedTribe$ } from "../../subjects/subjects";
 export function selectTribe(t: Tribe) {
   if (tribeId(t) === tribeId(selectedTribe$.value)) {
     selectedTribe$.next(nullTribe);
-  } else selectedTribe$.next(t);
+  } else {
+    selectedTribe$.next(t);
+  }
 }

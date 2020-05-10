@@ -9,9 +9,9 @@ import {
   switchEpisode$,
   newEpisode,
   switchSceneRelative,
-  getSelectedPlayer,
-  selectedPlayer$,
+  getSelectedPlayers,
 } from "../../subjects/subjects";
+import { selectedPlayer$ } from "../../subjects/selectedPlayer$";
 
 interface IndexedScene {
   scene: Scene;
@@ -52,14 +52,14 @@ export class SidebarController {
     mainContentStream$.next(this.scenes[id].scene.render);
     this.selectedEpisode = this.scenes[id].index;
     await this.view.setState({ selectedScene: id });
-    if (getSelectedPlayer() !== null) {
-      selectedPlayer$.next(
-        getById(
-          this.scenes[this.view.state.selectedScene].scene.gameState,
-          getSelectedPlayer()!.id
-        )
-      );
-    }
+    // if (getSelectedPlayers() !== null) {
+    //   selectedPlayer$.next(
+    //     getById(
+    //       this.scenes[this.view.state.selectedScene].scene.gameState,
+    //       getSelectedPlayers()!.id
+    //     )
+    //   );
+    // }
   }
 
   private switchSceneRelative = (delta: number) => {
