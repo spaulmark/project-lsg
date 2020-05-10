@@ -186,7 +186,7 @@ export class RelationshipMapper {
     const tribe = {
       size: members.filter((hg) => !this.get(hg).isEvicted).length, // only count non-evicted members
       name: skeleton.name,
-      color: skeleton.color,
+      color: skeleton.color.toLowerCase(),
     };
     if (tribe.name.includes("#") || tribe.name.includes("=")) {
       throw new Error("Tribe names cannot contain # or =");
