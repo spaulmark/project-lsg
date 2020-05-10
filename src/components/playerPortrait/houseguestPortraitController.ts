@@ -169,6 +169,7 @@ export class HouseguestPortraitController {
         // multiple people are selected and I am one of them
         this.selectSelf();
       } else {
+        // multiple people are selected and I am not one of them
         this.updateLikeCounts({
           size: map.size,
           isPlayerDisabled: (_) => false,
