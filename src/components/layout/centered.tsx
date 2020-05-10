@@ -7,6 +7,7 @@ interface TextProps {
   children?: any;
   style?: any;
   noTheme?: boolean;
+  className?: string;
 }
 
 const NoMargin = styled.div`
@@ -20,7 +21,11 @@ const Center = styled.p`
 
 export function Centered(props: TextProps): JSX.Element {
   if (props.noMargin) return <NoMargin>{props.children}</NoMargin>;
-  return <Center style={props.style}>{props.children} </Center>;
+  return (
+    <Center style={props.style} className={props.className || ""}>
+      {props.children}
+    </Center>
+  );
 }
 
 export function CenteredBold(props: TextProps): JSX.Element {
