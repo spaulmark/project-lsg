@@ -35,7 +35,6 @@ export class MemoryWallScreen extends React.Component<{}, PregameScreenState> {
     }
     return (
       <HasText>
-        <ViewsBar />
         <MemoryWall houseguests={this.state.cast} />
       </HasText>
     );

@@ -55,7 +55,14 @@ export class TribeContainer extends React.Component<
             <Hoverable onClick={this.select.bind(this)}>{tribeName}</Hoverable>
           </p>
         )}
-        <Portraits houseguests={this.props.hgs} centered={true}></Portraits>
+        <div
+          style={{
+            margin: "auto",
+            maxWidth: this.props.hgs.length > 7 ? 700 : -1,
+          }}
+        >
+          <Portraits houseguests={this.props.hgs} centered={true}></Portraits>
+        </div>
       </DividerBox>
     );
   }

@@ -8,7 +8,6 @@ import { PortraitDisplayMode } from "../../model/portraitDisplayMode";
 import styled from "styled-components";
 import { ColorTheme } from "../../theme/theme";
 import { Tribe } from "../../images/tribe";
-import { displayMode$ } from "../../subjects/subjects";
 import { Likemap } from "../../utils/likeMap";
 
 const Subtitle = styled.small`
@@ -25,6 +24,7 @@ const MemoryWallPortrait = styled.div`
   text-align: center;
   font-weight: 600;
   max-width: 7rem;
+  min-width: 7rem;
   word-wrap: break-word;
   -webkit-transition-property: none;
   -moz-transition-property: none;
@@ -48,6 +48,7 @@ const Jury = styled(MemoryWallPortrait)`
 const Normal = styled.img`
   min-width: 100px;
   max-width: 110px;
+  height: 110px
   width: -moz-available; /* For Mozzila */
   width: -webkit-fill-available; /* For Chrome */
 `;
@@ -158,7 +159,7 @@ export class HouseguestPortrait extends React.Component<
           backgroundColor: this.controller.backgroundColor(props, this.state),
         }}
       >
-        <Img src={props.imageURL} style={{ height: 100 }} />
+        <Img src={props.imageURL} />
         <br />
         {props.name}
         <br />
