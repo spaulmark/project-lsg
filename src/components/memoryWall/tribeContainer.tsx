@@ -58,7 +58,7 @@ export class TribeContainer extends React.Component<
         <div
           style={{
             margin: "auto",
-            maxWidth: this.props.hgs.length > 7 ? 700 : -1,
+            maxWidth: this.props.hgs.length > 7 ? 800 : -1,
           }}
         >
           <Portraits houseguests={this.props.hgs} centered={true}></Portraits>
