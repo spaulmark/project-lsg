@@ -3,6 +3,8 @@ import {
   selectedPlayer$,
   emptySet,
   getOnlySelectedPlayerOrNull,
+  multiSelection,
+  getSelectedPlayers,
 } from "../../subjects/selectedPlayer$";
 
 export interface SelectedPlayerData {
@@ -14,14 +16,33 @@ export interface SelectedPlayerData {
   superiors?: Set<number>;
 }
 
-export function selectPlayer(player: SelectedPlayerData | null) {
-  if (
-    !player ||
-    (getOnlySelectedPlayerOrNull() &&
-      getOnlySelectedPlayerOrNull()!.id === player.id)
-  ) {
-    selectedPlayer$.next(emptySet);
+function selectWithMultiSelection(player: SelectedPlayerData) {
+  const map = getSelectedPlayers();
+  if (map.get(player.id)) {
+    map.delete(player.id);
+    selectedPlayer$.next(map);
   } else {
-    selectedPlayer$.next(new Set<SelectedPlayerData>().add(player));
+    selectedPlayer$.next(map.set(player.id, player));
   }
+}
+
+function selectWithoutMultiSelection(player: SelectedPlayerData) {
+  const data = getOnlySelectedPlayerOrNull();
+  if (data && data.id === player.id) {
+    selectedPlayer$.next(emptySet());
+  } else {
+    selectedPlayer$.next(
+      new Map<number, SelectedPlayerData>().set(player.id, player)
+    );
+  }
+}
+
+export function selectPlayer(player: SelectedPlayerData | null) {
+  if (!player) {
+    selectedPlayer$.next(emptySet());
+    return;
+  }
+  multiSelection()
+    ? selectWithMultiSelection(player)
+    : selectWithoutMultiSelection(player);
 }

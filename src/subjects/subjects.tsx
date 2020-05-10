@@ -9,7 +9,6 @@ import {
 import { ColorTheme } from "../theme/theme";
 import { ProfileHouseguest } from "../components/memoryWall";
 import { Tribe, nullTribe } from "../images/tribe";
-import { selectedPlayer$, PlayerSet } from "./selectedPlayer$";
 
 // What is currently being displayed.
 export const mainContentStream$ = new BehaviorSubject(<MemoryWallScreen />);
@@ -30,10 +29,6 @@ export const players$ = new BehaviorSubject<ProfileHouseguest[]>([]);
 
 // this variable is unused but if you delete it it breaks some race condition or something and the code compiles, but doesn't work anymore.
 export const cast$ = new BehaviorSubject<PlayerProfile[]>([]);
-
-export function getSelectedPlayers(): PlayerSet {
-  return selectedPlayer$.value;
-}
 
 // The display mode selected by the viewsbar.
 export const displayMode$ = new BehaviorSubject<PortraitDisplayMode>(

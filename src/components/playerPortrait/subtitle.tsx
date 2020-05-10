@@ -9,7 +9,6 @@ import {
   ThreatLevelToSymbol,
   ThreatLevel,
 } from "../../utils/ai/classifyRelationship";
-import { getSelectedPlayers } from "../../subjects/subjects";
 import { sizeOf } from "../../utils/likeMap";
 import { getOnlySelectedPlayerOrNull } from "../../subjects/selectedPlayer$";
 

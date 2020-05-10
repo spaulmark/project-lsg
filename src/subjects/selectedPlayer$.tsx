@@ -1,21 +1,36 @@
 import { BehaviorSubject } from "rxjs";
 import { SelectedPlayerData } from "../components/playerPortrait/selectedPortrait";
-import { getSelectedPlayers } from "./subjects";
 // The player that the user has clicked on.
 
-export type PlayerSet = Set<SelectedPlayerData>;
+export type PlayerSet = Map<number, SelectedPlayerData>;
 
-export const emptySet = new Set<SelectedPlayerData>();
+export function emptySet() {
+  return new Map<number, SelectedPlayerData>();
+}
 
-export const selectedPlayer$ = new BehaviorSubject<PlayerSet>(emptySet);
+export const selectedPlayer$ = new BehaviorSubject<PlayerSet>(emptySet());
 
 export function getOnlySelectedPlayerOrNull(
-  x?: PlayerSet | undefined
+  x?: PlayerSet
 ): SelectedPlayerData | null {
   const s = x || getSelectedPlayers();
   if (s.size !== 1) return null;
   for (let entry of s.entries()) {
-    return entry[0];
+    return entry[1];
   }
   return null; // unreachable code
+}
+
+export const enableMultiSelection$ = new BehaviorSubject<boolean>(false);
+
+export function toggleMultiSelection() {
+  enableMultiSelection$.next(!enableMultiSelection$.value);
+}
+
+export function multiSelection(): boolean {
+  return enableMultiSelection$.value;
+}
+
+export function getSelectedPlayers(): PlayerSet {
+  return selectedPlayer$.value;
 }

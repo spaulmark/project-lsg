@@ -21,7 +21,7 @@ export class TopbarController {
 
     this.view.setState({ rMapper: newMap });
     players$.next(newMap.houseguests);
-    selectedPlayer$.next(emptySet);
+    selectedPlayer$.next(emptySet());
     selectedTribe$.next(nullTribe);
   };
 }

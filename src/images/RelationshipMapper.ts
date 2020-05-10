@@ -142,7 +142,7 @@ export class RelationshipMapper {
   }
 
   private addToLikeMap(l: Likemap, h: RelationshipHouseguest) {
-    l[h.id] = { tribeId: tribeId(h.tribe), groups: new Set<number>() };
+    l[h.id] = { tribeId: tribeId(h.tribe), id: h.id };
   }
 
   private deleteFromLikeMap(l: Likemap, h: RelationshipHouseguest) {

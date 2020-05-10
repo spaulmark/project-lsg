@@ -1,8 +1,10 @@
+export interface Like {
+  tribeId: string;
+  id: number;
+}
+
 export interface Likemap {
-  [id: number]: {
-    tribeId: string;
-    groups: Set<number>;
-  };
+  [id: number]: Like;
 }
 
 export function sizeOf(l: Likemap) {
