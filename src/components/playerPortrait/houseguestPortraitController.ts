@@ -155,42 +155,32 @@ export class HouseguestPortraitController {
             props.relationships![data.id],
             data.relationships[props.id!]
           ),
-          powerRanking: getPowerRanking(
-            props.powerRankings![data.id],
-            data.powerRankings[props.id!]
-          ),
         });
       } else {
         this.selectSelf();
       }
     } else {
-      const map = getSelectedPlayers();
-      if (props.id && map.get(props.id)) {
+      const selectedPlayers = getSelectedPlayers();
+      if (props.id && selectedPlayers.get(props.id)) {
         // multiple people are selected and I am one of them
         this.selectSelf();
+        this.updateLikeCounts({
+          size: 0, // size doesn't matter in this case
+          isPlayerDisabled: (_) => false,
+          isLikeInGroup: (l) => !selectedPlayers.has(l.id),
+        });
       } else {
         // multiple people are selected and I am not one of them
         this.updateLikeCounts({
-          size: map.size,
+          size: selectedPlayers.size,
           isPlayerDisabled: (_) => false,
-          isLikeInGroup: (l) => map.has(l.id),
+          isLikeInGroup: (l) => selectedPlayers.has(l.id),
         });
       }
     }
   };
 }
 type Rship = number | boolean | undefined;
-
-function getPowerRanking(hero: Rship, villain: Rship): number | undefined {
-  if (typeof hero === "number") {
-    return hero;
-  } else if (typeof villain === "number") {
-    return villain;
-  }
-  if (hero === true) return 1;
-  if (hero === false) return 0;
-  return undefined;
-}
 
 function getPopularity(hero: Rship, villain: Rship): number | undefined {
   if (isNullOrUndefined(hero) && isNullOrUndefined(villain)) return undefined;

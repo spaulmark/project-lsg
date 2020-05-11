@@ -1,53 +1,16 @@
 import React from "react";
-import { roundTwoDigits } from "../../utils";
 import { ProfileHouseguest, PortraitProps, PortraitState } from "../memoryWall";
 import { SelectedPlayerData } from "./selectedPortrait";
 import {
   RelationshipTypeToSymbol,
   RelationshipType as Relationship,
   classifyRelationship,
-  ThreatLevelToSymbol,
-  ThreatLevel,
 } from "../../utils/ai/classifyRelationship";
 import { sizeOf } from "../../utils/likeMap";
 import { getOnlySelectedPlayerOrNull } from "../../subjects/selectedPlayer$";
 
-function threatLevelOf(a: boolean | undefined): string {
-  if (a === undefined) return "-";
-  if (a) return "💢 THREAT";
-  return "💤 WEAK";
-}
-
 function emptySubtitle(): JSX.Element[] {
   return [<br key={1} />, <br key={2} />];
-}
-
-export function generatePowerSubtitle(
-  hero: PortraitProps,
-  state: PortraitState,
-  _: boolean | undefined
-): any[] {
-  if (state.disabled) return emptySubtitle();
-  let key = 0;
-  let subtitle: any[] = [];
-  key = addPopularityLine(state, hero, !!_, subtitle, key);
-  key = addCompsLine(hero, subtitle, key);
-  if (!hero.isEvicted) {
-    const data = getOnlySelectedPlayerOrNull();
-    if (data && data.id !== hero.id) {
-      subtitle.push(
-        <div key={key++}>{`${threatLevelOf(hero.powerRankings[data.id])}`}</div>
-      );
-    } else if (data && data.id === hero.id) {
-      subtitle.push(<div key={key++}>I'M SEEN AS</div>);
-      subtitle.push(<div key={key++}>{threatLevelCountTitle(state)}</div>);
-    } else {
-      subtitle.push(<div key={key++}>{threatLevelCountTitle(state)}</div>);
-    }
-  } else {
-    subtitle.push(<br key={key++} style={{ lineHeight: 1 }} />);
-  }
-  return subtitle;
 }
 
 export function generatePopularitySubtitle(
@@ -56,11 +19,9 @@ export function generatePopularitySubtitle(
   detailed: boolean = false
 ): any[] {
   if (state.disabled) return emptySubtitle();
-  // const data = getSelectedPlayer() as SelectedPlayerData | null;
   let key = 0;
   let subtitle: any[] = [];
   // popularity
-  // key = addPopularityLine(state, hero, detailed, subtitle, key);
   // competition wins
   key = addCompsLine(hero, subtitle, key);
   // friendship count / relationship classification titles
@@ -72,7 +33,6 @@ export function generatePopularitySubtitle(
     friendOrEnemyTitle,
     friendEnemyCountTitle
   ));
-  // if (!data) subtitle.push(<br key={key++} style={{ lineHeight: 1 }} />);
   return subtitle;
 }
 
@@ -85,45 +45,20 @@ function addCountTitle(
   countTitle: (a: PortraitState) => string[]
 ) {
   if (!hero.isEvicted) {
-    const data = getOnlySelectedPlayerOrNull();
+    const data = getOnlySelectedPlayerOrNull(); // it is correct that only one player selected causes discrete titles
+    let titles;
     if (data && data.id !== hero.id) {
-      const titles = discreteTitle(hero, data);
-      subtitle = subtitle.concat(
-        titles.map((txt) => <div key={key++}>{txt}</div>)
-      );
+      titles = discreteTitle(hero, data);
     } else {
-      const titles = countTitle(state);
-      subtitle = subtitle.concat(
-        titles.map((txt) => <div key={key++}>{txt}</div>)
-      );
+      titles = countTitle(state);
     }
+    subtitle = subtitle.concat(
+      titles.map((txt) => <div key={key++}>{txt}</div>)
+    );
   } else {
     subtitle.push(<br key={key++} style={{ lineHeight: 1 }} />);
   }
   return { subtitle, key };
-}
-
-function addPopularityLine(
-  state: { popularity?: number },
-  hero: PortraitProps,
-  detailed: boolean,
-  subtitle: any[],
-  key: number
-) {
-  let popularity = state.popularity;
-  if (popularity && (popularity > 1 || popularity < -1)) {
-    popularity = hero.popularity;
-  }
-  if (popularity && !hero.isEvicted) {
-    let popularitySubtitle = `${roundTwoDigits(popularity)}%`;
-    const deltaPop = getDeltaPopularity(hero, popularity);
-    if (detailed && deltaPop !== 0) {
-      const arrow = deltaPop > 0 ? " | ↑" : " | ↓";
-      popularitySubtitle += `${arrow} ${deltaPop}%`;
-    }
-    subtitle.push(<div key={key++}>{""}</div>); // hardcoded to do nothing for the discrete case.
-  }
-  return key;
 }
 
 function addCompsLine(hero: PortraitProps, subtitle: any[], key: number) {
@@ -133,20 +68,6 @@ function addCompsLine(hero: PortraitProps, subtitle: any[], key: number) {
     subtitle.push(<br key={key++} style={{ lineHeight: 1 }} />);
   }
   return key;
-}
-
-function getDeltaPopularity(
-  houseguest: PortraitProps,
-  statePopularity: number
-) {
-  if (
-    roundTwoDigits(houseguest.popularity) !== roundTwoDigits(statePopularity)
-  ) {
-    return 0;
-  }
-  return houseguest.deltaPopularity
-    ? roundTwoDigits(houseguest.deltaPopularity)
-    : 0;
 }
 
 function compWins(houseguest: ProfileHouseguest): string {
@@ -182,30 +103,6 @@ function friendOrEnemyTitle(
         villainRelationship
       )
     ]
-  );
-  return titles;
-}
-
-function threatLevelCountTitle(hero: PortraitState): string[] {
-  const titles: string[] = [];
-  const count = {
-    friends: sizeOf(hero.thinksImThreat),
-    enemies: sizeOf(hero.thinksImWeak),
-  };
-  const friendCountText =
-    count.friends > 0
-      ? `${count.friends} ${ThreatLevelToSymbol[ThreatLevel.Threat]}`
-      : "";
-
-  const enemyCountText =
-    count.enemies > 0
-      ? `${count.enemies} ${ThreatLevelToSymbol[ThreatLevel.Weak]}`
-      : "";
-
-  titles.push(
-    `${friendCountText}${
-      friendCountText && enemyCountText && " | "
-    }${enemyCountText}`
   );
   return titles;
 }
