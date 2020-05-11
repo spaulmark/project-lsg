@@ -161,11 +161,11 @@ export class HouseguestPortraitController {
       }
     } else {
       const selectedPlayers = getSelectedPlayers();
-      if (props.id && selectedPlayers.get(props.id)) {
+      if (!isNullOrUndefined(props.id) && selectedPlayers.get(props.id)) {
         // multiple people are selected and I am one of them
         this.selectSelf();
         this.updateLikeCounts({
-          size: 0, // size doesn't matter in this case
+          size: 0, // size doesn't matter for selected players --- their color is set to blue.
           isPlayerDisabled: (_) => false,
           isLikeInGroup: (l) => !selectedPlayers.has(l.id),
         });
