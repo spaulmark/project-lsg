@@ -28,19 +28,6 @@ export function calculatePopularity(
   return result;
 }
 
-export function calculatePowerRanking(
-  hg: { thinksImThreat: Likemap; thinksImWeak: Likemap },
-  n: number
-): number | undefined {
-  if (n < 1) return undefined;
-  const thinksImThreat = sizeOf(hg.thinksImThreat);
-  const thinksImWeak = sizeOf(hg.thinksImWeak);
-  let result: number | undefined = 0;
-  result = calcPowerRank(thinksImThreat, thinksImWeak, n);
-  thinksImThreat === 0 && thinksImWeak === 0 && (result = undefined);
-  return result;
-}
-
 export interface RelationshipHouseguest extends PlayerProfile {
   id: number;
   isEvicted?: boolean;
@@ -111,7 +98,6 @@ export class RelationshipMapper {
 
   private updatePopularities(hg: ProfileHouseguest, n: number) {
     hg.popularity = calculatePopularity(hg, n);
-    hg.powerRanking = calculatePowerRanking(hg, n);
   }
 
   public evict(h: string) {
@@ -182,7 +168,8 @@ export class RelationshipMapper {
     this.updatePopularities(villain, this.nonEvictedHouseguests - 1);
   }
 
-  // runs in linear time
+  // runs in O(m), m number of edges.
+  // if I wanted to make it better, I would have to optimize
   public tribe(skeleton: { name: string; color: string }, members: string[]) {
     const memberSet = new Set(members.map((name) => this.get(name).id));
     const tribe = {
@@ -198,7 +185,6 @@ export class RelationshipMapper {
       throw new Error(`Tribe ${newTribeId} declared twice`);
     }
     this.tribeIDs.add(newTribeId);
-
     this.houseguests.forEach((hg) => {
       memberSet.has(hg.id) && (hg.tribe = tribe);
       _.forEach(hg.likedBy, (like) => {

@@ -20,10 +20,7 @@ import {
 } from "../../utils/ai/classifyRelationship";
 import { tribeId, Tribe, tribeToFilter } from "../../images/tribe";
 import _ from "lodash";
-import {
-  calculatePopularity,
-  calculatePowerRanking,
-} from "../../images/RelationshipMapper";
+import { calculatePopularity } from "../../images/RelationshipMapper";
 import { Filter } from "../../subjects/filter";
 import { Like } from "../../utils/likeMap";
 
@@ -118,7 +115,6 @@ export class HouseguestPortraitController {
     if (getSelectedPlayers().size > 0 && !disabled) {
       const n = filter.size;
       newState.popularity = calculatePopularity({ ...newState }, n);
-      newState.powerRanking = calculatePowerRanking({ ...newState }, n);
     }
     this.view.setState(newState);
   }

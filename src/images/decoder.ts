@@ -56,7 +56,7 @@ function decodeTribes(m: RelationshipMapper, c: string) {
   tribes.forEach((t) => {
     const hash = t.indexOf("#");
     if (hash === -1) throw new Error("Invalid tribe, does not have a color");
-    const tribeName = t.slice(0, hash);
+    const name = t.slice(0, hash);
     const color = t.slice(hash + 1, hash + 7).toLowerCase();
     const members = t.slice(hash + 7);
     if (!chex.test(color)) throw new Error(`Invalid color: ${color}`);
@@ -69,7 +69,7 @@ function decodeTribes(m: RelationshipMapper, c: string) {
       );
       i++;
     }
-    m.tribe({ color: `#${color}`, name: tribeName }, tribemates);
+    m.tribe({ color: `#${color}`, name }, tribemates);
   });
 }
 
