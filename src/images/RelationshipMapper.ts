@@ -3,6 +3,7 @@ import { Tribe, tribeId } from "./tribe";
 import { PlayerProfile } from "../model";
 import { DiscreteRelationshipMap } from "../utils";
 import { Likemap, sizeOf } from "../utils/likeMap";
+import _ from "lodash";
 
 type Map = "relationships" | "powerRankings";
 type LikeKey = "likedBy" | "thinksImThreat";
@@ -24,19 +25,6 @@ export function calculatePopularity(
   let result: number | undefined = 0;
   result = (likedBy - dislikedBy) / n;
   likedBy === 0 && dislikedBy === 0 && (result = undefined);
-  return result;
-}
-
-export function calculatePowerRanking(
-  hg: { thinksImThreat: Likemap; thinksImWeak: Likemap },
-  n: number
-): number | undefined {
-  if (n < 1) return undefined;
-  const thinksImThreat = sizeOf(hg.thinksImThreat);
-  const thinksImWeak = sizeOf(hg.thinksImWeak);
-  let result: number | undefined = 0;
-  result = calcPowerRank(thinksImThreat, thinksImWeak, n);
-  thinksImThreat === 0 && thinksImWeak === 0 && (result = undefined);
   return result;
 }
 
@@ -110,7 +98,6 @@ export class RelationshipMapper {
 
   private updatePopularities(hg: ProfileHouseguest, n: number) {
     hg.popularity = calculatePopularity(hg, n);
-    hg.powerRanking = calculatePowerRanking(hg, n);
   }
 
   public evict(h: string) {
@@ -123,8 +110,6 @@ export class RelationshipMapper {
     this.nonEvictedIDs.forEach((id) => {
       this.neutral(h, this.houseguests[id].name);
       this.neutral(this.houseguests[id].name, h);
-      this.utr(h, this.houseguests[id].name);
-      this.utr(this.houseguests[id].name, h);
       const tribe = this.houseguests[id].tribe;
       if (flag && tribe && tribeId(tribe) === myTribeId) {
         tribe.size--;
@@ -182,21 +167,29 @@ export class RelationshipMapper {
     hero[map][villain.id] = newR;
     this.updatePopularities(villain, this.nonEvictedHouseguests - 1);
   }
+
+  // runs in O(m), m number of edges.
+  // if I wanted to make it better, I would have to optimize
   public tribe(skeleton: { name: string; color: string }, members: string[]) {
+    const memberSet = new Set(members.map((name) => this.get(name).id));
     const tribe = {
       size: members.filter((hg) => !this.get(hg).isEvicted).length, // only count non-evicted members
       name: skeleton.name,
       color: skeleton.color.toLowerCase(),
     };
+    const newTribeId = tribeId(tribe);
     if (tribe.name.includes("#") || tribe.name.includes("=")) {
       throw new Error("Tribe names cannot contain # or =");
     }
-    if (this.tribeIDs.has(tribeId(tribe))) {
-      throw new Error(`Tribe ${tribeId(tribe)} declared twice`);
+    if (this.tribeIDs.has(newTribeId)) {
+      throw new Error(`Tribe ${newTribeId} declared twice`);
     }
-    this.tribeIDs.add(tribeId(tribe));
-    members.forEach((hg) => {
-      this.get(hg).tribe = tribe;
+    this.tribeIDs.add(newTribeId);
+    this.houseguests.forEach((hg) => {
+      memberSet.has(hg.id) && (hg.tribe = tribe);
+      _.forEach(hg.likedBy, (like) => {
+        memberSet.has(like.id) && (like.tribeId = newTribeId);
+      });
     });
   }
   public like(hero: string, villain: string) {
@@ -232,36 +225,6 @@ export class RelationshipMapper {
   public friends(hero: string, villain: string) {
     this.like(hero, villain);
     this.like(villain, hero);
-  }
-  public threat(h: string, v: string) {
-    this.setRelationship(
-      h,
-      v,
-      true,
-      "thinksImThreat",
-      "thinksImWeak",
-      "powerRankings"
-    );
-  }
-  public weak(h: string, v: string) {
-    this.setRelationship(
-      h,
-      v,
-      false,
-      "thinksImThreat",
-      "thinksImWeak",
-      "powerRankings"
-    );
-  }
-  public utr(h: string, v: string) {
-    this.setRelationship(
-      h,
-      v,
-      undefined,
-      "thinksImThreat",
-      "thinksImWeak",
-      "powerRankings"
-    );
   }
   public alliance(members: string[]) {
     for (let i = 0; i < members.length; i++) {
