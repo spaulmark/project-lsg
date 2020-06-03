@@ -37,33 +37,33 @@ function importAll(
   const profiles: RelationshipHouseguest[] = [];
   setupProfiles(context, profiles, new Set<string>(), new Set<string>());
   const r: RelationshipMapper = new RelationshipMapper(profiles);
-  // r.tribe({ name: "Wisdom", color: "#635cb9" }, [
-  //   "ancient oven",
-  //   "epona",
-  //   "hunnie",
-  //   "karson",
-  //   "mipha",
-  //   "pelison",
-  //   "urbosa",
-  // ]);
-  // r.tribe({ name: "Power", color: "#c70134" }, [
-  //   "Kass",
-  //   "magda",
-  //   "master kohga",
-  //   "patrica",
-  //   "revali",
-  //   "roscoe",
-  //   "teebo",
-  // ]);
-  // r.tribe({ name: "Courage", color: "#7d8d4e" }, [
-  //   "Link",
-  //   "chio",
-  //   "oaki",
-  //   "prince sidon",
-  //   "royal white horse",
-  //   "robbie",
-  //   "riju",
-  // ]);r.dropYourBuffs();
+  r.tribe({ name: "Wisdom", color: "#635cb9" }, [
+    "ancient oven",
+    "epona",
+    "hunnie",
+    "karson",
+    "mipha",
+    "pelison",
+    "urbosa",
+  ]);
+  r.tribe({ name: "Power", color: "#c70134" }, [
+    "Kass",
+    "magda",
+    "master kohga",
+    "patrica",
+    "revali",
+    "roscoe",
+    "teebo",
+  ]);
+  r.tribe({ name: "Courage", color: "#7d8d4e" }, [
+    "Link",
+    "chio",
+    "oaki",
+    "prince sidon",
+    "royal white horse",
+    "robbie",
+    "riju",
+  ]);
   // r.tribe({ name: "Heart Container", color: "#c70134" }, [
   //   revali,
   //   link,
@@ -136,17 +136,6 @@ function importAll(
   //   oaki,
   // ]);
 
-  r.tribe({ name: "Hyrule Castle", color: "#95654E" }, [
-    oaki,
-    sidon,
-    mipha,
-    urbosa,
-    kass,
-    revali,
-    epona,
-    oven,
-    master,
-  ]);
   dislike(magda, patrica);
   dislike(magda, roscoe);
   dislike(magda, kass);
@@ -268,10 +257,6 @@ function importAll(
   dislike(kass, revali);
   dislike(kass, magda);
   dislike(horse, chio);
-  // group(roscoe, teebo, kass)
-  // group(urbosa, pelison, mipha, epona, hunnie )
-  // group(link, riju, sidon, oaki, chio)
-  // group(oven, mipha, urbosa)
   dislike(master, patricia);
   neutral(link, chio);
   like(link, sidon);
@@ -291,25 +276,25 @@ function importAll(
   evict(chio);
   evict(karson);
   /////////////////// EPISODE 2 BEGINS //////////////////////////////////
-  // r.dropYourBuffs();
-  // r.tribe({ name: "Gerudo-Kakariko", color: "#FE7555" }, [
-  //   epona,
-  //   horse,
-  //   teebo,
-  //   kass,
-  //   sidon,
-  //   urbosa,
-  // ]);
-  // r.tribe({ name: "Zora's Domain", color: "#635cb9" }, [mipha, riju, patrica]);
-  // r.tribe({ name: "Korok Forest", color: "#7d8d4e" }, [oaki, revali, pelison]);
-  // r.tribe({ name: "Rito-Goron", color: "#FCE78E" }, [
-  //   robbie,
-  //   master,
-  //   hunnie,
-  //   link,
-  //   oven,
-  //   roscoe,
-  // ]);
+  r.dropYourBuffs();
+  r.tribe({ name: "Gerudo-Kakariko", color: "#FE7555" }, [
+    epona,
+    horse,
+    teebo,
+    kass,
+    sidon,
+    urbosa,
+  ]);
+  r.tribe({ name: "Zora's Domain", color: "#635cb9" }, [mipha, riju, patrica]);
+  r.tribe({ name: "Korok Forest", color: "#7d8d4e" }, [oaki, revali, pelison]);
+  r.tribe({ name: "Rito-Goron", color: "#FCE78E" }, [
+    robbie,
+    master,
+    hunnie,
+    link,
+    oven,
+    roscoe,
+  ]);
   dislike(oven, hunnie);
   like(epona, karson);
   dislike(urbosa, pelison);
@@ -365,30 +350,30 @@ function importAll(
   like(pelison, oaki);
   like(sidon, patricia);
   //////////////////////// episode 3 ends
-  // r.dropYourBuffs();
-  // r.tribe({ name: "Heart Container", color: red }, [
-  //   revali,
-  //   link,
-  //   robbie,
-  //   mipha,
-  //   urbosa,
-  // ]);
-  // r.tribe({ name: "Spirit Orb", color: "#761536" }, [
-  //   kass,
-  //   riju,
-  //   horse,
-  //   hunnie,
-  //   pelison,
-  // ]);
-  // r.tribe({ name: "Stamina Vessel", color: "#7d8d4e" }, [
-  //   master,
-  //   sidon,
-  //   patricia,
-  //   oaki,
-  //   oven,
-  // ]);
-  r.evict(roscoe);
-  r.evict(teebo);
+  r.dropYourBuffs();
+  r.tribe({ name: "Heart Container", color: "#c70134" }, [
+    revali,
+    link,
+    robbie,
+    mipha,
+    urbosa,
+  ]);
+  r.tribe({ name: "Spirit Orb", color: "#761536" }, [
+    kass,
+    riju,
+    horse,
+    hunnie,
+    pelison,
+  ]);
+  r.tribe({ name: "Stamina Vessel", color: "#7d8d4e" }, [
+    master,
+    sidon,
+    patricia,
+    oaki,
+    oven,
+  ]);
+  evict(roscoe);
+  evict(teebo);
   dislike(sidon, revali);
   friends(revali, master);
   like(oaki, mipha);
@@ -446,7 +431,7 @@ function importAll(
   dislike(master, oaki);
   dislike(epona, oaki);
   dislike(sidon, oaki);
-  // r.evict(oaki);
+  // evict(oaki);
   //////////////////////// episode 4 ends
   dislike(urbosa, mipha);
   dislike(sidon, revali);
@@ -469,9 +454,9 @@ function importAll(
   friends(master, sidon);
   neutral(sidon, urbosa);
   dislike(mipha, link);
-  r.evict(robbie);
-  r.evict(riju);
-  // r.evict(oven);
+  evict(robbie);
+  evict(riju);
+  // evict(oven);
   //////////////////////// episode 5 ends
   // r.dropYourBuffs();
   // r.tribe({ name: "Naboris", color: "#FE7555" }, [master_kohga, urbosa, kass]);
@@ -523,7 +508,7 @@ function importAll(
   dislike(epona, link);
   dislike(epona, mipha);
   dislike(master, link);
-  r.evict(pelison);
+  evict(pelison);
   //////////////////////// episode 6 ends
   // r.dropYourBuffs();
   // r.tribe({ name: "Tarrey Town", color: "#de4861" }, [
@@ -619,7 +604,7 @@ function importAll(
   like(master, oven);
   dislike(oven, horse);
   friends(epona, kass);
-  r.evict(link);
+  evict(link);
   /////////////// episode 8 begins
   dislike(hunnie, oaki);
   dislike(hunnie, patrica);
@@ -632,7 +617,7 @@ function importAll(
   dislike(oaki, revali);
   like(sidon, hunnie);
   like(epona, hunnie);
-  // r.evict(mipha);
+  // evict(mipha);
   //////////// episode 9 begins
   like(patricia, hunnie);
   neutral(patricia, oven);
@@ -668,7 +653,7 @@ function importAll(
   dislike(sidon, hunnie);
   dislike(hunnie, epona);
   dislike(oven, patricia);
-  r.evict(horse);
+  evict(horse);
   ////// episode 10 begins
   dislike(sidon, kass);
   dislike(epona, kass);
@@ -692,9 +677,21 @@ function importAll(
   like(revali, sidon);
   like(master, hunnie);
   dislike(urbosa, hunnie);
-  r.evict(patricia);
-  r.evict(hunnie);
+  evict(patricia);
+  evict(hunnie);
   //// episode 11 begins
+  r.dropYourBuffs();
+  r.tribe({ name: "Hyrule Castle", color: "#95654E" }, [
+    oaki,
+    sidon,
+    mipha,
+    urbosa,
+    kass,
+    revali,
+    epona,
+    oven,
+    master,
+  ]);
   like(sidon, oven);
   dislike(sidon, epona);
   dislike(sidon, kass);
@@ -723,7 +720,7 @@ function importAll(
   dislike(mipha, oven);
   like(master, oaki);
   dislike(mipha, revali);
-  r.evict(oaki);
+  evict(oaki);
   /////////// episode 13 begins
   dislike(revali, epona);
   neutral(master, oven);
@@ -749,7 +746,7 @@ function importAll(
   friends(oven, epona);
   neutral(mipha, sidon);
   neutral(sidon, mipha);
-  r.evict(kass);
+  evict(kass);
   /////////// episode 14 begins
   enemies(sidon, mipha);
   dislike(revali, urbosa);
@@ -761,7 +758,7 @@ function importAll(
   neutral(urbosa, epona);
   dislike(master, urbosa);
   dislike(master, revali);
-  r.evict(oven);
+  evict(oven);
   /////// episode 15 begins
   like(master, revali);
   like(urbosa, epona);
@@ -772,11 +769,11 @@ function importAll(
   dislike(master, epona);
   like(mipha, revali);
   dislike(epona, urbosa);
-  r.evict(sidon);
+  evict(sidon);
   /////////// episode 16 begins
   dislike(urbosa, epona);
   like(urbosa, master);
-  r.evict(epona);
+  evict(epona);
   ////////// episode 17 begins
   friends(master, mipha);
   like(urbosa, mipha);
@@ -788,7 +785,7 @@ function importAll(
 ////////////////// safe space below here
 
 export const initialProfiles = importAll(
-  require.context("./src", false, /.jpg/)
+  require.context("./src", false, /.png/)
 );
 
 function setupProfiles(
@@ -798,7 +795,7 @@ function setupProfiles(
   jurors: Set<string>
 ) {
   context.keys().map((item: string, i: number) => {
-    const name = item.replace(".jpg", "").replace("./", "");
+    const name = item.replace(".png", "").replace("./", "");
     profiles.push({
       name,
       imageURL: context(item),
