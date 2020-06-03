@@ -109,7 +109,5 @@ function encodeRelationships(m: RelationshipMapper): CodedRelationships {
 
 export function encodeRelationshipMapper(m: RelationshipMapper): string {
   const r = encodeRelationships(m);
-  return `${encodeTribes(m)}|${encodeEvictees(m)}|${r.relationships}|${
-    r.powerRankings
-  }`;
+  return `${encodeTribes(m)}|${encodeEvictees(m)}|${r.relationships}|`;
 }
