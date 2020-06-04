@@ -36,12 +36,9 @@ export class HouseguestPortraitController {
     return {
       popularity: this.view.props.popularity,
       displayMode: displayMode$.value,
-      powerRanking: this.view.props.powerRanking,
       disabled: !!this.view.props.disabled,
       likedBy: this.view.props.likedBy,
       dislikedBy: this.view.props.dislikedBy,
-      thinksImThreat: this.view.props.thinksImThreat,
-      thinksImWeak: this.view.props.thinksImWeak,
     };
   }
   public backgroundColor(
@@ -110,8 +107,6 @@ export class HouseguestPortraitController {
     const f: (l: Like) => boolean = filter.isLikeInGroup;
     newState.likedBy = _.filter(props.likedBy, f);
     newState.dislikedBy = _.filter(props.dislikedBy, f);
-    newState.thinksImThreat = _.filter(props.thinksImThreat, f);
-    newState.thinksImWeak = _.filter(props.thinksImWeak, f);
     if (getSelectedPlayers().size > 0 && !disabled) {
       const n = filter.size;
       newState.popularity = calculatePopularity({ ...newState }, n);
@@ -131,7 +126,6 @@ export class HouseguestPortraitController {
   private selectSelf() {
     this.view.setState({
       popularity: 2, // note; popularity = 2 means the player is currently selected.
-      powerRanking: 2,
     });
   }
 

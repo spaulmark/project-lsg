@@ -2,10 +2,6 @@ import { RelationshipMapper } from "./RelationshipMapper";
 import _ from "lodash";
 import { Base64 } from "../utils/base64";
 
-export type CodedRelationships = {
-  relationships: string;
-  powerRankings: string;
-};
 const decode = (s: string) => Base64.toInt(s).toString(3).padStart(7, "0"); // base64 --> ternary
 const encode = (s: string) => encodeNumber(parseInt(s, 3)).padStart(2, "0"); // ternary --> base64
 
@@ -52,11 +48,10 @@ function encodeTribes(m: RelationshipMapper): string {
   return encodedTribes;
 }
 
-function encodeRelationships(m: RelationshipMapper): CodedRelationships {
+function encodeRelationships(m: RelationshipMapper): string {
   let relationships = "";
   let powerRankings = "";
   let rBuffer: string = "";
-  let pBuffer: string = "";
   let validateBuffer = (s: string) => {
     if (decode(encode(s)) !== s) {
       throw new Error(
@@ -80,18 +75,6 @@ function encodeRelationships(m: RelationshipMapper): CodedRelationships {
         relationships += e;
         rBuffer = "";
       }
-      /// powerRankings /////////////////////////////////////////
-
-      const nextCharP = toTernary(hg.powerRankings[id]);
-      pBuffer += nextCharP;
-      if (pBuffer.length === 7) {
-        const e: string = encode(pBuffer);
-        if (e.length !== 2)
-          throw new Error(`Byte misalignment prevented: (${e})`);
-        validateBuffer(pBuffer);
-        powerRankings += e;
-        pBuffer = "";
-      }
     });
   });
   if (rBuffer !== "") {
@@ -99,15 +82,10 @@ function encodeRelationships(m: RelationshipMapper): CodedRelationships {
     validateBuffer(rBuffer);
     relationships += encode(rBuffer);
   }
-  if (pBuffer !== "") {
-    pBuffer = pBuffer.padEnd(7, "0");
-    validateBuffer(pBuffer);
-    powerRankings += encode(pBuffer);
-  }
-  return { relationships, powerRankings };
+  return relationships;
 }
 
 export function encodeRelationshipMapper(m: RelationshipMapper): string {
-  const r = encodeRelationships(m);
-  return `${encodeTribes(m)}|${encodeEvictees(m)}|${r.relationships}|`;
+  const relationships = encodeRelationships(m);
+  return `${encodeTribes(m)}|${encodeEvictees(m)}|${relationships}|`;
 }

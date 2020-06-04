@@ -803,11 +803,8 @@ function setupProfiles(
       isEvicted: evictedHouseguests.has(name.toLowerCase()),
       disabled: jurors.has(name.toLowerCase()),
       relationships: newDiscreteRelationshipMap(context.length - 1, i),
-      powerRankings: newDiscreteRelationshipMap(context.length - 1, i),
       likedBy: {},
       dislikedBy: {},
-      thinksImThreat: {},
-      thinksImWeak: {},
     });
   });
 }
@@ -857,24 +854,6 @@ function randomRelationships(r: RelationshipMapper) {
         "likedBy",
         "dislikedBy",
         "relationships"
-      );
-      [r1, rng] = randomChoice([true, false, undefined], rng);
-      [r2, rng] = randomChoice([true, false, undefined], rng);
-      r.setRelationship(
-        hero,
-        villain,
-        r1 as any,
-        "thinksImThreat",
-        "thinksImWeak",
-        "powerRankings"
-      );
-      r.setRelationship(
-        villain,
-        hero,
-        r2 as any,
-        "thinksImThreat",
-        "thinksImWeak",
-        "powerRankings"
       );
     }
   }

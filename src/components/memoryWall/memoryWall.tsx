@@ -21,11 +21,6 @@ export interface ProfileHouseguest extends PlayerProfile {
   likedBy: Likemap;
   dislikedBy: Likemap;
   //
-  powerRankings: DiscreteRelationshipMap;
-  powerRanking?: number;
-  thinksImWeak: Likemap;
-  thinksImThreat: Likemap;
-  //
   hohWins?: number;
   povWins?: number;
   nominations?: number;

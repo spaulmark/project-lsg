@@ -11,7 +11,6 @@ export interface SelectedPlayerData {
   id: number;
   popularity: number;
   relationships: RelationshipMap | DiscreteRelationshipMap;
-  powerRankings: DiscreteRelationshipMap;
   isEvicted: boolean;
   superiors?: Set<number>;
 }

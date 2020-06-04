@@ -67,8 +67,6 @@ export interface PortraitProps {
   id?: number;
   relationships?: RelationshipMap | DiscreteRelationshipMap;
   popularity?: number;
-  powerRankings: DiscreteRelationshipMap;
-  powerRanking?: number;
   isEvicted?: boolean;
   disabled?: boolean;
   deltaPopularity?: number;
@@ -77,20 +75,15 @@ export interface PortraitProps {
   //
   likedBy: Likemap;
   dislikedBy: Likemap;
-  thinksImWeak: Likemap;
-  thinksImThreat: Likemap;
   tribe?: Tribe;
 }
 
 export interface PortraitState {
   popularity?: number;
-  powerRanking?: number;
   displayMode: PortraitDisplayMode;
   disabled: boolean;
   likedBy: Likemap;
   dislikedBy: Likemap;
-  thinksImWeak: Likemap;
-  thinksImThreat: Likemap;
 }
 export class HouseguestPortrait extends React.Component<
   PortraitProps,
@@ -130,7 +123,6 @@ export class HouseguestPortrait extends React.Component<
       isEvicted: !!this.props.isEvicted,
       popularity: this.props.popularity || 0,
       superiors: this.props.superiors,
-      powerRankings: this.props.powerRankings,
     };
     selectPlayer(data);
   }

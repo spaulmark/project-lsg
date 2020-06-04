@@ -5,9 +5,9 @@ import { DiscreteRelationshipMap } from "../utils";
 import { Likemap, sizeOf } from "../utils/likeMap";
 import _ from "lodash";
 
-type Map = "relationships" | "powerRankings";
-type LikeKey = "likedBy" | "thinksImThreat";
-type DislikeKey = "dislikedBy" | "thinksImWeak";
+type Map = "relationships";
+type LikeKey = "likedBy";
+type DislikeKey = "dislikedBy";
 
 function calcPowerRank(threats: number, weaks: number, n: number) {
   if (n === 0) return 0;
@@ -38,11 +38,6 @@ export interface RelationshipHouseguest extends PlayerProfile {
   popularity?: number;
   likedBy: Likemap;
   dislikedBy: Likemap;
-  //
-  powerRankings: DiscreteRelationshipMap;
-  powerRanking?: number;
-  thinksImWeak: Likemap;
-  thinksImThreat: Likemap;
   //
   tooltip?: string;
 }
