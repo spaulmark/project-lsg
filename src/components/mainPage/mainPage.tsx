@@ -4,7 +4,7 @@ import { Sidebar } from "../sidebar/sidebar";
 import { Topbar } from "../topbar/topBar";
 import { MainContentArea } from "./mainContentArea";
 import { MainPageController } from "./mainPageController";
-import { Groupbar } from "../sidebar/groupBar";
+import { RightSidebar } from "../sidebar/rightSidebar";
 
 interface MainPageProps {
   controller: MainPageController;
@@ -42,7 +42,7 @@ export class MainPage extends React.Component<MainPageProps, MainPageState> {
             <MainContentArea />
           </div>
           <div className="column is-narrow">
-            <Groupbar />
+            <RightSidebar />
           </div>
         </div>
       </div>
