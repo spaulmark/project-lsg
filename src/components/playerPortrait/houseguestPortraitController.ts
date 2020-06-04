@@ -107,10 +107,9 @@ export class HouseguestPortraitController {
     const f: (l: Like) => boolean = filter.isLikeInGroup;
     newState.likedBy = _.filter(props.likedBy, f);
     newState.dislikedBy = _.filter(props.dislikedBy, f);
-    if (getSelectedPlayers().size > 0 && !disabled) {
-      const n = filter.size;
-      newState.popularity = calculatePopularity({ ...newState }, n);
-    }
+    // if (getSelectedPlayers().size > 0 && !disabled) { --- idk why this if statement existed in the first place but it causes a bug
+    newState.popularity = calculatePopularity({ ...newState }, filter.size);
+    // }
     this.view.setState(newState);
   }
 
