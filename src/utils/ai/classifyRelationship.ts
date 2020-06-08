@@ -10,12 +10,6 @@ export enum RelationshipType {
   Deceiver = "DECEIVER",
 }
 
-export enum ThreatLevel {
-  Threat = "THREAT",
-  Weak = "WEAK",
-  Neutral = "NEUTRAL",
-}
-
 export const RelationshipTypeToSymbol = {
   NEUTRAL: "-",
   FRIEND: "♥",
@@ -26,12 +20,6 @@ export const RelationshipTypeToSymbol = {
   TARGET: "I 💔 THEM",
   DUPE: "I 💔 THEM THEY ♥ ME",
   DECEIVER: "I ♥ THEM THEY 💔 ME",
-};
-
-export const ThreatLevelToSymbol = {
-  THREAT: "💢",
-  WEAK: "💤",
-  NEUTRAL: "-",
 };
 
 export const RelationshipTypeToPopularity = {

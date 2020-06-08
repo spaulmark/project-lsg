@@ -1,4 +1,4 @@
-import { Filter } from "../subjects/filter";
+import { Filter, nullFilter } from "../subjects/filter";
 import { PortraitProps } from "../components/memoryWall";
 import { Like } from "../utils/likeMap";
 
@@ -15,6 +15,7 @@ export function tribeId(t: Tribe | undefined): string {
 
 export function tribeToFilter(t: Tribe | undefined): Filter {
   const tribe = t === undefined ? nullTribe : t;
+  if (t === nullTribe) return nullFilter;
   return {
     size: tribe.size,
     isPlayerDisabled: (p: PortraitProps): boolean => {

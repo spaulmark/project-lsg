@@ -6,6 +6,7 @@ import {
   multiSelection,
   getSelectedPlayers,
 } from "../../subjects/selectedPlayer$";
+import { Tribe } from "../../images/tribe";
 
 export interface SelectedPlayerData {
   id: number;
@@ -13,6 +14,7 @@ export interface SelectedPlayerData {
   relationships: RelationshipMap | DiscreteRelationshipMap;
   isEvicted: boolean;
   superiors?: Set<number>;
+  tribe: Tribe | null;
 }
 
 function selectWithMultiSelection(player: SelectedPlayerData) {

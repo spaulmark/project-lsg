@@ -7,9 +7,7 @@ import { Subscription } from "rxjs";
 import { displayMode$, selectedTribe$ } from "../../subjects/subjects";
 import {
   selectedPlayer$,
-  PlayerSet,
   getOnlySelectedPlayerOrNull,
-  emptySet,
   getSelectedPlayers,
 } from "../../subjects/selectedPlayer$";
 import { Rgb } from "../../model/color";
@@ -21,7 +19,7 @@ import {
 import { tribeId, Tribe, tribeToFilter } from "../../images/tribe";
 import _ from "lodash";
 import { calculatePopularity } from "../../images/RelationshipMapper";
-import { Filter } from "../../subjects/filter";
+import { Filter, compose } from "../../subjects/filter";
 import { Like } from "../../utils/likeMap";
 
 const selectedColor = new Rgb(51, 255, 249);
@@ -55,17 +53,24 @@ export class HouseguestPortraitController {
       ? undefined
       : this.view.state.displayMode.backgroundColor(this.view.state);
   }
+  public unsubscribe() {
+    this.subs.forEach((sub) => sub.unsubscribe());
+  }
 
   public subscribe() {
     const subs: Subscription[] = [];
     subs.push(
       selectedPlayer$.subscribe({
-        next: this.refreshData,
+        next: (_: any) => {
+          this.refreshData(selectedTribe$.getValue());
+        },
       })
     );
     subs.push(
       selectedTribe$.subscribe({
-        next: this.refreshTribeFilter,
+        next: (selectedTribe: Tribe) => {
+          this.refreshData(selectedTribe);
+        },
       })
     );
     subs.push(
@@ -76,28 +81,6 @@ export class HouseguestPortraitController {
     this.subs = subs;
   }
 
-  public unsubscribe() {
-    this.subs.forEach((sub) => sub.unsubscribe());
-  }
-
-  private refreshTribeFilter = (selectedTribe: Tribe) => {
-    // un-disable all
-    if (!selectedTribe.name) {
-      this.refreshData(getSelectedPlayers());
-      return;
-    }
-    // o/w, disable if nessecary
-    const selectedPlayer = getOnlySelectedPlayerOrNull();
-    this.updateLikeCounts(tribeToFilter(selectedTribe));
-    if (
-      tribeId(selectedTribe) !== tribeId(this.view.props.tribe) &&
-      selectedPlayer !== null &&
-      selectedPlayer.id === this.view.props.id
-    ) {
-      selectedPlayer$.next(emptySet());
-    }
-  };
-
   private updateLikeCounts(filter: Filter) {
     const props = this.view.props;
     const disabled = filter.isPlayerDisabled(this.view.props);
@@ -107,9 +90,19 @@ export class HouseguestPortraitController {
     const f: (l: Like) => boolean = filter.isLikeInGroup;
     newState.likedBy = _.filter(props.likedBy, f);
     newState.dislikedBy = _.filter(props.dislikedBy, f);
-    // if (getSelectedPlayers().size > 0 && !disabled) { --- idk why this if statement existed in the first place but it causes a bug
-    newState.popularity = calculatePopularity({ ...newState }, filter.size);
-    // }
+
+    const selectedPlayers = getSelectedPlayers().size;
+    if (getSelectedPlayers().has(props.id || -1)) newState.popularity = 2;
+
+    const data = getOnlySelectedPlayerOrNull()!;
+    if (selectedPlayers === 1 && data.id !== props.id) {
+      newState.popularity = getPopularity(
+        props.relationships![data.id],
+        data.relationships[props.id!]
+      );
+    } else {
+      newState.popularity = calculatePopularity({ ...newState }, filter.size);
+    }
     this.view.setState(newState);
   }
 
@@ -122,52 +115,47 @@ export class HouseguestPortraitController {
     }
   }
 
-  private selectSelf() {
-    this.view.setState({
-      popularity: 2, // note; popularity = 2 means the player is currently selected.
-    });
-  }
-
-  private refreshData = (set: PlayerSet) => {
+  private refreshData(selectedTribe: Tribe) {
+    const tribeFilter = tribeToFilter(selectedTribe);
+    const selectedPlayers = getSelectedPlayers();
     const view = this.view;
     const props = this.view.props;
     if (view.state.disabled) return;
-    if (set.size === 0) {
+    if (selectedPlayers.size === 0) {
       // no one is selected
       this.goToDefaultState();
-    } else if (set.size === 1) {
+    } else if (selectedPlayers.size === 1) {
       // only one person is selected
-      const data = getOnlySelectedPlayerOrNull()!;
-      if (data.id !== props.id) {
-        view.setState({
-          popularity: getPopularity(
-            props.relationships![data.id],
-            data.relationships[props.id!]
-          ),
-        });
-      } else {
-        this.selectSelf();
-      }
+      this.updateLikeCounts(
+        compose(tribeFilter, {
+          size: 0, // size does not matter for 1 selected: all popularity is hardcoded
+          isPlayerDisabled: (_) => false,
+          isLikeInGroup: (l) => true,
+        })
+      );
     } else {
-      const selectedPlayers = getSelectedPlayers();
+      // multiple people are selected
       if (!isNullOrUndefined(props.id) && selectedPlayers.get(props.id)) {
         // multiple people are selected and I am one of them
-        this.selectSelf();
-        this.updateLikeCounts({
-          size: 0, // size doesn't matter for selected players --- their color is set to blue.
-          isPlayerDisabled: (_) => false,
-          isLikeInGroup: (l) => !selectedPlayers.has(l.id),
-        });
+        this.updateLikeCounts(
+          compose(tribeFilter, {
+            size: 0, // size doesn't matter for selected players --- their color is set to blue.
+            isPlayerDisabled: (_) => false,
+            isLikeInGroup: (l) => !selectedPlayers.has(l.id),
+          })
+        );
       } else {
         // multiple people are selected and I am not one of them
-        this.updateLikeCounts({
-          size: selectedPlayers.size,
-          isPlayerDisabled: (_) => false,
-          isLikeInGroup: (l) => selectedPlayers.has(l.id),
-        });
+        this.updateLikeCounts(
+          compose(tribeFilter, {
+            size: selectedPlayers.size,
+            isPlayerDisabled: (_) => false,
+            isLikeInGroup: (l) => selectedPlayers.has(l.id),
+          })
+        );
       }
     }
-  };
+  }
 }
 type Rship = number | boolean | undefined;
 

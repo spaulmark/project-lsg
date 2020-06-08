@@ -123,6 +123,7 @@ export class HouseguestPortrait extends React.Component<
       isEvicted: !!this.props.isEvicted,
       popularity: this.props.popularity || 0,
       superiors: this.props.superiors,
+      tribe: this.props.tribe || null,
     };
     selectPlayer(data);
   }

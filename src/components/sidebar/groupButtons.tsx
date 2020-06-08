@@ -77,7 +77,7 @@ export class GroupButtons extends React.Component<GroupProps, GroupState> {
               disabled={this.state.count < 2}
               onClick={() => setState(false)}
             >
-              Lock
+              Done
             </button>
           </Centered>,
         ]}

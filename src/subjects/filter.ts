@@ -1,5 +1,4 @@
 import { PortraitProps } from "../components/memoryWall";
-import { BehaviorSubject } from "rxjs";
 import { Like } from "../utils/likeMap";
 
 export interface Filter {
@@ -14,4 +13,12 @@ export const nullFilter: Filter = {
   isLikeInGroup: (_: any) => true,
 };
 
-export const selectedFilter$ = new BehaviorSubject<Filter>(nullFilter);
+export function compose(tribe: Filter, selected: Filter): Filter {
+  const size = tribe.size < 1 ? selected.size : tribe.size - selected.size;
+  return {
+    size,
+    isPlayerDisabled: (p) =>
+      tribe.isPlayerDisabled(p) || selected.isPlayerDisabled(p),
+    isLikeInGroup: (p) => tribe.isLikeInGroup(p) && selected.isLikeInGroup(p),
+  };
+}

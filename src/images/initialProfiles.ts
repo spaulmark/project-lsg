@@ -275,6 +275,7 @@ function importAll(
   evict(magda);
   evict(chio);
   evict(karson);
+
   /////////////////// EPISODE 2 BEGINS //////////////////////////////////
   r.dropYourBuffs();
   r.tribe({ name: "Gerudo-Kakariko", color: "#FE7555" }, [
@@ -349,7 +350,8 @@ function importAll(
   like(pelison, hunnie);
   like(pelison, oaki);
   like(sidon, patricia);
-  //////////////////////// episode 3 ends
+  evict(roscoe);
+  evict(teebo); //////////////////////// episode 3 ends
   r.dropYourBuffs();
   r.tribe({ name: "Heart Container", color: "#c70134" }, [
     revali,
@@ -372,8 +374,7 @@ function importAll(
     oaki,
     oven,
   ]);
-  evict(roscoe);
-  evict(teebo);
+  // r.tribe({ name: "Exile", color: "#202020" }, [epona]); TODO: uncomment this line, also include custom tribe ordering.
   dislike(sidon, revali);
   friends(revali, master);
   like(oaki, mipha);
@@ -431,6 +432,7 @@ function importAll(
   dislike(master, oaki);
   dislike(epona, oaki);
   dislike(sidon, oaki);
+  return r;
   // evict(oaki);
   //////////////////////// episode 4 ends
   dislike(urbosa, mipha);
@@ -458,11 +460,11 @@ function importAll(
   evict(riju);
   // evict(oven);
   //////////////////////// episode 5 ends
-  // r.dropYourBuffs();
-  // r.tribe({ name: "Naboris", color: "#FE7555" }, [master_kohga, urbosa, kass]);
-  // r.tribe({ name: "Medoh", color: "#FCE78E" }, [revali, epona, horse]);
-  // r.tribe({ name: "Rudania", color: "#C70134" }, [sidon, mipha, hunnie]);
-  // r.tribe({ name: "Ruta", color: "#635CB9" }, [patrica, link, pelison]);
+  r.dropYourBuffs();
+  r.tribe({ name: "Naboris", color: "#FE7555" }, [master_kohga, urbosa, kass]);
+  r.tribe({ name: "Medoh", color: "#FCE78E" }, [revali, epona, horse]);
+  r.tribe({ name: "Rudania", color: "#C70134" }, [sidon, mipha, hunnie]);
+  r.tribe({ name: "Ruta", color: "#635CB9" }, [patrica, link, pelison]);
   dislike(mipha, sidon);
   dislike(patricia, horse);
   like(pelison, patricia);
@@ -510,20 +512,20 @@ function importAll(
   dislike(master, link);
   evict(pelison);
   //////////////////////// episode 6 ends
-  // r.dropYourBuffs();
-  // r.tribe({ name: "Tarrey Town", color: "#de4861" }, [
-  //   revali,
-  //   kass,
-  //   master,
-  //   patrica,
-  //   sidon,
-  //   link,
-  //   horse,
-  //   mipha,
-  //   epona,
-  //   urbosa,
-  //   hunnie,
-  // ]);
+  r.dropYourBuffs();
+  r.tribe({ name: "Tarrey Town", color: "#de4861" }, [
+    revali,
+    kass,
+    master,
+    patrica,
+    sidon,
+    link,
+    horse,
+    mipha,
+    epona,
+    urbosa,
+    hunnie,
+  ]);
   like(link, revali);
   neutral(master, hunnie);
   neutral(mipha, urbosa);
@@ -778,8 +780,8 @@ function importAll(
   friends(master, mipha);
   like(urbosa, mipha);
   dislike(urbosa, master);
+  evict(master);
   console.log(encodeRelationshipMapper(r));
-  return r;
 }
 
 ////////////////// safe space below here
