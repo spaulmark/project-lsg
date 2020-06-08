@@ -64,17 +64,6 @@ function importAll(
     "robbie",
     "riju",
   ]);
-  // r.dropYourBuffs();
-  // r.tribe({ name: "Medoh", color: "#FCE78E" }, [revali, epona, horse]);
-  // r.tribe({ name: "Rudania", color: "#C70134" }, [sidon, mipha, hunnie]);
-  // r.tribe({ name: "Naboris-Ruta", color: "#635CB9" }, [
-  //   patrica,
-  //   link,
-  //   pelison,
-  //   master_kohga,
-  //   urbosa,
-  //   kass,
-  // ]);
   const like = r.like.bind(r);
   const friends = r.friends.bind(r);
   const dislike = r.dislike.bind(r);
@@ -82,22 +71,6 @@ function importAll(
   const neutral = r.neutral.bind(r);
   const enemies = r.enemies.bind(r);
   const evict = r.evict.bind(r);
-
-  // r.tribe({ name: "Divine Trial", color: "#FCE78E" }, [
-  //   epona,
-  //   master_kohga,
-  //   urbosa,
-  //   kass,
-  //   hunnie,
-  // ]);
-  // r.tribe({ name: "Lost Woods", color: "#B8B8B8" }, [
-  //   oven,
-  //   revali,
-  //   sidon,
-  //   patricia,
-  //   oaki,
-  // ]);
-
   dislike(magda, patrica);
   dislike(magda, roscoe);
   dislike(magda, kass);
@@ -237,7 +210,6 @@ function importAll(
   evict(magda);
   evict(chio);
   evict(karson);
-
   /////////////////// EPISODE 2 BEGINS //////////////////////////////////
   r.dropYourBuffs();
   r.tribe({ name: "Gerudo-Kakariko", color: "#FE7555" }, [
@@ -394,8 +366,7 @@ function importAll(
   dislike(master, oaki);
   dislike(epona, oaki);
   dislike(sidon, oaki);
-  return r;
-  // evict(oaki);
+  evict(oaki);
   //////////////////////// episode 4 ends
   dislike(urbosa, mipha);
   dislike(sidon, revali);
@@ -420,7 +391,7 @@ function importAll(
   dislike(mipha, link);
   evict(robbie);
   evict(riju);
-  // evict(oven);
+  evict(oven);
   //////////////////////// episode 5 ends
   r.dropYourBuffs();
   r.tribe({ name: "Naboris", color: "#FE7555" }, [master_kohga, urbosa, kass]);
@@ -497,8 +468,26 @@ function importAll(
   dislike(horse, mipha);
   dislike(horse, kass);
   dislike(horse, patricia);
+  /////// surprise returnee twist
+  r.dropYourBuffs();
+  r.tribe({ name: "Tarrey Town", color: "#de4861" }, [
+    revali,
+    kass,
+    master,
+    patrica,
+    sidon,
+    link,
+    horse,
+    mipha,
+    epona,
+    urbosa,
+    hunnie,
+    oaki,
+    oven,
+  ]);
   r.unevict(oven);
   r.unevict(oaki);
+  return r;
   /////////////// episode 7 ends
   like(epona, link);
   friends(oaki, oven);
@@ -581,7 +570,7 @@ function importAll(
   dislike(oaki, revali);
   like(sidon, hunnie);
   like(epona, hunnie);
-  // evict(mipha);
+  evict(mipha);
   //////////// episode 9 begins
   like(patricia, hunnie);
   neutral(patricia, oven);
@@ -619,6 +608,21 @@ function importAll(
   dislike(oven, patricia);
   evict(horse);
   ////// episode 10 begins
+  r.dropYourBuffs();
+  r.tribe({ name: "Divine Trial", color: "#FCE78E" }, [
+    epona,
+    master_kohga,
+    urbosa,
+    kass,
+    hunnie,
+  ]);
+  r.tribe({ name: "Lost Woods", color: "#B8B8B8" }, [
+    oven,
+    revali,
+    sidon,
+    patricia,
+    oaki,
+  ]);
   dislike(sidon, kass);
   dislike(epona, kass);
   dislike(epona, hunnie);

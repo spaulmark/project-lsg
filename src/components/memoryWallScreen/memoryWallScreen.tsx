@@ -1,7 +1,6 @@
 import React from "react";
 import { MemoryWall } from "../memoryWall";
 import { HasText } from "../layout/text";
-import { ViewsBar } from "../viewsBar/viewBar";
 import { ProfileHouseguest } from "../memoryWall/memoryWall";
 import { Subscription } from "rxjs";
 import { players$ } from "../../subjects/subjects";

@@ -19,7 +19,7 @@ import {
 import { tribeId, Tribe, tribeToFilter } from "../../images/tribe";
 import _ from "lodash";
 import { calculatePopularity } from "../../images/RelationshipMapper";
-import { Filter, compose } from "../../subjects/filter";
+import { Filter, compose, nullFilter } from "../../subjects/filter";
 import { Like } from "../../utils/likeMap";
 
 const selectedColor = new Rgb(51, 255, 249);
@@ -87,7 +87,9 @@ export class HouseguestPortraitController {
     const newState: any = {
       disabled,
     };
-    const f: (l: Like) => boolean = filter.isLikeInGroup;
+    const f: (l: Like) => boolean = (l) => {
+      return !l.disabled && filter.isLikeInGroup(l);
+    };
     newState.likedBy = _.filter(props.likedBy, f);
     newState.dislikedBy = _.filter(props.dislikedBy, f);
 
@@ -100,6 +102,8 @@ export class HouseguestPortraitController {
         props.relationships![data.id],
         data.relationships[props.id!]
       );
+    } else if (selectedPlayers === 0) {
+      newState.popularity = this.defaultState.popularity;
     } else {
       newState.popularity = calculatePopularity({ ...newState }, filter.size);
     }
@@ -107,11 +111,12 @@ export class HouseguestPortraitController {
   }
 
   private goToDefaultState() {
+    if (this.view.props.name === "Oaki") console.log(this.view.props.likedBy);
     if (this.view.state.disabled) return;
     if (tribeId(selectedTribe$.value)) {
       this.updateLikeCounts(tribeToFilter(selectedTribe$.value));
     } else {
-      this.view.setState(this.defaultState);
+      this.updateLikeCounts(nullFilter);
     }
   }
 

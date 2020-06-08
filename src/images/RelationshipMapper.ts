@@ -1,19 +1,12 @@
-import { ProfileHouseguest } from "../components/memoryWall";
 import { Tribe, tribeId } from "./tribe";
 import { PlayerProfile } from "../model";
 import { DiscreteRelationshipMap } from "../utils";
-import { Likemap, sizeOf } from "../utils/likeMap";
+import { Likemap, sizeOf, disableLikes, enableLikes } from "../utils/likeMap";
 import _ from "lodash";
 
 type Map = "relationships";
 type LikeKey = "likedBy";
 type DislikeKey = "dislikedBy";
-
-function calcPowerRank(threats: number, weaks: number, n: number) {
-  if (n === 0) return 0;
-  const twoN = 2 * n;
-  return 0.5 + threats / twoN - weaks / twoN;
-}
 
 export function calculatePopularity(
   hg: { likedBy: Likemap; dislikedBy: Likemap },
@@ -51,6 +44,9 @@ export class RelationshipMapper {
     return this.nonEvictedIDs.length;
   }
   nonEvictedIDs: number[] = []; // this must be an ordered type to guarentee encoding/decoding works. don't use a set
+  // note that in the future, this won't matter because unevict() currently breaks this functionality.
+  // so basically it doesn't matter anymore because the new codes won't be limited by nonEvictedIDs.
+
   public constructor(houseguests: RelationshipHouseguest[]) {
     this.houseguests = houseguests;
     if (houseguests.length > 4096) {
@@ -91,7 +87,7 @@ export class RelationshipMapper {
     });
   }
 
-  private updatePopularities(hg: ProfileHouseguest, n: number) {
+  private updatePopularities(hg: RelationshipHouseguest, n: number) {
     hg.popularity = calculatePopularity(hg, n);
   }
 
@@ -103,8 +99,7 @@ export class RelationshipMapper {
     if (hero.isEvicted) return;
     hero.isEvicted = true;
     this.nonEvictedIDs.forEach((id) => {
-      this.neutral(h, this.houseguests[id].name);
-      this.neutral(this.houseguests[id].name, h);
+      disableLikes(hero, this.houseguests[id]);
       const tribe = this.houseguests[id].tribe;
       if (flag && tribe && tribeId(tribe) === myTribeId) {
         tribe.size--;
@@ -119,10 +114,13 @@ export class RelationshipMapper {
     if (!hero.isEvicted) return;
     hero.isEvicted = false;
     this.nonEvictedIDs.push(hero.id);
+    this.nonEvictedIDs.forEach((id) => {
+      enableLikes(hero, this.houseguests[id]);
+    });
   }
 
   private addToLikeMap(l: Likemap, h: RelationshipHouseguest) {
-    l[h.id] = { tribeId: tribeId(h.tribe), id: h.id };
+    l[h.id] = { tribeId: tribeId(h.tribe), id: h.id, disabled: false };
   }
 
   private deleteFromLikeMap(l: Likemap, h: RelationshipHouseguest) {
