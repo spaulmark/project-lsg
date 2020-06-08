@@ -64,29 +64,6 @@ function importAll(
     "robbie",
     "riju",
   ]);
-  // r.tribe({ name: "Heart Container", color: "#c70134" }, [
-  //   revali,
-  //   link,
-  //   robbie,
-  //   mipha,
-  //   urbosa,
-  // ]);
-  // r.tribe({ name: "Spirit Orb", color: "#761536" }, [
-  //   kass,
-  //   riju,
-  //   horse,
-  //   hunnie,
-  //   pelison,
-  // ]);
-  // r.tribe({ name: "Stamina Vessel", color: "#7d8d4e" }, [
-  //   master,
-  //   sidon,
-  //   patricia,
-  //   // oaki,
-  //   oven,
-  //   epona,
-  // ]);
-  // r.tribe({ name: "", color: "#000000" }, [epona]);
   // r.dropYourBuffs();
   // r.tribe({ name: "Medoh", color: "#FCE78E" }, [revali, epona, horse]);
   // r.tribe({ name: "Rudania", color: "#C70134" }, [sidon, mipha, hunnie]);
@@ -105,22 +82,7 @@ function importAll(
   const neutral = r.neutral.bind(r);
   const enemies = r.enemies.bind(r);
   const evict = r.evict.bind(r);
-  // TODO: the solution might be to have each likemap link to a player that has a tribe, so it's mutable
-  // r.tribe({ name: "Tarrey Town", color: "#de4861" }, [
-  //   revali,
-  //   kass,
-  //   master,
-  //   patrica,
-  //   sidon,
-  //   link,
-  //   horse,
-  //   mipha,
-  //   epona,
-  //   oven,
-  //   oaki,
-  //   urbosa,
-  //   hunnie,
-  // ])
+
   // r.tribe({ name: "Divine Trial", color: "#FCE78E" }, [
   //   epona,
   //   master_kohga,
