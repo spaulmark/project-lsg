@@ -13,26 +13,13 @@ export function calculatePopularity(
   n: number
 ): number | undefined {
   if (n < 1) return undefined;
-  //////
 
-  if (hg.name === "Ancient Oven") {
-    console.log(sizeOf(hg.likedBy), "-", sizeOf(hg.dislikedBy), "/", n);
-    if (sizeOf(hg.likedBy) === 3 && sizeOf(hg.dislikedBy) === 3) {
-      console.log(
-        _.filter(hg.likedBy, (like) => {
-          console.log(like, like.disabled);
-          return !like.disabled;
-        })
-      );
-      console.log(hg);
-    }
-  }
-
-  ///////
   const likedBy = sizeOf(hg.likedBy);
   const dislikedBy = sizeOf(hg.dislikedBy);
   let result: number | undefined = 0;
   result = (likedBy - dislikedBy) / n;
+  result > 1 && (result = 1);
+  result < -1 && (result = -1);
   likedBy === 0 && dislikedBy === 0 && (result = undefined);
   return result;
 }
@@ -44,7 +31,7 @@ export interface RelationshipHouseguest extends PlayerProfile {
   tribe?: Tribe;
   //
   relationships: DiscreteRelationshipMap;
-  popularity?: number;
+  houseSize: number;
   likedBy: Likemap;
   dislikedBy: Likemap;
   //
@@ -103,10 +90,6 @@ export class RelationshipMapper {
     });
   }
 
-  private updatePopularities(hg: RelationshipHouseguest, n: number) {
-    hg.popularity = calculatePopularity(hg, n);
-  }
-
   public evict(h: string) {
     const hero = this.get(h);
     const myTribeId = tribeId(hero.tribe);
@@ -116,6 +99,7 @@ export class RelationshipMapper {
     hero.isEvicted = true;
     this.nonEvictedIDs.forEach((id) => {
       disableLikes(hero, this.houseguests[id]);
+      this.houseguests[id].houseSize--;
       const tribe = this.houseguests[id].tribe;
       if (flag && tribe && tribeId(tribe) === myTribeId) {
         tribe.size--;
@@ -131,7 +115,10 @@ export class RelationshipMapper {
     hero.isEvicted = false;
     this.nonEvictedIDs.push(hero.id);
     this.nonEvictedIDs.forEach((id) => {
-      enableLikes(hero, this.houseguests[id]);
+      const hg = this.houseguests[id];
+      enableLikes(hero, hg);
+      hg.houseSize++;
+      hero.houseSize = hg.houseSize;
     });
   }
 
@@ -178,7 +165,6 @@ export class RelationshipMapper {
     }
     // actually set it
     hero[map][villain.id] = newR;
-    this.updatePopularities(villain, this.nonEvictedHouseguests - 1);
   }
 
   // runs in O(m), m number of edges.

@@ -16,7 +16,7 @@ export interface ProfileHouseguest extends PlayerProfile {
   tribe?: Tribe;
   //
   relationships?: RelationshipMap | DiscreteRelationshipMap;
-  popularity?: number;
+  houseSize: number;
   deltaPopularity?: number;
   likedBy: Likemap;
   dislikedBy: Likemap;

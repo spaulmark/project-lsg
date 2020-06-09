@@ -41,14 +41,18 @@ function addCountTitle(
   state: PortraitState,
   subtitle: any[],
   key: number,
-  discreteTitle: (a: PortraitProps, b: SelectedPlayerData) => string[],
+  discreteTitle: (
+    a: PortraitProps,
+    c: PortraitState,
+    b: SelectedPlayerData
+  ) => string[],
   countTitle: (a: PortraitState) => string[]
 ) {
   if (!hero.isEvicted) {
     const data = getOnlySelectedPlayerOrNull(); // it is correct that only one player selected causes discrete titles
     let titles;
     if (data && data.id !== hero.id) {
-      titles = discreteTitle(hero, data);
+      titles = discreteTitle(hero, state, data);
     } else {
       titles = countTitle(state);
     }
@@ -86,6 +90,7 @@ function compWins(houseguest: ProfileHouseguest): string {
 
 function friendOrEnemyTitle(
   hero: PortraitProps,
+  state: PortraitState,
   villain: SelectedPlayerData
 ): string[] {
   const titles: string[] = [];
@@ -97,7 +102,7 @@ function friendOrEnemyTitle(
   titles.push(
     RelationshipTypeToSymbol[
       classifyRelationship(
-        hero.popularity || 0,
+        state.popularity || 0,
         villain.popularity,
         heroRelationship,
         villainRelationship

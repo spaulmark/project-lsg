@@ -466,6 +466,7 @@ function importAll(
   dislike(epona, mipha);
   dislike(master, link);
   evict(pelison);
+  return r;
   //////////////////////// episode 6 ends
   r.dropYourBuffs();
   r.tribe({ name: "Tarrey Town", color: "#de4861" }, [
@@ -510,7 +511,6 @@ function importAll(
   r.unevict(oven);
   r.unevict(oaki);
   /////////////// episode 7 ends
-  return r;
   like(epona, link);
   friends(oaki, oven);
   like(urbosa, oven);
@@ -784,12 +784,14 @@ function setupProfiles(
   evictedHouseguests: Set<string>,
   jurors: Set<string>
 ) {
+  const houseSize = context.keys().length;
   context.keys().map((item: string, i: number) => {
     const name = item.replace(".png", "").replace("./", "");
     profiles.push({
       name,
       imageURL: context(item),
       id: i,
+      houseSize,
       isEvicted: evictedHouseguests.has(name.toLowerCase()),
       disabled: jurors.has(name.toLowerCase()),
       relationships: newDiscreteRelationshipMap(context.length - 1, i),

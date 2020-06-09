@@ -32,7 +32,10 @@ export class HouseguestPortraitController {
   }
   get defaultState(): PortraitState {
     return {
-      popularity: this.view.props.popularity,
+      popularity: calculatePopularity(
+        this.view.props,
+        this.view.props.houseSize - 1
+      ),
       displayMode: displayMode$.value,
       disabled: !!this.view.props.disabled,
       likedBy: this.view.props.likedBy,

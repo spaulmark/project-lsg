@@ -66,7 +66,6 @@ export interface PortraitProps {
   name: string;
   id?: number;
   relationships?: RelationshipMap | DiscreteRelationshipMap;
-  popularity?: number;
   isEvicted?: boolean;
   disabled?: boolean;
   deltaPopularity?: number;
@@ -75,6 +74,7 @@ export interface PortraitProps {
   //
   likedBy: Likemap;
   dislikedBy: Likemap;
+  houseSize: number;
   tribe?: Tribe;
 }
 
@@ -121,7 +121,7 @@ export class HouseguestPortrait extends React.Component<
       id: this.props.id,
       relationships: this.props.relationships,
       isEvicted: !!this.props.isEvicted,
-      popularity: this.props.popularity || 0,
+      popularity: this.state.popularity || 0,
       superiors: this.props.superiors,
       tribe: this.props.tribe || null,
     };
