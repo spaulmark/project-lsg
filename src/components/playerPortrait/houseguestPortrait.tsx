@@ -2,7 +2,6 @@ import React from "react";
 import { selectPlayer } from "./selectedPortrait";
 import { isNullOrUndefined } from "util";
 import { RelationshipMap, DiscreteRelationshipMap } from "../../utils";
-import _ from "lodash";
 import { HouseguestPortraitController } from "./houseguestPortraitController";
 import { PortraitDisplayMode } from "../../model/portraitDisplayMode";
 import styled from "styled-components";

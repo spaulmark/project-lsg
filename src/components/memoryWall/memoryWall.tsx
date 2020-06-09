@@ -35,6 +35,13 @@ export function MemoryWall(props: IMemoryWallProps): JSX.Element {
   const houseguestsByTribe = _.groupBy(houseguests, (hg) =>
     hg.tribe === undefined ? hg.tribe : hg.tribe.name
   );
+  const priorityMap: { [id: string]: number } = {};
+  _.forEach(houseguestsByTribe, (tribe) => {
+    const hg0 = tribe[0];
+    priorityMap[tribeId(hg0.tribe)] = (hg0.tribe || nullTribe).priority || 0;
+  });
+  console.log(priorityMap);
+
   const tribes: JSX.Element[] = [];
   _.forEach(houseguestsByTribe, (hgs, name) => {
     if (name === "undefined" && _.size(houseguestsByTribe) > 1) {
@@ -42,6 +49,9 @@ export function MemoryWall(props: IMemoryWallProps): JSX.Element {
     }
     const tribe: Tribe = hgs[0].tribe ? hgs[0].tribe : nullTribe;
     tribes.push(<TribeContainer key={tribeId(tribe)} {...{ tribe, hgs }} />);
+  });
+  tribes.sort((a, b) => {
+    return priorityMap[b.key || ""] - priorityMap[a.key || ""];
   });
   return (
     <div

@@ -25,9 +25,9 @@ export class Topbar extends React.Component<TopbarProps, TopbarState> {
   public componentDidMount() {
     players$.next(this.state.rMapper.houseguests);
   }
-  private handleChange = ((event: { target: { value: string } }) => {
+  private handleChange = (event: { target: { value: string } }) => {
     this.setState({ inputCode: event.target.value });
-  }).bind(this);
+  };
 
   public render(): JSX.Element {
     const style = { ...{ marginTop: 30 }, ...(this.props.style || {}) };

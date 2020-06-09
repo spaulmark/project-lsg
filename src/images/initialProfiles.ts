@@ -1,5 +1,5 @@
-import { newDiscreteRelationshipMap, hashcode } from "../utils";
-import prand from "pure-rand";
+import { newDiscreteRelationshipMap } from "../utils";
+// import prand from "pure-rand";
 import {
   RelationshipMapper,
   RelationshipHouseguest,
@@ -37,7 +37,7 @@ function importAll(
   const profiles: RelationshipHouseguest[] = [];
   setupProfiles(context, profiles, new Set<string>(), new Set<string>());
   const r: RelationshipMapper = new RelationshipMapper(profiles);
-  r.tribe({ name: "Wisdom", color: "#635cb9" }, [
+  r.tribe({ name: "Wisdom", color: "#635cb9", priority: -1 }, [
     "ancient oven",
     "epona",
     "hunnie",
@@ -46,7 +46,7 @@ function importAll(
     "pelison",
     "urbosa",
   ]);
-  r.tribe({ name: "Power", color: "#c70134" }, [
+  r.tribe({ name: "Power", color: "#c70134", priority: 1 }, [
     "Kass",
     "magda",
     "master kohga",
@@ -308,7 +308,7 @@ function importAll(
     oaki,
     oven,
   ]);
-  // r.tribe({ name: "Exile", color: "#202020" }, [epona]); TODO: uncomment this line, also include custom tribe ordering.
+  r.tribe({ name: "Exile", color: "#202020", priority: -1 }, [epona]); // TODO: uncomment this line, also include custom tribe ordering.
   dislike(sidon, revali);
   friends(revali, master);
   like(oaki, mipha);
@@ -367,6 +367,7 @@ function importAll(
   dislike(epona, oaki);
   dislike(sidon, oaki);
   evict(oaki);
+  return r;
   r.dropYourBuffs();
   r.tribe({ name: "Heart Container", color: "#c70134" }, [
     revali,
@@ -466,7 +467,6 @@ function importAll(
   dislike(epona, mipha);
   dislike(master, link);
   evict(pelison);
-  return r;
   //////////////////////// episode 6 ends
   r.dropYourBuffs();
   r.tribe({ name: "Tarrey Town", color: "#de4861" }, [
@@ -785,7 +785,7 @@ function setupProfiles(
   jurors: Set<string>
 ) {
   const houseSize = context.keys().length;
-  context.keys().map((item: string, i: number) => {
+  context.keys().forEach((item: string, i: number) => {
     const name = item.replace(".png", "").replace("./", "");
     profiles.push({
       name,
@@ -801,52 +801,52 @@ function setupProfiles(
   });
 }
 
-function randomInt(
-  a: number,
-  b: number,
-  rng: prand.RandomGenerator
-): [number, prand.RandomGenerator] {
-  let result: number;
-  [result, rng] = prand.uniformIntDistribution(a, b, rng);
-  return [result, rng];
-}
-function randomChoice(
-  a: (number | boolean | undefined)[],
-  rng: prand.RandomGenerator
-): [number | boolean | undefined, prand.RandomGenerator] {
-  const [result, rng2] = randomInt(0, a.length - 1, rng);
-  return [a[result], rng2];
-}
+// function randomInt(
+//   a: number,
+//   b: number,
+//   rng: prand.RandomGenerator
+// ): [number, prand.RandomGenerator] {
+//   let result: number;
+//   [result, rng] = prand.uniformIntDistribution(a, b, rng);
+//   return [result, rng];
+// }
+// function randomChoice(
+//   a: (number | boolean | undefined)[],
+//   rng: prand.RandomGenerator
+// ): [number | boolean | undefined, prand.RandomGenerator] {
+//   const [result, rng2] = randomInt(0, a.length - 1, rng);
+//   return [a[result], rng2];
+// }
 
-function randomRelationships(r: RelationshipMapper) {
-  let castNames = "";
-  r.houseguests.forEach((houseguest) => (castNames += houseguest.name));
-  let rng = prand.xorshift128plus(hashcode(castNames));
-  const hgs = r.houseguests;
-  for (let i = 0; i < hgs.length; i++) {
-    const hero = hgs[i].name;
-    for (let j = i + 1; j < hgs.length; j++) {
-      const villain = hgs[j].name;
-      let r1;
-      let r2;
-      [r1, rng] = randomChoice([true, false, undefined], rng);
-      [r2, rng] = randomChoice([true, false, undefined], rng);
-      r.setRelationship(
-        hero,
-        villain,
-        r1 as any,
-        "likedBy",
-        "dislikedBy",
-        "relationships"
-      );
-      r.setRelationship(
-        villain,
-        hero,
-        r2 as any,
-        "likedBy",
-        "dislikedBy",
-        "relationships"
-      );
-    }
-  }
-}
+// function randomRelationships(r: RelationshipMapper) {
+//   let castNames = "";
+//   r.houseguests.forEach((houseguest) => (castNames += houseguest.name));
+//   let rng = prand.xorshift128plus(hashcode(castNames));
+//   const hgs = r.houseguests;
+//   for (let i = 0; i < hgs.length; i++) {
+//     const hero = hgs[i].name;
+//     for (let j = i + 1; j < hgs.length; j++) {
+//       const villain = hgs[j].name;
+//       let r1;
+//       let r2;
+//       [r1, rng] = randomChoice([true, false, undefined], rng);
+//       [r2, rng] = randomChoice([true, false, undefined], rng);
+//       r.setRelationship(
+//         hero,
+//         villain,
+//         r1 as any,
+//         "likedBy",
+//         "dislikedBy",
+//         "relationships"
+//       );
+//       r.setRelationship(
+//         villain,
+//         hero,
+//         r2 as any,
+//         "likedBy",
+//         "dislikedBy",
+//         "relationships"
+//       );
+//     }
+//   }
+// }

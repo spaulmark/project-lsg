@@ -6,6 +6,7 @@ export interface Tribe {
   name: string;
   color: string;
   size: number;
+  priority?: number;
 }
 
 export function tribeId(t: Tribe | undefined): string {

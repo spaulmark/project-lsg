@@ -169,12 +169,16 @@ export class RelationshipMapper {
 
   // runs in O(m), m number of edges.
   // if I wanted to make it better, I would have to optimize
-  public tribe(skeleton: { name: string; color: string }, members: string[]) {
+  public tribe(
+    skeleton: { name: string; color: string; priority?: number },
+    members: string[]
+  ) {
     const memberSet = new Set(members.map((name) => this.get(name).id));
-    const tribe = {
+    const tribe: Tribe = {
       size: members.filter((hg) => !this.get(hg).isEvicted).length, // only count non-evicted members
       name: skeleton.name,
       color: skeleton.color.toLowerCase(),
+      priority: skeleton.priority,
     };
     const newTribeId = tribeId(tribe);
     if (tribe.name.includes("#") || tribe.name.includes("=")) {

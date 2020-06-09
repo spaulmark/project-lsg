@@ -14,7 +14,7 @@ export function decodeToRelationshipMapper(
   const c = c1.trim();
   try {
     if (c.split("|").length !== 4) throw new Error(`Not a code`);
-    const [tribes, evictees, relationships, _] = c.split("|");
+    const [tribes, evictees, relationships] = c.split("|");
     if (relationships.length % 2 > 0 || evictees.length % 2 > 0)
       throw new Error(
         `Misaligned bytes: (${evictees.length}, ${relationships.length}`
@@ -92,7 +92,6 @@ function decodeEvictees(m: RelationshipMapper, c: string) {
 function decodeRelationships(m: RelationshipMapper, relationships: string) {
   let decodedR = "";
   let r: number = 0;
-  let p: number = 0;
   m.houseguests.forEach((hg) => {
     if (hg.isEvicted || hg.disabled) return;
     m.nonEvictedIDs.forEach((id) => {

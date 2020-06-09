@@ -5,7 +5,6 @@ import {
   emptySet,
   selectedPlayer$,
 } from "../../subjects/selectedPlayer$";
-import _ from "lodash";
 
 export function selectTribe(t: Tribe) {
   if (tribeId(t) === tribeId(selectedTribe$.value)) {

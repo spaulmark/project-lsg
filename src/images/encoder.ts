@@ -50,7 +50,6 @@ function encodeTribes(m: RelationshipMapper): string {
 
 function encodeRelationships(m: RelationshipMapper): string {
   let relationships = "";
-  let powerRankings = "";
   let rBuffer: string = "";
   let validateBuffer = (s: string) => {
     if (decode(encode(s)) !== s) {
