@@ -367,6 +367,28 @@ function importAll(
   dislike(epona, oaki);
   dislike(sidon, oaki);
   evict(oaki);
+  r.dropYourBuffs();
+  r.tribe({ name: "Heart Container", color: "#c70134" }, [
+    revali,
+    link,
+    robbie,
+    mipha,
+    urbosa,
+  ]);
+  r.tribe({ name: "Spirit Orb", color: "#761536" }, [
+    kass,
+    riju,
+    horse,
+    hunnie,
+    pelison,
+  ]);
+  r.tribe({ name: "Stamina Vessel", color: "#7d8d4e" }, [
+    master,
+    sidon,
+    patricia,
+    epona,
+    oven,
+  ]);
   //////////////////////// episode 4 ends
   dislike(urbosa, mipha);
   dislike(sidon, revali);
@@ -487,8 +509,8 @@ function importAll(
   ]);
   r.unevict(oven);
   r.unevict(oaki);
-  return r;
   /////////////// episode 7 ends
+  return r;
   like(epona, link);
   friends(oaki, oven);
   like(urbosa, oven);

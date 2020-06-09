@@ -102,7 +102,7 @@ export class HouseguestPortraitController {
         props.relationships![data.id],
         data.relationships[props.id!]
       );
-    } else if (selectedPlayers === 0) {
+    } else if (selectedPlayers === 0 && filter === nullFilter) {
       newState.popularity = this.defaultState.popularity;
     } else {
       newState.popularity = calculatePopularity({ ...newState }, filter.size);
@@ -111,7 +111,6 @@ export class HouseguestPortraitController {
   }
 
   private goToDefaultState() {
-    if (this.view.props.name === "Oaki") console.log(this.view.props.likedBy);
     if (this.view.state.disabled) return;
     if (tribeId(selectedTribe$.value)) {
       this.updateLikeCounts(tribeToFilter(selectedTribe$.value));
@@ -133,7 +132,7 @@ export class HouseguestPortraitController {
       // only one person is selected
       this.updateLikeCounts(
         compose(tribeFilter, {
-          size: 0, // size does not matter for 1 selected: all popularity is hardcoded
+          size: 0, // size does not matter for 1 selected: popularity is not calculated
           isPlayerDisabled: (_) => false,
           isLikeInGroup: (l) => true,
         })

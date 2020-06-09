@@ -27,8 +27,8 @@ export function tribeToFilter(t: Tribe | undefined): Filter {
 
 export const nullTribe: Tribe = { name: "", color: "", size: 0 };
 
-function hasSameTribe(tribe: string): (l: Like) => boolean {
+function hasSameTribe(tribeId: string): (l: Like) => boolean {
   return (l: Like): boolean => {
-    return tribe === l.tribeId;
+    return l.tribeIds.has(tribeId);
   };
 }

@@ -2,7 +2,7 @@ import { RelationshipHouseguest } from "../images/RelationshipMapper";
 import _ from "lodash";
 
 export interface Like {
-  tribeId: string;
+  tribeIds: Set<string>;
   id: number;
   disabled: boolean;
 }
@@ -27,8 +27,6 @@ export function enableLikes(
   villain: RelationshipHouseguest
 ) {
   setLikes(hero, villain, false);
-  console.log(hero.likedBy);
-  console.log(villain.likedBy);
 }
 
 function ignoreProblems(fcns: (() => void)[]) {

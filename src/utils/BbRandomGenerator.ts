@@ -34,13 +34,5 @@ export class BbRandomGenerator {
 }
 
 export function rng() {
-  return rng$.value;
+  return new BbRandomGenerator(0);
 }
-
-const rng$ = new BehaviorSubject(new BbRandomGenerator(0));
-
-// theoretically this does nothing, but if you delete it the code stops working.
-// yay race conditions...?
-const castSub = cast$.subscribe({
-  next: () => {},
-});

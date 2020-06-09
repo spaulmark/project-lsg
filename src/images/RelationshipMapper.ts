@@ -9,10 +9,26 @@ type LikeKey = "likedBy";
 type DislikeKey = "dislikedBy";
 
 export function calculatePopularity(
-  hg: { likedBy: Likemap; dislikedBy: Likemap },
+  hg: { likedBy: Likemap; dislikedBy: Likemap; name?: string },
   n: number
 ): number | undefined {
   if (n < 1) return undefined;
+  //////
+
+  if (hg.name === "Ancient Oven") {
+    console.log(sizeOf(hg.likedBy), "-", sizeOf(hg.dislikedBy), "/", n);
+    if (sizeOf(hg.likedBy) === 3 && sizeOf(hg.dislikedBy) === 3) {
+      console.log(
+        _.filter(hg.likedBy, (like) => {
+          console.log(like, like.disabled);
+          return !like.disabled;
+        })
+      );
+      console.log(hg);
+    }
+  }
+
+  ///////
   const likedBy = sizeOf(hg.likedBy);
   const dislikedBy = sizeOf(hg.dislikedBy);
   let result: number | undefined = 0;
@@ -120,7 +136,11 @@ export class RelationshipMapper {
   }
 
   private addToLikeMap(l: Likemap, h: RelationshipHouseguest) {
-    l[h.id] = { tribeId: tribeId(h.tribe), id: h.id, disabled: false };
+    l[h.id] = {
+      tribeIds: new Set([tribeId(h.tribe)]),
+      id: h.id,
+      disabled: false,
+    };
   }
 
   private deleteFromLikeMap(l: Likemap, h: RelationshipHouseguest) {
@@ -181,7 +201,10 @@ export class RelationshipMapper {
     this.houseguests.forEach((hg) => {
       memberSet.has(hg.id) && (hg.tribe = tribe);
       _.forEach(hg.likedBy, (like) => {
-        memberSet.has(like.id) && (like.tribeId = newTribeId);
+        memberSet.has(like.id) && like.tribeIds.add(newTribeId);
+      }); // TODO: major fixes needed right here boys
+      _.forEach(hg.dislikedBy, (like) => {
+        memberSet.has(like.id) && like.tribeIds.add(newTribeId);
       });
     });
   }
