@@ -4,7 +4,7 @@ import {
   RelationshipMapper,
   RelationshipHouseguest,
 } from "./RelationshipMapper";
-import { encodeRelationshipMapper } from "./encoder";
+import { MetaRelationshipMapper } from "./MetaRelationshipMapper";
 
 const master_kohga = "master kohga";
 const master = "master kohga";
@@ -33,37 +33,12 @@ const pelison = "pelison";
 const horse = "royal white horse";
 function importAll(
   context: __WebpackModuleApi.RequireContext
-): RelationshipMapper {
+): MetaRelationshipMapper {
   const profiles: RelationshipHouseguest[] = [];
   setupProfiles(context, profiles, new Set<string>(), new Set<string>());
-  const r: RelationshipMapper = new RelationshipMapper(profiles);
-  r.tribe({ name: "Wisdom", color: "#635cb9", priority: -1 }, [
-    "ancient oven",
-    "epona",
-    "hunnie",
-    "karson",
-    "mipha",
-    "pelison",
-    "urbosa",
-  ]);
-  r.tribe({ name: "Power", color: "#c70134", priority: 1 }, [
-    "Kass",
-    "magda",
-    "master kohga",
-    "patrica",
-    "revali",
-    "roscoe",
-    "teebo",
-  ]);
-  r.tribe({ name: "Courage", color: "#7d8d4e" }, [
-    "Link",
-    "chio",
-    "oaki",
-    "prince sidon",
-    "royal white horse",
-    "robbie",
-    "riju",
-  ]);
+  const r: MetaRelationshipMapper = new MetaRelationshipMapper(profiles);
+
+  const tribeSwap = r.tribeSwap.bind(r);
   const like = r.like.bind(r);
   const friends = r.friends.bind(r);
   const dislike = r.dislike.bind(r);
@@ -71,6 +46,50 @@ function importAll(
   const neutral = r.neutral.bind(r);
   const enemies = r.enemies.bind(r);
   const evict = r.evict.bind(r);
+  const unevict = r.unevict.bind(r);
+  tribeSwap([
+    {
+      name: "Wisdom",
+      color: "#635cb9",
+      priority: -1,
+      members: [
+        "ancient oven",
+        "epona",
+        "hunnie",
+        "karson",
+        "mipha",
+        "pelison",
+        "urbosa",
+      ],
+    },
+    {
+      name: "Power",
+      color: "#c70134",
+      priority: 1,
+      members: [
+        "Kass",
+        "magda",
+        "master kohga",
+        "patrica",
+        "revali",
+        "roscoe",
+        "teebo",
+      ],
+    },
+    {
+      name: "Courage",
+      color: "#7d8d4e",
+      members: [
+        "Link",
+        "chio",
+        "oaki",
+        "prince sidon",
+        "royal white horse",
+        "robbie",
+        "riju",
+      ],
+    },
+  ]);
   dislike(magda, patrica);
   dislike(magda, roscoe);
   dislike(magda, kass);
@@ -211,24 +230,31 @@ function importAll(
   evict(chio);
   evict(karson);
   /////////////////// EPISODE 2 BEGINS //////////////////////////////////
-  r.dropYourBuffs();
-  r.tribe({ name: "Gerudo-Kakariko", color: "#FE7555" }, [
-    epona,
-    horse,
-    teebo,
-    kass,
-    sidon,
-    urbosa,
-  ]);
-  r.tribe({ name: "Zora's Domain", color: "#635cb9" }, [mipha, riju, patrica]);
-  r.tribe({ name: "Korok Forest", color: "#7d8d4e" }, [oaki, revali, pelison]);
-  r.tribe({ name: "Rito-Goron", color: "#FCE78E" }, [
-    robbie,
-    master,
-    hunnie,
-    link,
-    oven,
-    roscoe,
+
+  r.tribeSwap([
+    {
+      name: "Gerudo-Kakariko",
+      color: "#FE7555",
+      members: [epona, horse, teebo, kass, sidon, urbosa],
+    },
+
+    {
+      name: "Zora's Domain",
+      color: "#635cb9",
+      members: [mipha, riju, patrica],
+    },
+
+    {
+      name: "Korok Forest",
+      color: "#7d8d4e",
+      members: [oaki, revali, pelison],
+    },
+
+    {
+      name: "Rito-Goron",
+      color: "#FCE78E",
+      members: [robbie, master, hunnie, link, oven, roscoe],
+    },
   ]);
   dislike(oven, hunnie);
   like(epona, karson);
@@ -286,29 +312,24 @@ function importAll(
   like(sidon, patricia);
   evict(roscoe);
   evict(teebo); //////////////////////// episode 3 ends
-  r.dropYourBuffs();
-  r.tribe({ name: "Heart Container", color: "#c70134" }, [
-    revali,
-    link,
-    robbie,
-    mipha,
-    urbosa,
+  r.tribeSwap([
+    {
+      name: "Stamina Vessel",
+      color: "#7d8d4e",
+      members: [master, sidon, patricia, oaki, oven],
+    },
+    {
+      name: "Heart Container",
+      color: "#c70134",
+      members: [revali, link, robbie, mipha, urbosa],
+    },
+    {
+      name: "Spirit Orb",
+      color: "#761536",
+      members: [kass, riju, horse, hunnie, pelison],
+    },
+    { name: "Exile", color: "#202020", priority: -1, members: [epona] },
   ]);
-  r.tribe({ name: "Spirit Orb", color: "#761536" }, [
-    kass,
-    riju,
-    horse,
-    hunnie,
-    pelison,
-  ]);
-  r.tribe({ name: "Stamina Vessel", color: "#7d8d4e" }, [
-    master,
-    sidon,
-    patricia,
-    oaki,
-    oven,
-  ]);
-  r.tribe({ name: "Exile", color: "#202020", priority: -1 }, [epona]); // TODO: uncomment this line, also include custom tribe ordering.
   dislike(sidon, revali);
   friends(revali, master);
   like(oaki, mipha);
@@ -367,28 +388,22 @@ function importAll(
   dislike(epona, oaki);
   dislike(sidon, oaki);
   evict(oaki);
-  return r;
-  r.dropYourBuffs();
-  r.tribe({ name: "Heart Container", color: "#c70134" }, [
-    revali,
-    link,
-    robbie,
-    mipha,
-    urbosa,
-  ]);
-  r.tribe({ name: "Spirit Orb", color: "#761536" }, [
-    kass,
-    riju,
-    horse,
-    hunnie,
-    pelison,
-  ]);
-  r.tribe({ name: "Stamina Vessel", color: "#7d8d4e" }, [
-    master,
-    sidon,
-    patricia,
-    epona,
-    oven,
+  tribeSwap([
+    {
+      name: "Heart Container",
+      color: "#c70134",
+      members: [revali, link, robbie, mipha, urbosa],
+    },
+    {
+      name: "Spirit Orb",
+      color: "#761536",
+      members: [kass, riju, horse, hunnie, pelison],
+    },
+    {
+      name: "Stamina Vessel",
+      color: "#7d8d4e",
+      members: [master, sidon, patricia, epona, oven],
+    },
   ]);
   //////////////////////// episode 4 ends
   dislike(urbosa, mipha);
@@ -416,11 +431,17 @@ function importAll(
   evict(riju);
   evict(oven);
   //////////////////////// episode 5 ends
-  r.dropYourBuffs();
-  r.tribe({ name: "Naboris", color: "#FE7555" }, [master_kohga, urbosa, kass]);
-  r.tribe({ name: "Medoh", color: "#FCE78E" }, [revali, epona, horse]);
-  r.tribe({ name: "Rudania", color: "#C70134" }, [sidon, mipha, hunnie]);
-  r.tribe({ name: "Ruta", color: "#635CB9" }, [patrica, link, pelison]);
+
+  tribeSwap([
+    {
+      name: "Naboris",
+      color: "#FE7555",
+      members: [master_kohga, urbosa, kass],
+    },
+    { name: "Medoh", color: "#FCE78E", members: [revali, epona, horse] },
+    { name: "Rudania", color: "#C70134", members: [sidon, mipha, hunnie] },
+    { name: "Ruta", color: "#635CB9", members: [patrica, link, pelison] },
+  ]);
   dislike(mipha, sidon);
   dislike(patricia, horse);
   like(pelison, patricia);
@@ -468,19 +489,24 @@ function importAll(
   dislike(master, link);
   evict(pelison);
   //////////////////////// episode 6 ends
-  r.dropYourBuffs();
-  r.tribe({ name: "Tarrey Town", color: "#de4861" }, [
-    revali,
-    kass,
-    master,
-    patrica,
-    sidon,
-    link,
-    horse,
-    mipha,
-    epona,
-    urbosa,
-    hunnie,
+  tribeSwap([
+    {
+      name: "Tarrey Town",
+      color: "#de4861",
+      members: [
+        revali,
+        kass,
+        master,
+        patrica,
+        sidon,
+        link,
+        horse,
+        mipha,
+        epona,
+        urbosa,
+        hunnie,
+      ],
+    },
   ]);
   like(link, revali);
   neutral(master, hunnie);
@@ -492,24 +518,30 @@ function importAll(
   dislike(horse, kass);
   dislike(horse, patricia);
   /////// surprise returnee twist
-  r.dropYourBuffs();
-  r.tribe({ name: "Tarrey Town", color: "#de4861" }, [
-    revali,
-    kass,
-    master,
-    patrica,
-    sidon,
-    link,
-    horse,
-    mipha,
-    epona,
-    urbosa,
-    hunnie,
-    oaki,
-    oven,
+
+  tribeSwap([
+    {
+      name: "Tarrey Town",
+      color: "#de4861",
+      members: [
+        revali,
+        kass,
+        master,
+        patrica,
+        sidon,
+        link,
+        horse,
+        mipha,
+        epona,
+        urbosa,
+        hunnie,
+        oaki,
+        oven,
+      ],
+    },
   ]);
-  r.unevict(oven);
-  r.unevict(oaki);
+  unevict(oven);
+  unevict(oaki);
   /////////////// episode 7 ends
   like(epona, link);
   friends(oaki, oven);
@@ -630,20 +662,18 @@ function importAll(
   dislike(oven, patricia);
   evict(horse);
   ////// episode 10 begins
-  r.dropYourBuffs();
-  r.tribe({ name: "Divine Trial", color: "#FCE78E" }, [
-    epona,
-    master_kohga,
-    urbosa,
-    kass,
-    hunnie,
-  ]);
-  r.tribe({ name: "Lost Woods", color: "#B8B8B8" }, [
-    oven,
-    revali,
-    sidon,
-    patricia,
-    oaki,
+
+  tribeSwap([
+    {
+      name: "Divine Trial",
+      color: "#FCE78E",
+      members: [epona, master_kohga, urbosa, kass, hunnie],
+    },
+    {
+      name: "Lost Woods",
+      color: "#B8B8B8",
+      members: [oven, revali, sidon, patricia, oaki],
+    },
   ]);
   dislike(sidon, kass);
   dislike(epona, kass);
@@ -670,17 +700,13 @@ function importAll(
   evict(patricia);
   evict(hunnie);
   //// episode 11 begins
-  r.dropYourBuffs();
-  r.tribe({ name: "Hyrule Castle", color: "#95654E" }, [
-    oaki,
-    sidon,
-    mipha,
-    urbosa,
-    kass,
-    revali,
-    epona,
-    oven,
-    master,
+
+  tribeSwap([
+    {
+      name: "Hyrule Castle",
+      color: "#95654E",
+      members: [oaki, sidon, mipha, urbosa, kass, revali, epona, oven, master],
+    },
   ]);
   like(sidon, oven);
   dislike(sidon, epona);
@@ -769,12 +795,13 @@ function importAll(
   like(urbosa, mipha);
   dislike(urbosa, master);
   evict(master);
-  console.log(encodeRelationshipMapper(r));
+  // console.log(encodeRelationshipMapper(r));
+  return r;
 }
 
 ////////////////// safe space below here
 
-export const initialProfiles = importAll(
+export const initialProfiles: MetaRelationshipMapper = importAll(
   require.context("./src", false, /.png/)
 );
 

@@ -5,6 +5,7 @@ import { TopbarController } from "./topBarController";
 import { RelationshipMapper } from "../../images/RelationshipMapper";
 import { initialProfiles } from "../../images/initialProfiles";
 import { players$ } from "../../subjects/subjects";
+import { MetaRelationshipMapper } from "../../images/MetaRelationshipMapper";
 
 interface TopbarProps {
   style?: any;
@@ -12,6 +13,8 @@ interface TopbarProps {
 interface TopbarState {
   inputCode: string;
   rMapper: RelationshipMapper;
+  metaRmapper: MetaRelationshipMapper;
+  time: number;
 }
 export class Topbar extends React.Component<TopbarProps, TopbarState> {
   private controller: TopbarController;
@@ -19,7 +22,12 @@ export class Topbar extends React.Component<TopbarProps, TopbarState> {
   public constructor(props: TopbarProps) {
     super(props);
     this.controller = new TopbarController(this);
-    this.state = { inputCode: "", rMapper: initialProfiles };
+    this.state = {
+      inputCode: "",
+      metaRmapper: initialProfiles,
+      time: 0,
+      rMapper: initialProfiles.at(20),
+    };
   }
 
   public componentDidMount() {
