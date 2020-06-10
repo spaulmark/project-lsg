@@ -43,7 +43,7 @@ export class MetaRelationshipMapper {
   }
 
   public endEpisode() {
-    this.episodeStartMarkers.push(this.t);
+    this.episodeStartMarkers.push(this.t - 1);
   }
 
   public tribeSwap(tribes: TribeSkeleton[]) {

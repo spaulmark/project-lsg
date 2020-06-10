@@ -344,8 +344,9 @@ function importAll(
   like(pelison, oaki);
   like(sidon, patricia);
   evict(roscoe);
-  evict(teebo); //////////////////////// episode 3 ends
+  evict(teebo);
   endEpisode();
+  //////////////////////// episode 3 ends
   r.tribeSwap([
     {
       name: "Stamina Vessel",
@@ -422,6 +423,9 @@ function importAll(
   dislike(epona, oaki);
   dislike(sidon, oaki);
   evict(oaki);
+
+  endEpisode();
+  //////////////////////// episode 4 ends
   tribeSwap([
     {
       name: "Heart Container",
@@ -439,8 +443,6 @@ function importAll(
       members: [master, sidon, patricia, epona, oven],
     },
   ]);
-  endEpisode();
-  //////////////////////// episode 4 ends
   dislike(urbosa, mipha);
   dislike(sidon, revali);
   neutral(sidon, link);
