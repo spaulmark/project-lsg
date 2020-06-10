@@ -8,6 +8,7 @@ import { MetaRelationshipMapper } from "../../images/MetaRelationshipMapper";
 import { HasText } from "../layout/text";
 import { CenteredBold } from "../layout/centered";
 import { primary, secondary } from "../../App";
+import { isNullOrUndefined } from "util";
 
 interface TopbarProps {
   style?: any;
@@ -47,10 +48,13 @@ export class Topbar extends React.Component<TopbarProps, TopbarState> {
     const metaMapper = this.state.metaRmapper;
     const selectedEpisode = this.state.selectedEpisode;
     if (prevState.selectedEpisode !== this.state.selectedEpisode) {
-      players$Next(
-        metaMapper.at(metaMapper.episodeStartMarkers[selectedEpisode - 1] + 1)
-          .houseguests
-      );
+      // going forwards in time ? 1 : 0.
+      const offset =
+        prevState.selectedEpisode < this.state.selectedEpisode ? 1 : 0;
+      const time =
+        metaMapper.episodeStartMarkers[selectedEpisode - offset] + offset; // this works, trust me.
+      players$Next(metaMapper.at(time).houseguests);
+      this.setState({ time });
     } else if (prevState.time !== this.state.time) {
       players$Next(metaMapper.at(this.state.time).houseguests);
     }
@@ -62,6 +66,7 @@ export class Topbar extends React.Component<TopbarProps, TopbarState> {
     const min =
       metaMapper.episodeStartMarkers[this.state.selectedEpisode - 1] + 1;
     const max = metaMapper.episodeStartMarkers[this.state.selectedEpisode];
+    const disabled = min >= max || max === undefined;
     return (
       <Box className="" style={style}>
         <HasText className="columns is-gapless is-vcentered">
@@ -84,17 +89,19 @@ export class Topbar extends React.Component<TopbarProps, TopbarState> {
         </HasText>
         <HasText className="columns is-vcentered">
           <div className="column is-1">
-            <CenteredBold style={{ color: secondary }}>Timeline</CenteredBold>
+            <CenteredBold style={{ color: disabled ? "#BDBDBD" : secondary }}>
+              Timeline
+            </CenteredBold>
           </div>
           <div className="column">
             <Slider
               color="secondary"
               aria-labelledby="timeline-slider"
-              defaultValue={0}
+              value={this.state.time}
               onChange={this.handleTimeChange}
               min={min}
-              max={max}
-              disabled={min >= max || max === undefined}
+              max={isNullOrUndefined(max) ? min + 1 : max}
+              disabled={disabled}
               valueLabelDisplay="off"
             />
           </div>
