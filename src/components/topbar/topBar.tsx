@@ -3,7 +3,7 @@ import { Box } from "../layout/box";
 import Slider from "@material-ui/core/Slider";
 import { RelationshipMapper } from "../../images/RelationshipMapper";
 import { initialProfiles } from "../../images/initialProfiles";
-import { players$ } from "../../subjects/subjects";
+import { players$Next } from "../../subjects/subjects";
 import { MetaRelationshipMapper } from "../../images/MetaRelationshipMapper";
 import { HasText } from "../layout/text";
 import { CenteredBold } from "../layout/centered";
@@ -23,7 +23,6 @@ export class Topbar extends React.Component<TopbarProps, TopbarState> {
 
   public constructor(props: TopbarProps) {
     super(props);
-    // this.controller = new TopbarController(this);
     this.state = {
       metaRmapper: initialProfiles,
       time: 1,
@@ -37,7 +36,7 @@ export class Topbar extends React.Component<TopbarProps, TopbarState> {
   };
 
   public componentDidMount() {
-    players$.next(this.state.rMapper.houseguests);
+    players$Next(this.state.rMapper.houseguests);
   }
 
   private handleTimeChange = (event: any, time: any) => {
@@ -48,12 +47,12 @@ export class Topbar extends React.Component<TopbarProps, TopbarState> {
     const metaMapper = this.state.metaRmapper;
     const selectedEpisode = this.state.selectedEpisode;
     if (prevState.selectedEpisode !== this.state.selectedEpisode) {
-      players$.next(
+      players$Next(
         metaMapper.at(metaMapper.episodeStartMarkers[selectedEpisode - 1] + 1)
           .houseguests
       );
     } else if (prevState.time !== this.state.time) {
-      players$.next(metaMapper.at(this.state.time).houseguests);
+      players$Next(metaMapper.at(this.state.time).houseguests);
     }
   }
 

@@ -10,7 +10,7 @@ import { Tribe } from "../../images/tribe";
 
 export interface SelectedPlayerData {
   id: number;
-  popularity: number;
+  // popularity: number;
   relationships: RelationshipMap | DiscreteRelationshipMap;
   isEvicted: boolean;
   superiors?: Set<number>;

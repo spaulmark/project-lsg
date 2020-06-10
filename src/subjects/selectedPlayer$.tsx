@@ -18,7 +18,7 @@ export function getOnlySelectedPlayerOrNull(
   for (let entry of s.entries()) {
     return entry[1];
   }
-  return null; // unreachable code
+  return null; // unreachable code but the compiler can't understand that
 }
 
 export const enableMultiSelection$ = new BehaviorSubject<boolean>(false);

@@ -103,7 +103,7 @@ function friendOrEnemyTitle(
     RelationshipTypeToSymbol[
       classifyRelationship(
         state.popularity || 0,
-        villain.popularity,
+        0, // was  villain.popularity. but does not matter
         heroRelationship,
         villainRelationship
       )
