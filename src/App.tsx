@@ -6,6 +6,18 @@ import { ColorTheme, darkTheme } from "./theme/theme";
 import { GlobalStyles } from "./theme/globalTheme";
 import { theme$ } from "./subjects/subjects";
 import { Subscription } from "rxjs";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
+
+export const primary = "#33fff9";
+export const secondary = "#f933ff";
+
+const muiTheme = createMuiTheme({
+  palette: {
+    type: "dark",
+    primary: { main: primary },
+    secondary: { main: secondary },
+  },
+});
 
 class App extends React.Component<{}, { theme: ColorTheme }> {
   private sub: Subscription | null = null;
@@ -28,12 +40,14 @@ class App extends React.Component<{}, { theme: ColorTheme }> {
 
   render() {
     return (
-      <ThemeProvider theme={this.state.theme}>
-        <>
-          <GlobalStyles />
-          <MainPage controller={new MainPageController()} />
-        </>
-      </ThemeProvider>
+      <MuiThemeProvider theme={muiTheme}>
+        <ThemeProvider theme={this.state.theme}>
+          <>
+            <GlobalStyles />
+            <MainPage controller={new MainPageController()} />
+          </>
+        </ThemeProvider>
+      </MuiThemeProvider>
     );
   }
 }

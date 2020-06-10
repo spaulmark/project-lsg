@@ -1,9 +1,5 @@
 import { newDiscreteRelationshipMap } from "../utils";
-// import prand from "pure-rand";
-import {
-  RelationshipMapper,
-  RelationshipHouseguest,
-} from "./RelationshipMapper";
+import { RelationshipHouseguest } from "./RelationshipMapper";
 import { MetaRelationshipMapper } from "./MetaRelationshipMapper";
 
 const master_kohga = "master kohga";
@@ -47,6 +43,7 @@ function importAll(
   const enemies = r.enemies.bind(r);
   const evict = r.evict.bind(r);
   const unevict = r.unevict.bind(r);
+  const endEpisode = r.endEpisode.bind(r);
   tribeSwap([
     {
       name: "Wisdom",
@@ -229,9 +226,67 @@ function importAll(
   evict(magda);
   evict(chio);
   evict(karson);
+  endEpisode();
   /////////////////// EPISODE 2 BEGINS //////////////////////////////////
 
-  r.tribeSwap([
+  tribeSwap([
+    {
+      name: "Gerudo Town",
+      color: "#FE7555",
+      members: [epona, horse, teebo],
+    },
+    {
+      name: "Kakariko Village",
+      color: "#761536",
+      members: [kass, sidon, urbosa],
+      priority: -2,
+    },
+    {
+      name: "Zora's Domain",
+      color: "#635cb9",
+      members: [mipha, riju, patrica],
+      priority: -1,
+    },
+    {
+      name: "Korok Forest",
+      color: "#7d8d4e",
+      members: [oaki, revali, pelison],
+    },
+    {
+      name: "Goron City",
+      color: "#C70134",
+      members: [link, oven, roscoe],
+    },
+    {
+      name: "Rito Village",
+      color: "#FCE78E",
+      members: [robbie, master, hunnie],
+    },
+  ]);
+
+  dislike(oven, hunnie);
+  like(epona, karson);
+  dislike(urbosa, pelison);
+  like(oaki, revali);
+  like(epona, horse);
+  dislike(master, hunnie);
+  dislike(master, robbie);
+  dislike(oaki, pelison);
+  dislike(robbie, hunnie);
+  like(sidon, urbosa);
+  dislike(sidon, revali);
+  dislike(sidon, kass);
+  dislike(mipha, riju);
+  like(mipha, patricia);
+  dislike(hunnie, oven);
+  neutral(oaki, pelison);
+  dislike(epona, pelison);
+  like(riju, mipha);
+  friends(roscoe, oven);
+  like(robbie, master);
+  like(patricia, mipha);
+  dislike(mipha, riju);
+  tribeSwap([
     {
       name: "Gerudo-Kakariko",
       color: "#FE7555",
@@ -256,28 +311,6 @@ function importAll(
       members: [robbie, master, hunnie, link, oven, roscoe],
     },
   ]);
-  dislike(oven, hunnie);
-  like(epona, karson);
-  dislike(urbosa, pelison);
-  like(oaki, revali);
-  like(epona, horse);
-  dislike(master, hunnie);
-  dislike(master, robbie);
-  dislike(oaki, pelison);
-  dislike(robbie, hunnie);
-  like(sidon, urbosa);
-  dislike(sidon, revali);
-  dislike(sidon, kass);
-  dislike(mipha, riju);
-  like(mipha, patricia);
-  dislike(hunnie, oven);
-  neutral(oaki, pelison);
-  dislike(epona, pelison);
-  like(riju, mipha);
-  friends(roscoe, oven);
-  like(robbie, master);
-  like(patricia, mipha);
-  dislike(mipha, riju);
   dislike(link, robbie);
   like(horse, epona);
   friends(robbie, master);
@@ -312,6 +345,7 @@ function importAll(
   like(sidon, patricia);
   evict(roscoe);
   evict(teebo); //////////////////////// episode 3 ends
+  endEpisode();
   r.tribeSwap([
     {
       name: "Stamina Vessel",
@@ -405,6 +439,7 @@ function importAll(
       members: [master, sidon, patricia, epona, oven],
     },
   ]);
+  endEpisode();
   //////////////////////// episode 4 ends
   dislike(urbosa, mipha);
   dislike(sidon, revali);
@@ -430,6 +465,7 @@ function importAll(
   evict(robbie);
   evict(riju);
   evict(oven);
+  endEpisode();
   //////////////////////// episode 5 ends
 
   tribeSwap([
@@ -458,6 +494,15 @@ function importAll(
   like(revali, urbosa);
   dislike(revali, epona);
   dislike(revali, horse);
+  tribeSwap([
+    {
+      name: "Naboris-Ruta",
+      color: "#FE7555",
+      members: [master_kohga, urbosa, kass, patrica, link, pelison],
+    },
+    { name: "Medoh", color: "#FCE78E", members: [revali, epona, horse] },
+    { name: "Rudania", color: "#C70134", members: [sidon, mipha, hunnie] },
+  ]);
   dislike(kass, patricia);
   dislike(kass, link);
   dislike(kass, mipha);
@@ -488,6 +533,7 @@ function importAll(
   dislike(epona, mipha);
   dislike(master, link);
   evict(pelison);
+  endEpisode();
   //////////////////////// episode 6 ends
   tribeSwap([
     {
@@ -542,6 +588,7 @@ function importAll(
   ]);
   unevict(oven);
   unevict(oaki);
+  endEpisode();
   /////////////// episode 7 ends
   like(epona, link);
   friends(oaki, oven);
@@ -612,6 +659,7 @@ function importAll(
   dislike(oven, horse);
   friends(epona, kass);
   evict(link);
+  endEpisode();
   /////////////// episode 8 begins
   dislike(hunnie, oaki);
   dislike(hunnie, patrica);
@@ -625,6 +673,7 @@ function importAll(
   like(sidon, hunnie);
   like(epona, hunnie);
   evict(mipha);
+  endEpisode();
   //////////// episode 9 begins
   like(patricia, hunnie);
   neutral(patricia, oven);
@@ -661,6 +710,7 @@ function importAll(
   dislike(hunnie, epona);
   dislike(oven, patricia);
   evict(horse);
+  endEpisode();
   ////// episode 10 begins
 
   tribeSwap([
@@ -668,6 +718,7 @@ function importAll(
       name: "Divine Trial",
       color: "#FCE78E",
       members: [epona, master_kohga, urbosa, kass, hunnie],
+      priority: 1,
     },
     {
       name: "Lost Woods",
@@ -699,6 +750,7 @@ function importAll(
   dislike(urbosa, hunnie);
   evict(patricia);
   evict(hunnie);
+  endEpisode();
   //// episode 11 begins
 
   tribeSwap([
@@ -737,6 +789,7 @@ function importAll(
   like(master, oaki);
   dislike(mipha, revali);
   evict(oaki);
+  endEpisode();
   /////////// episode 13 begins
   dislike(revali, epona);
   neutral(master, oven);
@@ -763,6 +816,7 @@ function importAll(
   neutral(mipha, sidon);
   neutral(sidon, mipha);
   evict(kass);
+  endEpisode();
   /////////// episode 14 begins
   enemies(sidon, mipha);
   dislike(revali, urbosa);
@@ -775,6 +829,7 @@ function importAll(
   dislike(master, urbosa);
   dislike(master, revali);
   evict(oven);
+  endEpisode();
   /////// episode 15 begins
   like(master, revali);
   like(urbosa, epona);
@@ -786,16 +841,18 @@ function importAll(
   like(mipha, revali);
   dislike(epona, urbosa);
   evict(sidon);
+  endEpisode();
   /////////// episode 16 begins
   dislike(urbosa, epona);
   like(urbosa, master);
   evict(epona);
+  endEpisode();
   ////////// episode 17 begins
   friends(master, mipha);
   like(urbosa, mipha);
   dislike(urbosa, master);
   evict(master);
-  // console.log(encodeRelationshipMapper(r));
+  endEpisode();
   return r;
 }
 

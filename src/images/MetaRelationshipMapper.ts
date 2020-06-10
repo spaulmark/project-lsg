@@ -14,6 +14,11 @@ export interface TribeSkeleton {
 export class MetaRelationshipMapper {
   private timeline: RelationshipMapper[] = [];
   private t: number = 0;
+  public episodeStartMarkers: number[] = [0];
+
+  public get time() {
+    return this.t;
+  }
 
   public constructor(houseguests: RelationshipHouseguest[]) {
     this.timeline[this.t] = new RelationshipMapper(houseguests);
@@ -21,13 +26,11 @@ export class MetaRelationshipMapper {
   }
 
   public at(t: number) {
-    if (t >= this.t)
-      throw new Error(
-        `Tried to get the time slice ${t}, only values below ${
-          this.t - 1
-        } are valid`
-      );
-    return this.timeline[t];
+    let time = t;
+
+    if (t >= this.t) time = this.t - 1;
+    if (t < 1) time = 1;
+    return this.timeline[time];
   }
 
   private cloneDeep(): RelationshipMapper {
@@ -37,6 +40,10 @@ export class MetaRelationshipMapper {
   private pushToTimeline(newMap: RelationshipMapper) {
     this.timeline[this.t] = newMap;
     this.t++;
+  }
+
+  public endEpisode() {
+    this.episodeStartMarkers.push(this.t);
   }
 
   public tribeSwap(tribes: TribeSkeleton[]) {

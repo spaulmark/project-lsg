@@ -10,18 +10,18 @@ export class TopbarController {
   public constructor(view: Topbar) {
     this.view = view;
   }
-  public onSubmit = () => {
-    if (!this.view.state.inputCode) return;
-    const newMap: RelationshipMapper | null = decodeToRelationshipMapper(
-      this.view.state.rMapper,
-      this.view.state.inputCode
-    );
-    this.view.setState({ inputCode: "" });
-    if (newMap === null) return;
+  // public onSubmit = () => {
+  //   if (!this.view.state.inputCode) return;
+  //   const newMap: RelationshipMapper | null = decodeToRelationshipMapper(
+  //     this.view.state.rMapper,
+  //     this.view.state.inputCode
+  //   );
+  //   this.view.setState({ inputCode: "" });
+  //   if (newMap === null) return;
 
-    this.view.setState({ rMapper: newMap });
-    players$.next(newMap.houseguests);
-    selectedPlayer$.next(emptySet());
-    selectedTribe$.next(nullTribe);
-  };
+  //   this.view.setState({ rMapper: newMap });
+  //   players$.next(newMap.houseguests);
+  //   selectedPlayer$.next(emptySet());
+  //   selectedTribe$.next(nullTribe);
+  // };
 }

@@ -40,7 +40,6 @@ export function MemoryWall(props: IMemoryWallProps): JSX.Element {
     const hg0 = tribe[0];
     priorityMap[tribeId(hg0.tribe)] = (hg0.tribe || nullTribe).priority || 0;
   });
-  console.log(priorityMap);
 
   const tribes: JSX.Element[] = [];
   _.forEach(houseguestsByTribe, (hgs, name) => {
@@ -60,7 +59,7 @@ export function MemoryWall(props: IMemoryWallProps): JSX.Element {
         maxWidth: -1,
       }}
     >
-      {tribes}
+      <div className="columns is-multiline is-centered">{tribes}</div>
     </div>
   );
 }
