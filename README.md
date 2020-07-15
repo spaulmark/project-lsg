@@ -1,15 +1,18 @@
 # Hi, welcome to Project LSG!
 
-This project is a secret right now! Only a few people know what to do with this page. If you're one of those people, just follow the instructions I've given you, and let me know what you think. Otherwise, you should just check back in a couple months.
+This is an experimental interface I made for visualizing social networks as they change over time. It uses real data! 
 
-## What is a community viewer for social networks?
+## Show, don't tell
 
-A community viewer for social networks is something that makes sense of a small social network with a lot of edges.
+![./select.gif](image.png)
 
-You know how when you look at a really big graph, sometimes you can notice little groups and clusters of nodes that are mostly connected to each other? Those are called communities. In a social network, a community might be a classroom, a group of co-workers, or members of the same club. Communities can also have communities within them, like the popular girls that always eat lunch together.
+## What's the source on your data?
 
-Because most people talk to each other in a community, the resulting graph is very dense in edges and is hard to look at. Everybody has an opinion on everybody else, so displaying it like a graph to try to visualize it isn't very helpful, even for small communities. That's where this software comes in.
+I spectated an online game of survivor, and kept track of the players's opinions on each other as the game progressed. Survivor is a game where the primary mechanic is that players eliminate each other by majority vote until only one winner remains, making it a good candidate for a social network analysis. Players voulenteered information to spectators in private forum threads. Because giving information to spectators was not compulsory, some players chose to give less information than others. As such, the data collected is not guarenteed to be 100% accurate or complete.
 
-### What can I do right now? 
+Here's a link to the forum where the game was played. Unless you've seen one of these before, you're probably not going to know what to do with it. 
+https://powervcouragevwisdom.freeforums.net/
 
-Maybe do some reading on community visualziation: Look up "NodeTrix" and "Social Network Visualization" on Google Scholar and start reading papers until you're excited about this problem as I am. 
+## How do I use this interface? 
+
+Use the sliders up top to 
