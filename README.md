@@ -4,7 +4,7 @@ This is an experimental interface I made for visualizing social networks as they
 
 ## Show, don't tell
 
-![./select.gif](image.png)
+![](select.gif)
 
 ## What's the source on your data?
 
