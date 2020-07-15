@@ -1,7 +1,4 @@
 import prand from "pure-rand";
-import { BehaviorSubject } from "rxjs";
-import { hashcode } from "./utilities";
-import { cast$ } from "../subjects/subjects";
 
 export class BbRandomGenerator {
   private rng: prand.RandomGenerator;
@@ -34,13 +31,5 @@ export class BbRandomGenerator {
 }
 
 export function rng() {
-  return rng$.value;
+  return new BbRandomGenerator(0);
 }
-
-const rng$ = new BehaviorSubject(new BbRandomGenerator(0));
-
-// theoretically this does nothing, but if you delete it the code stops working.
-// yay race conditions...?
-const castSub = cast$.subscribe({
-  next: () => {},
-});

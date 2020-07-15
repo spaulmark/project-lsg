@@ -40,19 +40,6 @@ export function inJury(gameState: GameState): Boolean {
   return gameState.remainingPlayers - getFinalists() <= finalJurySize();
 }
 
-// export function calculatePopularity(hero: Houseguest, house: Houseguest[]) {
-//     let sum = 0;
-//     let count = 0;
-//     const targetId = hero.id;
-//     house.forEach(houseguest => {
-//         if (houseguest.id !== targetId) {
-//             count++;
-//             sum += houseguest.relationships[targetId];
-//         }
-//     });
-//     return count === 0 ? 0 : sum / count;
-// }
-
 export class GameState {
   // Current state of the game after a phase.
 

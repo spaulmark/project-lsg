@@ -1,6 +1,6 @@
 function componentToHex(c: any) {
   var hex = Math.round(c).toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
+  return hex.length === 1 ? "0" + hex : hex;
 }
 
 export class Rgb {
@@ -24,16 +24,16 @@ export class Rgb {
     this.b = b;
   }
 }
-function hexToRgb(hex: string) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
-    : null;
-}
+// function hexToRgb(hex: string) {
+//   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+//   return result
+//     ? {
+//         r: parseInt(result[1], 16),
+//         g: parseInt(result[2], 16),
+//         b: parseInt(result[3], 16),
+//       }
+//     : null;
+// }
 
 export function textColor(bg: string) {
   var color = bg.charAt(0) === "#" ? bg.substring(1, 7) : bg;

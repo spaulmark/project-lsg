@@ -1,5 +1,5 @@
 import React from "react";
-import { popularityMode, powerMode } from "../../model/portraitDisplayMode";
+import { popularityMode } from "../../model/portraitDisplayMode";
 import { ViewBarTag } from "./viewBarTag";
 import { Box } from "../layout/box";
 import styled from "styled-components";
@@ -13,8 +13,6 @@ export function ViewsBar() {
   return (
     <ViewsBox className="level is-mobile" key="viewsbar">
       <ViewBarTag mode={popularityMode} text={"Relationships"}></ViewBarTag>
-      <ViewBarTag mode={powerMode} text={"Threat Level"}></ViewBarTag>
-      {/* <ViewBarTag mode={powerMode} disabled={true} text={"Cliques [Coming Soon™]"}></ViewBarTag> */}
     </ViewsBox>
   );
 }

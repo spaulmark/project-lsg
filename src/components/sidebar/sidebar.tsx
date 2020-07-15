@@ -1,8 +1,6 @@
 import React from "react";
 import { SidebarController } from "./sidebarController";
-import { Episode, GameState } from "../../model";
-import { Scene } from "../episode/scene";
-import { newEpisode } from "../../subjects/subjects";
+import { Episode } from "../../model";
 import { Box } from "../layout/box";
 import { HasText } from "../layout/text";
 interface SidebarState {
@@ -59,17 +57,22 @@ export class Sidebar extends React.Component<{}, SidebarState> {
         </b>
       );
       result.push(<br key={--breakKey} />);
-      episode.scenes.forEach((scene: Scene) => {
-        const id = ++episodeKey;
-        if (this.controller.getSelectedEpisode() === episode.gameState.phase) {
-          result.push(
-            <a key={id} onClick={() => this.controller.switchToScene(id)}>
-              {this.getHighlight(scene.title, id)}
-            </a>
-          );
-          result.push(<br key={--breakKey} />);
-        }
-      });
+      // episode.scenes.forEach((scene: Scene) => {
+      //   const id = ++episodeKey;
+      //   if (this.controller.getSelectedEpisode() === episode.gameState.phase) {
+      //     result
+      //       .push
+      //       // <a
+      //       //   key={id}
+      //       //   href={""}
+      //       //   onClick={() => this.controller.switchToScene(id)}
+      //       // >
+      //       //   {this.getHighlight(scene.title, id)}
+      //       // </a>
+      //       ();
+      //     result.push(<br key={--breakKey} />);
+      //   }
+      // });
     });
     return result;
   }

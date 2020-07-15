@@ -4,6 +4,7 @@ import { Sidebar } from "../sidebar/sidebar";
 import { Topbar } from "../topbar/topBar";
 import { MainContentArea } from "./mainContentArea";
 import { MainPageController } from "./mainPageController";
+import { RightSidebar } from "../sidebar/rightSidebar";
 
 interface MainPageProps {
   controller: MainPageController;
@@ -34,11 +35,14 @@ export class MainPage extends React.Component<MainPageProps, MainPageState> {
       : { margin: "auto", maxWidth: 1380, overflow: "hidden" };
     return (
       <div style={wrapperStyle}>
-        <Sidebar />
         <Topbar style={hideOnFullscreen} />
+        <Sidebar />
         <div className="columns">
           <div className="column" style={{ overflowX: "hidden" }}>
             <MainContentArea />
+          </div>
+          <div className="column is-narrow">
+            <RightSidebar />
           </div>
         </div>
       </div>

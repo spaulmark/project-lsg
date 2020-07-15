@@ -1,3 +1,11 @@
+// @import "../sass/utilities/initial-variables";
+// @import "../sass/utilities/functions";
+
+@import "../../../node_modules/bulma/sass/utilities/initial-variables.sass";
+@import "../../../node_modules/bulma/sass/utilities/functions.sass";
+$primary: #1d9793;
+$primary-invert: #fff;
+
 @import "../../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../../node_modules/bulma/sass/components/level.sass";
 @import "../../../node_modules/bulma/sass/elements/tag.sass";
@@ -6,7 +14,7 @@
 @import "../../../node_modules/bulma/sass/elements/form.sass";
 @import "../../../node_modules/bulma/sass/elements/button.sass";
 .box {
-    margin-left: 3px;
-    margin-right: 3px;
-    margin-bottom: 3px;
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-bottom: 3px;
 }

@@ -1,7 +1,7 @@
 import { Subscription } from "rxjs";
 import { Sidebar } from "./sidebar";
 import { Season } from "../../model/season";
-import { Episode, nonEvictedHouseguests, getById } from "../../model";
+import { Episode, nonEvictedHouseguests } from "../../model";
 import { Scene } from "../episode/scene";
 import {
   mainContentStream$,
@@ -9,8 +9,6 @@ import {
   switchEpisode$,
   newEpisode,
   switchSceneRelative,
-  getSelectedPlayer,
-  selectedPlayer$,
 } from "../../subjects/subjects";
 
 interface IndexedScene {
@@ -52,14 +50,14 @@ export class SidebarController {
     mainContentStream$.next(this.scenes[id].scene.render);
     this.selectedEpisode = this.scenes[id].index;
     await this.view.setState({ selectedScene: id });
-    if (getSelectedPlayer() !== null) {
-      selectedPlayer$.next(
-        getById(
-          this.scenes[this.view.state.selectedScene].scene.gameState,
-          getSelectedPlayer()!.id
-        )
-      );
-    }
+    // if (getSelectedPlayers() !== null) {
+    //   selectedPlayer$.next(
+    //     getById(
+    //       this.scenes[this.view.state.selectedScene].scene.gameState,
+    //       getSelectedPlayers()!.id
+    //     )
+    //   );
+    // }
   }
 
   private switchSceneRelative = (delta: number) => {

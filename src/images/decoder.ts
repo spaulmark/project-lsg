@@ -2,7 +2,6 @@ import {
   RelationshipMapper,
   RelationshipHouseguest,
 } from "./RelationshipMapper";
-import { CodedRelationships } from "./encoder";
 import { Base64 } from "../utils/base64";
 import _ from "lodash";
 
@@ -15,18 +14,14 @@ export function decodeToRelationshipMapper(
   const c = c1.trim();
   try {
     if (c.split("|").length !== 4) throw new Error(`Not a code`);
-    const [tribes, evictees, relationships, powerRankings] = c.split("|");
-    if (
-      relationships.length % 2 > 0 ||
-      evictees.length % 2 > 0 ||
-      powerRankings.length % 2 > 0
-    )
+    const [tribes, evictees, relationships] = c.split("|");
+    if (relationships.length % 2 > 0 || evictees.length % 2 > 0)
       throw new Error(
-        `Misaligned bytes: (${evictees.length}, ${relationships.length}, ${powerRankings.length}`
+        `Misaligned bytes: (${evictees.length}, ${relationships.length}`
       );
     decodeEvictees(r, evictees);
     decodeTribes(r, tribes);
-    decodeRelationships(r, { relationships, powerRankings });
+    decodeRelationships(r, relationships);
   } catch (e) {
     alert(e);
     return null;
@@ -56,8 +51,8 @@ function decodeTribes(m: RelationshipMapper, c: string) {
   tribes.forEach((t) => {
     const hash = t.indexOf("#");
     if (hash === -1) throw new Error("Invalid tribe, does not have a color");
-    const tribeName = t.slice(0, hash);
-    const color = t.slice(hash + 1, hash + 7);
+    const name = t.slice(0, hash);
+    const color = t.slice(hash + 1, hash + 7).toLowerCase();
     const members = t.slice(hash + 7);
     if (!chex.test(color)) throw new Error(`Invalid color: ${color}`);
     const tribemates: string[] = [];
@@ -69,7 +64,7 @@ function decodeTribes(m: RelationshipMapper, c: string) {
       );
       i++;
     }
-    m.tribe({ color: `#${color}`, name: tribeName }, tribemates);
+    m.tribe({ color: `#${color}`, name }, tribemates);
   });
 }
 
@@ -94,12 +89,9 @@ function decodeEvictees(m: RelationshipMapper, c: string) {
   }
 }
 
-function decodeRelationships(m: RelationshipMapper, c: CodedRelationships) {
+function decodeRelationships(m: RelationshipMapper, relationships: string) {
   let decodedR = "";
-  let decodedP = "";
   let r: number = 0;
-  let p: number = 0;
-  const [relationships, powerRankings] = [c.relationships, c.powerRankings];
   m.houseguests.forEach((hg) => {
     if (hg.isEvicted || hg.disabled) return;
     m.nonEvictedIDs.forEach((id) => {
@@ -118,20 +110,6 @@ function decodeRelationships(m: RelationshipMapper, c: CodedRelationships) {
         "relationships"
       );
       decodedR = decodedR.slice(1);
-      //////////////////////////////////////////////// powerRankings
-      if (decodedP.length === 0) {
-        decodedP = decode(`${powerRankings[p]}${powerRankings[p + 1]}`);
-        p += 2;
-      }
-      m.setRelationship(
-        hg.name,
-        m.houseguests[id].name,
-        fromTernary(decodedP[0]),
-        "thinksImThreat",
-        "thinksImWeak",
-        "powerRankings"
-      );
-      decodedP = decodedP.slice(1);
     });
   });
 }

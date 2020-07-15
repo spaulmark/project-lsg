@@ -2,7 +2,6 @@ import React from "react";
 import { selectPlayer } from "./selectedPortrait";
 import { isNullOrUndefined } from "util";
 import { RelationshipMap, DiscreteRelationshipMap } from "../../utils";
-import _ from "lodash";
 import { HouseguestPortraitController } from "./houseguestPortraitController";
 import { PortraitDisplayMode } from "../../model/portraitDisplayMode";
 import styled from "styled-components";
@@ -66,9 +65,6 @@ export interface PortraitProps {
   name: string;
   id?: number;
   relationships?: RelationshipMap | DiscreteRelationshipMap;
-  popularity?: number;
-  powerRankings: DiscreteRelationshipMap;
-  powerRanking?: number;
   isEvicted?: boolean;
   disabled?: boolean;
   deltaPopularity?: number;
@@ -77,20 +73,16 @@ export interface PortraitProps {
   //
   likedBy: Likemap;
   dislikedBy: Likemap;
-  thinksImWeak: Likemap;
-  thinksImThreat: Likemap;
+  houseSize: number;
   tribe?: Tribe;
 }
 
 export interface PortraitState {
   popularity?: number;
-  powerRanking?: number;
   displayMode: PortraitDisplayMode;
   disabled: boolean;
   likedBy: Likemap;
   dislikedBy: Likemap;
-  thinksImWeak: Likemap;
-  thinksImThreat: Likemap;
 }
 export class HouseguestPortrait extends React.Component<
   PortraitProps,
@@ -128,9 +120,9 @@ export class HouseguestPortrait extends React.Component<
       id: this.props.id,
       relationships: this.props.relationships,
       isEvicted: !!this.props.isEvicted,
-      popularity: this.props.popularity || 0,
+      popularity: this.state.popularity || 0,
       superiors: this.props.superiors,
-      powerRankings: this.props.powerRankings,
+      tribe: this.props.tribe || null,
     };
     selectPlayer(data);
   }

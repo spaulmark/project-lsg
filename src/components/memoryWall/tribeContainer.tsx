@@ -49,7 +49,11 @@ export class TribeContainer extends React.Component<
     const Hoverable = this.getHoverable(this.props.tribe.color);
     const tribeName = this.props.tribe.name;
     return (
-      <DividerBox key={tribeName} style={{ textAlign: "center" }}>
+      <DividerBox
+        className={`column ${this.props.hgs.length === 1 ? "is-narrow" : ""}`}
+        key={tribeName}
+        style={{ textAlign: "center", padding: 0 }}
+      >
         {tribeName !== "undefined" && (
           <p>
             <Hoverable onClick={this.select.bind(this)}>{tribeName}</Hoverable>
