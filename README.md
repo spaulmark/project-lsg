@@ -29,8 +29,8 @@ https://powervcouragevwisdom.freeforums.net/
 
 I didn't make a backend because backends cost money to run, and I want this project to be available forever.
 
-`npm install
-npm start`
+```npm install
+npm start```
 
 
 
