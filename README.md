@@ -2,6 +2,8 @@
 
 This is an experimental interface I made for visualizing social networks as they change over time. It uses real data, from a real online game, played by real people!  
 
+>>> https://spaulmark.github.io/project-lsg/ <<<
+
 ## Show, don't tell
 
 ![](select.gif)
@@ -31,6 +33,8 @@ I didn't make a backend because backends cost money to run, and I want this proj
 
 `npm install`
 `npm start`
+
+>>> https://spaulmark.github.io/project-lsg/ <<<
 
 
 
